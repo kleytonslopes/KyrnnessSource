@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "GENERATE_FILE",
+        "type": "shell",
+        "command": "ThirdParty\\Premake\\premake5.exe vs2022",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": true
+        },
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "COMPILE_SHADERS",
+        "type": "shell",
+        "command": "compile.bat",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": true
+        },
+        "cwd": "${workspaceFolder}/Content/Shaders",
+        "dependsOn": ["GENERATE_FILE"]
+      },
+      {
+        "label": "BUILD_ALL",
+        "dependsOn": [
+          "GENERATE_FILE",
+          "COMPILE_SHADERS"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": false
+        }
+      }
+    ]
+  }

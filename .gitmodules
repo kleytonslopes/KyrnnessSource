@@ -1,0 +1,33 @@
+[submodule "ThirdParty/GLM"]
+	path = ThirdParty/GLM
+	url = https://github.com/g-truc/glm.git
+[submodule "ThirdParty/STB"]
+	path = ThirdParty/STB
+	url = https://github.com/nothings/stb.git
+[submodule "ThirdParty/ASSIMP"]
+	path = ThirdParty/ASSIMP
+	url = https://github.com/assimp/assimp.git
+[submodule "ThirdParty/TINY"]
+	path = ThirdParty/TINY
+	url = https://github.com/syoyo/tinygltf.git
+[submodule "ThirdParty/TINYOBJ"]
+	path = ThirdParty/TINYOBJ
+	url = https://github.com/tinyobjloader/tinyobjloader.git
+[submodule "ThirdParty/GLFW"]
+	path = ThirdParty/GLFW
+	url = https://github.com/glfw/glfw.git
+[submodule "ThirdParty/JSON"]
+	path = ThirdParty/JSON
+	url = https://github.com/nlohmann/json.git
+[submodule "ThirdParty/ENTT"]
+	path = ThirdParty/ENTT
+	url = https://github.com/skypjack/entt.git
+[submodule "ThirdParty/OPENSSL"]
+	path = ThirdParty/OPENSSL
+	url = https://github.com/openssl/openssl.git
+[submodule "ThirdParty/RMLUI"]
+	path = ThirdParty/RMLUI
+	url = https://github.com/mikke89/RmlUi.git
+[submodule "ThirdParty/NUKLEAR"]
+	path = ThirdParty/NUKLEAR
+	url = https://github.com/Immediate-Mode-UI/Nuklear.git
