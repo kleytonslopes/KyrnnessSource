@@ -116,26 +116,25 @@ private:
         {
             try
             {
-                uintptr_t addr = reinterpret_cast<uintptr_t>(ptr);
-                if (addr == 0 || addr == 0xFFFFFFFFFFFFFFFF || addr < 0x1000)
+                if (ptr == nullptr || reinterpret_cast<uintptr_t>(ptr) < 0x1000)
                 {
-                    LOG(Fatal, TEXT("Skipping likely invalid pointer in FreeAll: %p"), ptr);
+                    LOG(Fatal, TEXT("Skipping invalid pointer: %p"), ptr);
                     continue;
                 }
 
                 if (deleter)
                 {
-                    LOG(Log, TEXT("FreeAll pointer: %p"), ptr);
+                    LOG(Log, TEXT("Freeing pointer: %p"), ptr);
                     deleter(ptr);
                 }
             }
             catch (const std::exception& e)
             {
-                LOG(Fatal, TEXT("Exception while freeing pointer: %p | What: %s"), ptr, e.what());
+                LOG(Fatal, TEXT("Exception while deleting pointer: %p - %s"), ptr, e.what());
             }
             catch (...)
             {
-                LOG(Fatal, TEXT("Unknown exception while freeing pointer: %p"), ptr);
+                LOG(Fatal, TEXT("Unknown exception while deleting pointer: %p"), ptr);
             }
         }
 

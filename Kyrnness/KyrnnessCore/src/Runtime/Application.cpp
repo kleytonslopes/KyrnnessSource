@@ -29,7 +29,7 @@ UApplication::UApplication()
 
 UApplication::~UApplication()
 {
-	FMemoryManager::Get().Cleanup();
+	
 }
 
 void UApplication::Run()
@@ -103,6 +103,8 @@ void UApplication::Update(float DeltaTime)
 
 void UApplication::Destroy()
 {
+	FMemoryManager::Get().Cleanup();
+
 	m_Window->Destroy();
 
 	LOG(Warning, "UApplication::Destroy");
