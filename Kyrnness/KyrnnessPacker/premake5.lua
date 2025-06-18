@@ -4,8 +4,8 @@ project "KyrnnessPacker"
     cppdialect "c++20"
     staticruntime "on"
 
-    pchheader "kpackerpch.hpp"
-    pchsource "src/kpackerpch.cpp"
+    pchheader "pch.hpp"
+    pchsource "src/pch.cpp"
 
     targetdir ("%{wks.location}/Build/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/Build/obj/" .. outputdir .. "/%{prj.name}")
@@ -20,7 +20,7 @@ project "KyrnnessPacker"
     includedirs
     {
         "include",
-
+        "%{include_dir.ZLIB}",
     }
 
     libdirs
@@ -30,7 +30,7 @@ project "KyrnnessPacker"
 
     links
     {
-       
+       "ZLIB",
     }
 
     filter "system:windows"

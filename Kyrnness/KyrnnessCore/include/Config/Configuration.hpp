@@ -3,6 +3,8 @@
 #define KYRNNES_CORE_CONFIG_CONFIGURATION_HPP
 
 #include "Core/Core.hpp"
+#include "Core/AssetManager.hpp"
+
 #include <nlohmann/json.hpp>
 #include <fstream>
 
@@ -23,22 +25,24 @@ public:
 	{
 		GameConfig config{};
 
-		std::ifstream file("Config/GameConfig.json");
-
-		if (!file)
+		try
 		{
-			throw std::runtime_error("Failed to open config file: GameConfig.json");
+			std::vector<uint8_t> jsonData = UAssetManager::LoadAssetRaw("Config/GameConfig.json");
+			std::string jsonStr(jsonData.begin(), jsonData.end());
+
+			nlohmann::json j = nlohmann::json::parse(jsonStr);
+
+			config.m_With = j["Resolution"]["Width"];
+			config.m_Height = j["Resolution"]["Height"];
+			config.m_Renderer = j["Renderer"];
+			config.m_WindowType = j["WindowType"];
+			config.m_FrameRate = j["FrameRate"];
+			config.m_MainMenuMap = j["MainMenuMap"];
 		}
-
-		nlohmann::json j;
-		file >> j;
-
-		config.m_With = j["Resolution"]["Width"];
-		config.m_Height = j["Resolution"]["Height"];
-		config.m_Renderer = j["Renderer"];
-		config.m_WindowType = j["WindowType"];
-		config.m_FrameRate = j["FrameRate"];
-		config.m_MainMenuMap = j["MainMenuMap"];
+		catch (const std::exception& e)
+		{
+			throw std::runtime_error(std::string("Falha ao carregar GameConfig.json: ") + e.what());
+		}
 
 		return config;
 	}

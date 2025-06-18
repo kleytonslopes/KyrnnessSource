@@ -1,8 +1,6 @@
 project "Game"
-    kind "ConsoleApp"
-    language "C++"
-    cppdialect "c++20"
-    staticruntime "on"
+    kind "WindowedApp"
+    SetupCommonProjectSettings()
 
     targetdir ("%{wks.location}/Build/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/Build/obj/" .. outputdir .. "/%{prj.name}")
@@ -37,6 +35,7 @@ project "Game"
         "%{include_dir.SteamSDK}",
         "%{include_dir.VULKAN}",
         "%{include_dir.FMOD}",
+        "%{include_dir.ZLIB}",
     }
 
     libdirs
@@ -44,10 +43,9 @@ project "Game"
         "%{extern_lib_dir.SDL}",
         "%{extern_lib_dir.ASSIMP}",
         "%{extern_lib_dir.GLFW}",
-        "%{extern_lib_dir.PHYSX}",
         "%{extern_lib_dir.SteamSDK}",
         "%{extern_lib_dir.VULKAN}",
-        "%{extern_lib_dir.FMOD}",
+        
     }
 
     links
@@ -65,15 +63,6 @@ project "Game"
         "assimp-vc143-mtd.lib",
         "glfw3.lib",
         "steam_api64.lib",
-        "PhysX_64.lib",
-        "PhysXCharacterKinematic_static_64.lib",
-        "PhysXCommon_64.lib",
-        "PhysXCooking_64.lib",
-        "PhysXExtensions_static_64.lib",
-        "PhysXFoundation_64.lib",
-        "PhysXPvdSDK_static_64.lib",
-        "PhysXTask_static_64.lib",
-        "PhysXVehicle2_static_64.lib",
     }
 
     postbuildcommands

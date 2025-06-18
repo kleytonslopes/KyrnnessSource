@@ -1,9 +1,6 @@
-project "KyrnnessCore"
-    kind "StaticLib"
+project "Packer"
+    kind "ConsoleApp"
     SetupCommonProjectSettings()
-
-    -- pchheader "pch.hpp"
-    -- pchsource "src/pch.cpp"
 
     targetdir ("%{wks.location}/Build/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/Build/obj/" .. outputdir .. "/%{prj.name}")
@@ -12,16 +9,16 @@ project "KyrnnessCore"
     {
         "include/**.hpp",
         "include/**.h",
-        "include/**.cpp",
         "src/**.cpp"
     }
 
     includedirs
     {
         "include",
-        "%{include_dir.KyrnnessAudio}",
+        "%{include_dir.KyrnnessCore}",
         "%{include_dir.KyrnnessPacker}",
-        "%{include_dir.FMOD}",
+        "%{include_dir.KyrnnessSteamModule}",
+        "%{include_dir.KyrnnessAudio}",
         "%{include_dir.SDL}",
         "%{include_dir.JSON}",
         "%{include_dir.GLAD}",
@@ -37,6 +34,7 @@ project "KyrnnessCore"
         "%{include_dir.PHYSX}",
         "%{include_dir.SteamSDK}",
         "%{include_dir.VULKAN}",
+        "%{include_dir.FMOD}",
         "%{include_dir.ZLIB}",
     }
 
@@ -45,20 +43,31 @@ project "KyrnnessCore"
         "%{extern_lib_dir.SDL}",
         "%{extern_lib_dir.ASSIMP}",
         "%{extern_lib_dir.GLFW}",
+        "%{extern_lib_dir.SteamSDK}",
         "%{extern_lib_dir.VULKAN}",
-        "%{extern_lib_dir.FMOD}",
-        
     }
 
     links
     {
+        "opengl32.lib",
+        "fmodL_vc.lib",
         "GLAD",
         "IMGUI",
+        "ZLIB",
+        "KyrnnessAudio",
+        "KyrnnessCore",
+        "KyrnnessPacker",
+        "KyrnnessSteamModule",
         "SDL3.lib",
         "vulkan-1.lib",
         "assimp-vc143-mtd.lib",
-        "fmodL_vc.lib",
-        "ZLIB",
+        "glfw3.lib",
+        "steam_api64.lib",
+    }
+
+    postbuildcommands
+    {
+        
     }
 
     filter "system:windows"

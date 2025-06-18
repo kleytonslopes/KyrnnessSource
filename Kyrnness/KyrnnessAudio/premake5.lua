@@ -1,8 +1,6 @@
 project "KyrnnessAudio"
     kind "StaticLib"
-    language "C++"
-    cppdialect "c++20"
-    staticruntime "on"
+    SetupCommonProjectSettings()
 
     pchheader "pch.hpp"
     pchsource "src/pch.cpp"

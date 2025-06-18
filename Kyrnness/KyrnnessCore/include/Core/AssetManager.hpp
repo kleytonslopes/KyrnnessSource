@@ -6,13 +6,22 @@
 #include "Core/Core.hpp"
 #include "nlohmann/json.hpp"
 #include "Content/MeshAsset.hpp"
-
+#include <glad/glad.h>
+#include <zlib.h>
+#include "Runtime/Packer.hpp"
 
 struct TScene;
 
+struct FAssetEntry
+{
+	uint64_t Offset;
+	uint32_t CompressedSize;
+	uint32_t UncompressedSize;
+	uint32_t CRC32;
+};
+
 class UAssetManager
 {
-
 
 public:
 	UAssetManager() = default;
@@ -28,7 +37,18 @@ public:
 	static nlohmann::json LoadJson(const std::string& jsonFilePath);
 	static void SaveJson(const std::string& jsonFilePath, const nlohmann::json& jsonData);
 	static GLuint LoadTextureOpenGL(const std::string& filePath);
+	static void InitializeGData(const std::string& gdataFilePath);
+	static std::vector<uint8_t> LoadAssetRaw(const std::string& assetPath);
+	static void LoadAssetMap(const std::string& path);
+	
 
+private:
+	//inline static std::unordered_map<std::string, FAssetEntry> s_AssetMap;
+	inline static std::vector<uint8_t> s_GDataFile;
+	//static std::ifstream s_AssetFile;
+
+	static std::unordered_map<std::string, FAssetEntry> s_AssetMap;
+	static std::ifstream s_AssetFile;
 
 };
 

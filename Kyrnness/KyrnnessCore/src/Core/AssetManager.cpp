@@ -12,6 +12,8 @@
 #include <fstream>
 
 static std::unordered_map<std::string, FMeshAsset> m_MeshCache;
+std::unordered_map<std::string, FAssetEntry> UAssetManager::s_AssetMap;
+std::ifstream UAssetManager::s_AssetFile;
 
 void UAssetManager::LoadMeshAsset(const std::string& meshFilePath, FMeshAsset& meshAsset)
 {
@@ -167,7 +169,10 @@ TScene UAssetManager::LoadScene(const std::string& sceneFilePath)
 
 nlohmann::json UAssetManager::LoadJson(const std::string& jsonFilePath)
 {
-	std::ifstream sceneFile(jsonFilePath);
+	auto rawData = LoadAssetRaw(jsonFilePath);
+	std::string jsonString(rawData.begin(), rawData.end());
+	return nlohmann::json::parse(jsonString);
+	/*std::ifstream sceneFile(jsonFilePath);
 
 	if (!sceneFile)
 		ThrowRuntimeError("Failed to open json file: " + jsonFilePath);
@@ -180,7 +185,7 @@ nlohmann::json UAssetManager::LoadJson(const std::string& jsonFilePath)
 		return j;
 	}
 
-	return nlohmann::json();
+	return nlohmann::json();*/
 }
 
 void UAssetManager::SaveJson(const std::string& jsonFilePath, const nlohmann::json& jsonData)
@@ -218,4 +223,155 @@ GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath)
 
 	stbi_image_free(data);
 	return textureID;
+}
+
+void UAssetManager::InitializeGData(const std::string& gdataFilePath)
+{
+	// Ler tudo pra memória
+	std::ifstream file(gdataFilePath, std::ios::binary | std::ios::ate);
+	if (!file)
+	{
+		throw std::runtime_error("Falha ao abrir GData file");
+	}
+
+	size_t fileSize = file.tellg();
+	file.seekg(0);
+	s_GDataFile.resize(fileSize);
+	file.read(reinterpret_cast<char*>(s_GDataFile.data()), fileSize);
+
+	// Parse do Header
+	struct GDataHeader
+	{
+		char Magic[4];
+		uint32_t Version;
+		uint32_t FileCount;
+		uint32_t DataOffset;
+	};
+
+	GDataHeader* header = reinterpret_cast<GDataHeader*>(s_GDataFile.data());
+	if (std::string(header->Magic, 4) != "KGPK")
+	{
+		throw std::runtime_error("GData: Header inválido");
+	}
+
+	size_t offset = sizeof(GDataHeader);
+
+	for (uint32_t i = 0; i < header->FileCount; i++)
+	{
+		uint32_t pathSize = *reinterpret_cast<uint32_t*>(&s_GDataFile[offset]);
+		offset += sizeof(uint32_t);
+
+		std::string path(reinterpret_cast<char*>(&s_GDataFile[offset]), pathSize);
+		offset += pathSize;
+
+		FAssetEntry entry;
+		entry.Offset = *reinterpret_cast<uint32_t*>(&s_GDataFile[offset]);
+		offset += sizeof(uint32_t);
+
+		entry.UncompressedSize = *reinterpret_cast<uint32_t*>(&s_GDataFile[offset]);
+		offset += sizeof(uint32_t);
+
+		entry.CompressedSize = *reinterpret_cast<uint32_t*>(&s_GDataFile[offset]);
+		offset += sizeof(uint32_t);
+
+		entry.CRC32 = *reinterpret_cast<uint32_t*>(&s_GDataFile[offset]);
+		offset += sizeof(uint32_t);
+
+		s_AssetMap[path] = entry;
+	}
+
+	    s_AssetFile.open(gdataFilePath, std::ios::binary);
+    if (!s_AssetFile)
+    {
+        throw std::runtime_error("Falha ao reabrir o .gdata para leitura de conteúdo.");
+    }
+}
+
+std::vector<uint8_t> UAssetManager::LoadAssetRaw(const std::string& assetPath)
+{
+	auto it = s_AssetMap.find(assetPath);
+	if (it == s_AssetMap.end())
+	{
+		ThrowRuntimeError("Asset não encontrado: " + assetPath);
+	}
+
+	const FAssetEntry& entry = it->second;
+
+	s_AssetFile.seekg(entry.Offset, std::ios::beg);
+
+	std::vector<uint8_t> compressedData(entry.CompressedSize);
+	s_AssetFile.read(reinterpret_cast<char*>(compressedData.data()), entry.CompressedSize);
+
+	std::vector<uint8_t> uncompressedData(entry.UncompressedSize);
+
+	uLongf destLen = static_cast<uLongf>(entry.UncompressedSize);
+	int result = uncompress(uncompressedData.data(), &destLen, compressedData.data(), entry.CompressedSize);
+
+	if (result != Z_OK)
+	{
+		ThrowRuntimeError("Falha ao descomprimir asset: " + assetPath);
+	}
+
+	// Verificar CRC
+	uint32_t calcCrc = ::crc32(0L, Z_NULL, 0);
+	calcCrc = ::crc32(calcCrc, uncompressedData.data(), uncompressedData.size());
+
+	if (calcCrc != entry.CRC32)
+	{
+		ThrowRuntimeError("CRC inválido para asset: " + assetPath);
+	}
+
+	return uncompressedData;
+}
+
+void UAssetManager::LoadAssetMap(const std::string& path)
+{
+	std::ifstream inFile(path, std::ios::binary);
+	if (!inFile)
+	{
+		ThrowRuntimeError("Falha ao abrir o arquivo de assets: " + path);
+		return;
+	}
+
+	char magic[4];
+	inFile.read(magic, 4);
+	if (std::string(magic, 4) != "KGPK")
+	{
+		ThrowRuntimeError("Arquivo .gdata inválido: " + path);
+		return;
+	}
+
+	uint32_t version;
+	uint32_t numFiles;
+	uint32_t dataOffset;
+
+	inFile.read(reinterpret_cast<char*>(&version), sizeof(uint32_t));
+	inFile.read(reinterpret_cast<char*>(&numFiles), sizeof(uint32_t));
+	inFile.read(reinterpret_cast<char*>(&dataOffset), sizeof(uint32_t));
+
+	s_AssetMap.clear();
+
+	for (uint32_t i = 0; i < numFiles; ++i)
+	{
+		uint32_t pathSize;
+		inFile.read(reinterpret_cast<char*>(&pathSize), sizeof(uint32_t));
+
+		std::string relativePath(pathSize, '\0');
+		inFile.read(relativePath.data(), pathSize);
+
+		FAssetEntry entry;
+
+		inFile.read(reinterpret_cast<char*>(&entry.Offset), sizeof(uint32_t));
+		inFile.read(reinterpret_cast<char*>(&entry.UncompressedSize), sizeof(uint32_t));
+		inFile.read(reinterpret_cast<char*>(&entry.CompressedSize), sizeof(uint32_t));
+		inFile.read(reinterpret_cast<char*>(&entry.CRC32), sizeof(uint32_t));
+
+		s_AssetMap[relativePath] = entry;
+	}
+
+	s_AssetFile.open(path, std::ios::binary);
+	if (!s_AssetFile)
+	{
+		ThrowRuntimeError("Falha ao reabrir o .gdata para leitura de conteúdo.");
+	}
 }

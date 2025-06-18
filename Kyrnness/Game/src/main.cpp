@@ -1,3 +1,8 @@
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#define NOGDI
+#include <Windows.h>
+
 #define GL_SILENCE_DEPRECATION
 #include "Runtime/Application.hpp"
 #include "Runtime/FrequencyThread.hpp"
@@ -7,9 +12,15 @@
 #include <memory>
 #include "Online/SteamModule.hpp"
 #include "UI/GameHUD.hpp"
+#include "DebugUtils.hpp"
+#include "Core/AssetManager.hpp"
 
-int main(int, char**)
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
+	OpenDebugConsole();
+
+	UAssetManager::InitializeGData("KyrnnessGameData.gdata");
 
 	USteamModule::Get().Initialize();
 
@@ -33,8 +44,6 @@ int main(int, char**)
 
 	USteamModule::Get().CreateSession();
 
-	//UApplication::Get().SetHUDClass(UGameHUD);
-	
 	UApplication::Get().Run();
 
 	SteamUpdateFrequency.Stop();
