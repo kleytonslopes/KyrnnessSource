@@ -19,7 +19,6 @@ project "KyrnnessCore"
     includedirs
     {
         "include",
-        "%{include_dir.KyrnnessAudio}",
         "%{include_dir.KyrnnessPacker}",
         "%{include_dir.FMOD}",
         "%{include_dir.SDL}",

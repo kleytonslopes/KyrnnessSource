@@ -1,7 +1,6 @@
 include_dir = {}
 include_dir["KyrnnessCore"]        = "%{wks.location}/Kyrnness/KyrnnessCore/include"
 include_dir["KyrnnessSteamModule"] = "%{wks.location}/Kyrnness/KyrnnessSteamModule/include"
-include_dir["KyrnnessAudio"]       = "%{wks.location}/Kyrnness/KyrnnessAudio/include"
 include_dir["KyrnnessPacker"]       = "%{wks.location}/Kyrnness/KyrnnessPacker/include"
 
 include_dir["SDL"]             = "%{wks.location}/ThirdParty/SDL/include"
@@ -113,7 +112,6 @@ group ""
 group "Libs"
    include "Kyrnness/KyrnnessCore"
    include "Kyrnness/KyrnnessSteamModule"
-   include "Kyrnness/KyrnnessAudio"
    include "Kyrnness/KyrnnessPacker"
 group ""
 

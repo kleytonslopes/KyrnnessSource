@@ -15,6 +15,12 @@ enum class ESoundCategory
     UI
 };
 
+struct SoundData
+{
+    std::vector<uint8_t> Buffer;
+    FMOD::Sound* Sound = nullptr;
+};
+
 class USoundManager
 {
 public:
@@ -50,8 +56,9 @@ public:
     FMOD::Sound* GetSound(const std::string& name);
 private:
     FMOD::System* m_System = nullptr;
-    std::unordered_map<std::string, FMOD::Sound*> m_Sounds;
+    //std::unordered_map<std::string, FMOD::Sound*> m_Sounds;
     std::vector<FMOD::Channel*> m_ActiveChannels;
+    std::unordered_map<std::string, SoundData> m_SoundData;
 
     FMOD::ChannelGroup* m_MasterGroup = nullptr;
     FMOD::ChannelGroup* m_UIGroup = nullptr;

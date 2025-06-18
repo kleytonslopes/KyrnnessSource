@@ -1,5 +1,6 @@
 #include "pch.hpp"
 #include "Audio/SoundManager.hpp"
+#include "Core/AssetManager.hpp"
 #include <iostream>
 
 USoundManager& USoundManager::Get()
@@ -55,11 +56,11 @@ bool USoundManager::Initialize()
 
 void USoundManager::Shutdown()
 {
-	for (auto& pair : m_Sounds)
+	for (auto& pair : m_SoundData)
 	{
-		pair.second->release();
+		pair.second.Sound->release();
 	}
-	m_Sounds.clear();
+	m_SoundData.clear();
 
 	if (m_System)
 	{
@@ -83,16 +84,34 @@ bool USoundManager::LoadSound(const std::string& name, const std::string& filepa
 
 	if (stream) mode |= FMOD_CREATESTREAM;
 
-	FMOD::Sound* sound = nullptr;
-	FMOD_RESULT result = m_System->createSound(filepath.c_str(), mode, nullptr, &sound);
+	SoundData soundData;
 
-	if (result != FMOD_OK)
+	try
 	{
-		std::cout << "Failed to load sound: " << filepath << " Error: " << result << std::endl;
+		soundData.Buffer = UAssetManager::LoadAssetRaw(filepath);
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Falha ao carregar asset de som: " << filepath << " | Erro: " << e.what() << std::endl;
 		return false;
 	}
 
-	m_Sounds[name] = sound;
+	FMOD_CREATESOUNDEXINFO exInfo{};
+	exInfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+	exInfo.length = static_cast<unsigned int>(soundData.Buffer.size());
+
+	FMOD::Sound* sound = nullptr;
+	FMOD_RESULT result = m_System->createSound(reinterpret_cast<const char*>(soundData.Buffer.data()), mode | FMOD_OPENMEMORY, &exInfo, &sound);
+
+	if (result != FMOD_OK)
+	{
+		std::cerr << "FMOD: Failed to load sound: " << filepath << " | Error: " << result << std::endl;
+		return false;
+	}
+
+	soundData.Sound = sound;
+	m_SoundData[name] = std::move(soundData);
+
 	return true;
 }
 
@@ -101,12 +120,17 @@ void USoundManager::PlaySound(const std::string& name, ESoundCategory category, 
 	if (!m_System)
 		return;
 
-	auto it = m_Sounds.find(name);
-	if (it == m_Sounds.end())
+	//auto it = m_Sounds.find(name);
+	//if (it == m_Sounds.end())
+	//	return;
+
+	auto it = m_SoundData.find(name);
+	if (it == m_SoundData.end())
 		return;
 
 	FMOD::Channel* channel = nullptr;
-	m_System->playSound(it->second, nullptr, false, &channel);
+	//m_System->playSound(it->second, nullptr, false, &channel);
+	m_System->playSound(m_SoundData[name].Sound, nullptr, false, nullptr);
 
 	if (channel)
 	{
@@ -261,6 +285,6 @@ FMOD::System* USoundManager::GetSystem()
 
 FMOD::Sound* USoundManager::GetSound(const std::string& name)
 {
-	auto it = m_Sounds.find(name);
-	return (it != m_Sounds.end()) ? it->second : nullptr;
+	auto it = m_SoundData.find(name);
+	return (it != m_SoundData.end()) ? it->second.Sound : nullptr;
 }

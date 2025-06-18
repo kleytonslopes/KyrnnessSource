@@ -1,5 +1,6 @@
 #include "pch.hpp"
 #include "Components/ShaderOpenGLComponent.hpp"
+#include <Core/AssetManager.hpp>
 
 FShaderOpenGLComponent::FShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile)
 	: m_ShaderName(shaderName), m_VertShaderFile(vertShaderFile), m_FragShaderFile(fragShaderFile)
@@ -126,8 +127,17 @@ nlohmann::json FShaderOpenGLComponent::GetJsonData()
 
 void FShaderOpenGLComponent::LoadShaderFiles()
 {
-	std::string vertShaderSource = FFile::ReadFile(m_VertShaderFile);
-	std::string fragShaderSource = FFile::ReadFile(m_FragShaderFile);
+	//std::string vertShaderSource = FFile::ReadFile(m_VertShaderFile);
+	//std::string fragShaderSource = FFile::ReadFile(m_FragShaderFile);
+
+	// Carrega o código-fonte do vertex shader
+	std::vector<uint8_t> vertexShaderData = UAssetManager::LoadAssetRaw(m_VertShaderFile);
+	std::string vertShaderSource(vertexShaderData.begin(), vertexShaderData.end());
+
+	// Carrega o código-fonte do fragment shader
+	std::vector<uint8_t> fragmentShaderData = UAssetManager::LoadAssetRaw(m_FragShaderFile);
+	std::string fragShaderSource(fragmentShaderData.begin(), fragmentShaderData.end());
+
 
 	const char* vertShaderCode = vertShaderSource.c_str();
 	const char* fragShaderCode = fragShaderSource.c_str();

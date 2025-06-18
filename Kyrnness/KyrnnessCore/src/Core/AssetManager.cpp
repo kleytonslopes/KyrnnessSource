@@ -14,7 +14,7 @@
 static std::unordered_map<std::string, FMeshAsset> m_MeshCache;
 std::unordered_map<std::string, FAssetEntry> UAssetManager::s_AssetMap;
 std::ifstream UAssetManager::s_AssetFile;
-
+/*
 void UAssetManager::LoadMeshAsset(const std::string& meshFilePath, FMeshAsset& meshAsset)
 {
 	if (m_MeshCache.find(meshFilePath) != m_MeshCache.end())
@@ -149,6 +149,150 @@ void UAssetManager::LoadMeshAsset(const std::string& meshFilePath, FMeshAsset& m
 
 	m_MeshCache[meshFilePath] = meshAsset;
 }
+*/
+
+void UAssetManager::LoadMeshAsset(const std::string& meshFilePath, FMeshAsset& meshAsset)
+{
+	if (m_MeshCache.find(meshFilePath) != m_MeshCache.end())
+	{
+		meshAsset = m_MeshCache[meshFilePath];
+		return;
+	}
+
+	// Carregar binário do .glb da memória
+	std::vector<uint8_t> meshData;
+	try
+	{
+		meshData = LoadAssetRaw(meshFilePath);
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Falha ao carregar mesh asset: " << meshFilePath << " | Erro: " << e.what() << std::endl;
+		return;
+	}
+
+	tinygltf::TinyGLTF loader;
+	tinygltf::Model model;
+	std::string err, warn;
+
+	bool ret = loader.LoadBinaryFromMemory(&model, &err, &warn, meshData.data(), meshData.size(), "");
+
+	if (!warn.empty()) std::cout << "Warning: " << warn << std::endl;
+	if (!err.empty()) std::cerr << "Error: " << err << std::endl;
+	if (!ret) {
+		std::cerr << "Failed to load glTF model from memory: " << meshFilePath << std::endl;
+		return;
+	}
+
+	// O resto do código (parse dos vertices, indices e texturas) permanece igual:
+	bool hasUBOX = false;
+
+	for (const auto& mesh : model.meshes)
+	{
+		hasUBOX = mesh.name.rfind("UBOX_", 0) == 0;
+
+		for (const auto& primitive : mesh.primitives) {
+			if (primitive.mode != TINYGLTF_MODE_TRIANGLES) continue;
+
+			const auto& posAccessor = model.accessors[primitive.attributes.at("POSITION")];
+			const auto& posView = model.bufferViews[posAccessor.bufferView];
+			const auto& posBuffer = model.buffers[posView.buffer];
+			size_t posStride = posAccessor.ByteStride(posView);
+			const unsigned char* posData = posBuffer.data.data() + posView.byteOffset + posAccessor.byteOffset;
+
+			const float* texData = nullptr;
+			size_t texStride = 0;
+			bool hasUV = primitive.attributes.find("TEXCOORD_0") != primitive.attributes.end();
+			if (hasUV) {
+				const auto& texAccessor = model.accessors[primitive.attributes.at("TEXCOORD_0")];
+				const auto& texView = model.bufferViews[texAccessor.bufferView];
+				const auto& texBuffer = model.buffers[texView.buffer];
+				texStride = texAccessor.ByteStride(texView);
+				texData = reinterpret_cast<const float*>(texBuffer.data.data() + texView.byteOffset + texAccessor.byteOffset);
+			}
+
+			size_t vertexOffset = meshAsset.vertices.size();
+			for (size_t i = 0; i < posAccessor.count; i++) {
+				const float* position = reinterpret_cast<const float*>(posData + i * posStride);
+
+				Vertex v{};
+				v.position = glm::vec3(position[0], position[1], position[2]);
+				v.color = glm::vec3(1.0f);
+
+				if (hasUBOX)
+				{
+					meshAsset.boundingBoxMin = glm::min(meshAsset.boundingBoxMin, v.position);
+					meshAsset.boundingBoxMax = glm::max(meshAsset.boundingBoxMax, v.position);
+				}
+
+				if (hasUV) {
+					const float* tex = reinterpret_cast<const float*>(reinterpret_cast<const unsigned char*>(texData) + i * texStride);
+					v.uv = glm::vec2(tex[0], tex[1]);
+				}
+				else {
+					v.uv = glm::vec2(0.0f);
+				}
+
+				if (!hasUBOX)
+					meshAsset.vertices.push_back(v);
+			}
+
+			if (!hasUBOX && primitive.indices >= 0) {
+				const auto& indexAccessor = model.accessors[primitive.indices];
+				const auto& indexView = model.bufferViews[indexAccessor.bufferView];
+				const auto& indexBuffer = model.buffers[indexView.buffer];
+				const void* dataPtr = indexBuffer.data.data() + indexView.byteOffset + indexAccessor.byteOffset;
+
+				switch (indexAccessor.componentType) {
+				case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE: {
+					const uint8_t* buf = static_cast<const uint8_t*>(dataPtr);
+					for (size_t i = 0; i < indexAccessor.count; ++i)
+						meshAsset.indices.push_back(vertexOffset + static_cast<uint32_t>(buf[i]));
+					break;
+				}
+				case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT: {
+					const uint16_t* buf = static_cast<const uint16_t*>(dataPtr);
+					for (size_t i = 0; i < indexAccessor.count; ++i)
+						meshAsset.indices.push_back(vertexOffset + static_cast<uint32_t>(buf[i]));
+					break;
+				}
+				case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT: {
+					const uint32_t* buf = static_cast<const uint32_t*>(dataPtr);
+					for (size_t i = 0; i < indexAccessor.count; ++i)
+						meshAsset.indices.push_back(vertexOffset + buf[i]);
+					break;
+				}
+				default:
+					std::cerr << "Tipo de Indice nao suportado: " << indexAccessor.componentType << std::endl;
+					break;
+				}
+			}
+		}
+	}
+
+	if (!hasUBOX)
+	{
+		for (const Vertex& v : meshAsset.vertices)
+		{
+			meshAsset.boundingBoxMin = glm::min(meshAsset.boundingBoxMin, v.position);
+			meshAsset.boundingBoxMax = glm::max(meshAsset.boundingBoxMax, v.position);
+		}
+	}
+
+	for (const auto& material : model.materials) {
+		const auto& baseColor = material.pbrMetallicRoughness.baseColorTexture;
+
+		if (baseColor.index >= 0) {
+			const tinygltf::Texture& texture = model.textures[baseColor.index];
+			const tinygltf::Image& image = model.images[texture.source];
+
+			meshAsset.textures.push_back(texture);
+			meshAsset.images.push_back(image);
+		}
+	}
+
+	m_MeshCache[meshFilePath] = meshAsset;
+}
 
 TScene UAssetManager::LoadScene(const std::string& sceneFilePath)
 {
@@ -203,11 +347,24 @@ void UAssetManager::SaveJson(const std::string& jsonFilePath, const nlohmann::js
 
 GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath)
 {
+	// Carregar o arquivo de textura da memória
+	std::vector<uint8_t> textureData;
+	try
+	{
+		textureData = LoadAssetRaw(filePath);
+	}
+	catch (const std::exception& e)
+	{
+		printf("Failed to load texture asset: %s | Error: %s\n", filePath.c_str(), e.what());
+		return 0;
+	}
+
 	int width, height, nrChannels;
-	unsigned char* data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, 4);
+	unsigned char* data = stbi_load_from_memory(textureData.data(), static_cast<int>(textureData.size()), &width, &height, &nrChannels, 4);
+
 	if (!data)
 	{
-		printf("Failed to load texture: %s\n", filePath);
+		printf("Failed to decode texture from memory: %s\n", filePath.c_str());
 		return 0;
 	}
 

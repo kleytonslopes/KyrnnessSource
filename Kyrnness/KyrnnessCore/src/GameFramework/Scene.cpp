@@ -32,10 +32,9 @@ UScene::~UScene()
 void UScene::Initialize()
 {
 	SetupInputActions();
-	//CreateShaders();
 
 	TComponentBuilder& comp = FComponentBuilder::GetComponentBuilderParameters();
-	//comp.defaultShader = m_DefaultShader;
+
 	comp.defaultShader = UShaders::GetShader(SHADER_DEFAULT);
 
 	FComponentBuilder::RegisterEngineComponents(comp);
