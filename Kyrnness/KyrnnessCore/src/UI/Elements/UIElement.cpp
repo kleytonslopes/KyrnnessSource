@@ -30,8 +30,18 @@ UUIElement::UUIElement()
 #endif
 }
 
+void UUIElement::AddChild(UUIElement* child)
+{
+    if (child)
+    {
+        child->Parent = this;
+        Children.push_back(child);
+    }
+}
+
 void UUIElement::Draw()
 {
+#if(DEBUG)
 	if (UGraphicsApi_OpenGL* api = UApplication::Get().GetGraphicsApi<UGraphicsApi_OpenGL>())
 	{
 		glm::vec4 btnColor = { 1,1,1,1 };
@@ -41,16 +51,119 @@ void UUIElement::Draw()
 		glm::vec3 btn_Start2{ x, y + height, 0 };
 		glm::vec3 btn_End2{ x + width, y, 0 };
 
-#if(DEBUG)
 		api->DebugDrawLine2D(btn_Start, btn_End, btnColor);
 		api->DebugDrawLine2D(btn_Start2, btn_End2, btnColor);
-#endif
 	}
+#endif
+
+    DrawSelf(); // Cada tipo de elemento (ex: Border, Button) faz seu desenho aqui
+
+    for (UUIElement* child : Children)
+    {
+        if (child)
+        {
+            child->Draw();
+        }
+    }
 
 }
 
 void UUIElement::UpdateLayout()
 {
+    bool isRoot = (Parent == nullptr);
+
+    float parentX = 0.0f;
+    float parentY = 0.0f;
+    float parentW = static_cast<float>(UApplication::Get().GetWidth());
+    float parentH = static_cast<float>(UApplication::Get().GetHeight());
+
+    if (!isRoot)
+    {
+        parentX = Parent->x;
+        parentY = Parent->y;
+        parentW = Parent->width;
+        parentH = Parent->height;
+    }
+
+    // Calcula baseX e baseY conforme anchor
+    float baseX = parentX;
+    float baseY = parentY;
+
+    switch (Anchor)
+    {
+    case EAnchor::TopLeft:
+        baseX = parentX;
+        baseY = parentY;
+        break;
+
+    case EAnchor::TopCenter:
+        baseX = parentX + (parentW - width) * 0.5f;
+        baseY = parentY;
+        break;
+
+    case EAnchor::TopRight:
+        baseX = parentX + (parentW - width);
+        baseY = parentY;
+        break;
+
+    case EAnchor::CenterLeft:
+        baseX = parentX;
+        baseY = parentY + (parentH - height) * 0.5f;
+        break;
+
+    case EAnchor::Center:
+        baseX = parentX + (parentW - width) * 0.5f;
+        baseY = parentY + (parentH - height) * 0.5f;
+        break;
+
+    case EAnchor::CenterRight:
+        baseX = parentX + (parentW - width);
+        baseY = parentY + (parentH - height) * 0.5f;
+        break;
+
+    case EAnchor::BottomLeft:
+        baseX = parentX;
+        baseY = parentY + (parentH - height);
+        break;
+
+    case EAnchor::BottomCenter:
+        baseX = parentX + (parentW - width) * 0.5f;
+        baseY = parentY + (parentH - height);
+        break;
+
+    case EAnchor::BottomRight:
+        baseX = parentX + (parentW - width);
+        baseY = parentY + (parentH - height);
+        break;
+    }
+
+    // A posição final (absoluta) é: Anchor + Offset + LocalX/LocalY
+    x = baseX + OffsetX + LocalX;
+    y = baseY + OffsetY + LocalY;
+
+    // Recalcula layout dos filhos
+    for (UUIElement* child : Children)
+    {
+        if (child)
+        {
+            child->UpdateLayout();
+        }
+    }
+}
+
+glm::mat4 UUIElement::GetWorldModel()
+{
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x + (width / 2), y + (height / 2), 0.0f));
+    model = glm::scale(model, glm::vec3(width, height, 1.0f));
+
+    if (Parent)
+    {
+        return Parent->GetWorldModel() * model;
+    }
+    else
+    {
+        return model;
+    }
 }
 
 glm::mat4 UUIElement::GetProjetion()
@@ -69,4 +182,35 @@ glm::mat4 UUIElement::GetModel()
 	model = glm::scale(model, glm::vec3(width, height, 1.0f));
 
 	return model;
+}
+
+void UUIElement::DrawSelf()
+{
+    if (m_TextureID != 0)
+    {
+        glm::mat4 model = GetWorldModel();
+        glm::mat4 projection = GetProjetion();
+
+        // Aqui você seta os uniforms no shader
+        auto shaderEntities = UApplication::Get().GetEnttRegistry().view<FShaderOpenGLComponent>();
+        shaderEntities.each([&](const auto entity, auto& shader)
+            {
+                if (shader.GetShaderName() == "uiShader")
+                {
+                    shader.Bind();
+                    shader.SetMatrix4("projection", projection);
+                    shader.SetMatrix4("model", model);
+                    shader.SetVector4("color", glm::vec4(1, 1, 1, 1));
+                    shader.SetInt("tex", 0);
+                }
+            });
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+        glBindVertexArray(m_VAO);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
 }

@@ -85,7 +85,13 @@ protected:
 
 	EMouseFocusState m_MouseFocusState = EMouseFocusState::MFS_None;
 public:
+	UUIElement* Parent = nullptr;
+	std::vector<UUIElement*> Children;
+
     float x, y, width, height, scale;
+
+	float LocalX = 0.0f;
+	float LocalY = 0.0f;
 
 	EAnchor Anchor = EAnchor::TopLeft;
 	float OffsetX = 0.0f;
@@ -93,6 +99,8 @@ public:
 
 	UUIElement();
     virtual ~UUIElement() = default;
+
+	void AddChild(UUIElement* child);
 
     virtual void Draw();
 	virtual void UpdateLayout(); 
@@ -104,7 +112,11 @@ public:
 	void SetTextureId(unsigned int value) { m_TextureID = value; }
 	void SetVAO(unsigned int value) { m_VAO = value; }
 
+	glm::mat4 GetWorldModel();
+
 protected:
+
+
 	unsigned int m_TextureID;
 	unsigned int m_VAO;
 	unsigned int m_VBO;
@@ -119,6 +131,8 @@ protected:
 
 	glm::mat4 GetProjetion();
 	glm::mat4 GetModel();
+
+	virtual void DrawSelf();
 
 	//void DrawDebugLine(float xPosA, float xPosB, float yPosA, float yPosB);
 };

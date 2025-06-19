@@ -24,10 +24,11 @@ void UGameHUD::Initialize()
 
 	if (Button)
 	{
-		Button->x = 100.f;
-		Button->y = 100.f;
+		Button->LocalX = 100.f;
+		Button->y = 0.f;
 		Button->width = 162.f;
 		Button->height = 52.f;
+		Button->Anchor = EAnchor::TopLeft;
 
 		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_button_02_normal_r.png");
 		Button->SetTextureId(textureId);
@@ -42,15 +43,15 @@ void UGameHUD::Initialize()
 			};
 
 		Button->Initialize();
-		m_UIManager->AddElement(Button);
 	}
 
 	if (Button2)
 	{
-		Button2->x = 300.f;
+		Button2->LocalX = 300.f;
 		Button2->y = 100.f;
 		Button2->width = 162.f;
 		Button2->height = 52.f;
+		Button2->Anchor = EAnchor::Center;
 
 		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_button_02_normal_r.png");
 		Button2->SetTextureId(textureId);
@@ -65,7 +66,6 @@ void UGameHUD::Initialize()
 			};
 
 		Button2->Initialize();
-		m_UIManager->AddElement(Button2);
 	}
 
 	if (Border)
@@ -74,7 +74,12 @@ void UGameHUD::Initialize()
 		Border->y = 0.f;
 		Border->width = 1602.f;
 		Border->height = 802.f;
-		//Border->Anchor = EAnchor::Center; //Example
+		Border->Anchor = EAnchor::Center;
+		Border->OffsetX = 0.0f;
+		Border->OffsetY = 0.0f;
+
+		Border->AddChild(Button);
+		Border->AddChild(Button2);
 
 		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_menu_panel_bg.png");
 		Border->SetTextureId(textureId);

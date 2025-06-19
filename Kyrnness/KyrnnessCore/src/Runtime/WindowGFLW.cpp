@@ -35,11 +35,16 @@ void UWindowGLFW::Initialize()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+#if DEBUG
+	m_glfwWindow = glfwCreateWindow(GetWidth(), GetHeight(), "Kyrnness OpenGL", nullptr, nullptr);
+#else
 	// Obter o monitor primário e seu modo de vídeo
 	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
+
 	// Criar janela em fullscreen com a resolução do monitor
 	m_glfwWindow = glfwCreateWindow(mode->width, mode->height, "Kyrnness OpenGL", primaryMonitor, nullptr);
+#endif
 
 	if (!m_glfwWindow)
 	{
@@ -47,10 +52,12 @@ void UWindowGLFW::Initialize()
 		ThrowRuntimeError("Failed to create window");
 	}
 
+#if RELEASE
 	// Atualizar as configurações do jogo com a resolução real
 	GameConfig& cfg = UApplication::Get().GetGameConfig();
 	cfg.m_Width = mode->width;
 	cfg.m_Height = mode->height;
+#endif
 
 	glfwMakeContextCurrent(m_glfwWindow);
 	glfwSetFramebufferSizeCallback(m_glfwWindow, framebuffer_size_callback);

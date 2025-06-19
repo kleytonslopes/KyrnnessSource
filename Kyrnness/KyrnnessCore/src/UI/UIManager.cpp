@@ -21,16 +21,25 @@ void UUIManager::Initialize()
 	UInputManager::Get().OnMouseMoveEvent.AddListener(this, &UUIManager::OnUpdateMouseFocus);
 }
 
+void UUIManager::UpdateElements()
+{
+    for (UUIElement* element : m_Elements)
+    {
+        element->UpdateLayout();
+    }
+}
+
 void UUIManager::RenderAll()
 {
+    UpdateElements();
 
-	for (auto& e : elements) 
+	for (auto& e : m_Elements)
         e->Draw();
 }
 
 void UUIManager::ProcessInput(float mx, float my, bool isMouseDown, bool isMouseUp)
 {
-    for (auto& e : elements)
+    for (auto& e : m_Elements)
     {
         e->HandleInput(mx, my, isMouseDown, isMouseUp);
     }
@@ -38,7 +47,7 @@ void UUIManager::ProcessInput(float mx, float my, bool isMouseDown, bool isMouse
 
 void UUIManager::OnMouseEnter(float mx, float my)
 {
-    for (auto& e : elements)
+    for (auto& e : m_Elements)
     {
         e->OnMouseEnter(mx, my);
     }
@@ -46,7 +55,7 @@ void UUIManager::OnMouseEnter(float mx, float my)
 
 void UUIManager::OnMouseLeave(float mx, float my)
 {
-    for (auto& e : elements)
+    for (auto& e : m_Elements)
     {
         e->OnMouseLeave(mx, my);
     }
@@ -62,7 +71,7 @@ void UUIManager::OnUpdateMouseFocus(float mx, float my)
     mx = glm::clamp(mx, 0.0f, (float)windowWidth);
     my = glm::clamp(my, 0.0f, (float)windowHeight);
 
-    for (auto& e : elements)
+    for (auto& e : m_Elements)
     {
         e->OnUpdateMouseFocus(mx, my);
     }
@@ -74,7 +83,6 @@ GLuint LoadTexture(const std::string& path);
 GLuint quadVAO;
 GLuint quadVBO;
 
-// DrawQuad (exemplo simplificado)
 void DrawQuad(float x, float y, float w, float h, GLuint texture, const glm::vec4 color) 
 {
     // 1. Inicializa VAO/VBO apenas uma vez

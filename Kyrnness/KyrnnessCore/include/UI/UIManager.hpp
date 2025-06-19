@@ -14,11 +14,12 @@ public:
 	UUIManager(UApplication* application);
 	~UUIManager();
 	
-	std::vector<UUIElement*> elements;
+
 
 	void Initialize();
 
-	void AddElement(UUIElement* e) { elements.push_back(e); }
+	void AddElement(UUIElement* element) { m_Elements.push_back(element); }
+	void UpdateElements();
 	void RenderAll();
 	void ProcessInput(float mx, float my, bool isMouseDown, bool isMouseUp);
 	void OnMouseEnter(float mx, float my);
@@ -29,6 +30,7 @@ public:
 
 private:
 	UApplication* m_Application = nullptr;
+	std::vector<UUIElement*> m_Elements;
 };
 
 #endif// KYRNESS_UI_UIMANAGER_HPP
