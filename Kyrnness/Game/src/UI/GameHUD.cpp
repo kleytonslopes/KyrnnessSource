@@ -3,6 +3,7 @@
 #include "Runtime/Application.hpp"
 #include "UI/UIManager.hpp"
 #include "UI/Elements/UIButton.hpp"
+#include "UI/Elements/UIBorder.hpp"
 #include "Core/AssetManager.hpp"
 #include "Graphics/OpenGL/GraphicsApi_OpenGL.hpp"
 #include "Audio/SoundManager.hpp"
@@ -17,11 +18,10 @@ void UGameHUD::Initialize()
 {
 	UHUD::Initialize();
 
-	UUIButton* ButtonT = FMemoryManager::Allocate<UUIButton>();
+	UUIBorder* Border = FMemoryManager::Allocate<UUIBorder>();
 	UUIButton* Button = FMemoryManager::Allocate<UUIButton>();
 	UUIButton* Button2 = FMemoryManager::Allocate<UUIButton>();
 
-	FMemoryManager::Deallocate(ButtonT);
 	if (Button)
 	{
 		Button->x = 100.f;
@@ -68,6 +68,21 @@ void UGameHUD::Initialize()
 		m_UIManager->AddElement(Button2);
 	}
 
+	if (Border)
+	{
+		Border->x = 0;
+		Border->y = 0.f;
+		Border->width = 1602.f;
+		Border->height = 802.f;
+		//Border->Anchor = EAnchor::Center; //Example
+
+		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_menu_panel_bg.png");
+		Border->SetTextureId(textureId);
+
+		Border->Initialize();
+		m_UIManager->AddElement(Border);
+	}
+
 	auto allButtons = FMemoryManager::GetAll<UUIButton>();
 	for (UUIButton* btn : allButtons)
 	{
@@ -91,7 +106,9 @@ void UGameHUD::Draw(float deltaTime)
 	glm::vec3 fromY{ 1, 1, 0 };
 	glm::vec3 fromY2{ 1, 100.f, 0 };
 
+#ifdef DEBUG
 	api->DebugDrawLine2D(fromX, fromX2, colorX);
 	api->DebugDrawLine2D(fromY, fromY2, colorY);
+#endif // DEBUG
 }
 

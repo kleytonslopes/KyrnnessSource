@@ -67,7 +67,16 @@ namespace krn::core
 	};
 }
 
+#ifdef DEBUG
+
 #define LOG(A,B) krn::core::FLogger::A(B)
 #define LOG_FATAL(A) krn::core::FLogger::Fatal(A)
+
+#else
+
+#define LOG(A,B)
+#define LOG_FATAL(A)
+
+#endif // DEBUG
 
 #endif// KYRNESS_CORE_LOGGER_HPP

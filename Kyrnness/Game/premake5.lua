@@ -2,14 +2,13 @@ project "Game"
     kind "WindowedApp"
     SetupCommonProjectSettings()
 
-    targetdir ("%{wks.location}/Build/bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("%{wks.location}/Build/obj/" .. outputdir .. "/%{prj.name}")
-
     files
     {
         "include/**.hpp",
         "include/**.h",
-        "src/**.cpp"
+        "src/**.cpp",
+        "version.rc",
+        "gcrw_ico.ico"
     }
 
     includedirs
@@ -65,6 +64,9 @@ project "Game"
 
     postbuildcommands
     {
+        "copy %{wks.location}\\Kyrnness\\Game\\GameContent\\Game.kpak %{wks.location}\\Build\\bin\\Debug-windows-x86_64\\Game\\GameContent\\Game.kpak",
+        "copy %{wks.location}\\Kyrnness\\Game\\GameContent\\Game.kpak %{wks.location}\\Kyrnness\\Game\\GameContent\\Game.kpak",
+
         "copy %{wks.location}\\ThirdParty\\SDL\\VisualC\\x64\\Debug\\SDL3.dll $(SolutionDir)Kyrnness\\Game\\SDL3.dll",
         "C:\\VulkanSDK\\1.4.309.0\\Bin\\glslangValidator -V %{wks.location}\\Assets\\Shaders\\shader.vert -o %{wks.location}\\Assets\\Shaders\\shader.vert.spv",
         "C:\\VulkanSDK\\1.4.309.0\\Bin\\glslangValidator -V %{wks.location}\\Assets\\Shaders\\shader.frag -o %{wks.location}\\Assets\\Shaders\\shader.frag.spv",
@@ -87,75 +89,3 @@ project "Game"
         "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXFoundation_64.dll $(SolutionDir)Kyrnness\\Game\\PhysXFoundation_64.dll",
         "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXCooking_64.dll $(SolutionDir)Kyrnness\\Game\\PhysXCooking_64.dll"
     }
-
-    filter "system:windows"
-        systemversion "latest"
-
-        filter "configurations:Debug"
-            defines 
-            {
-                "DEBUG",
-                "PLATFORM_WINDOWS",
-                "WIN32_LEAN_AND_MEAN",
-                "_CRT_SECURE_NO_WARNINGS",
-                "YAML_CPP_STATIC_DEFINE",
-                "LOG_WARNING",
-                "LOG_INFORMATION",
-                "LOG_DEBUG",
-                "LOG_TRACE",
-                "LOG_DEFAULT",
-                "PX_PHYSX_COOKING"
-            }
-            buildoptions "/MTd" --MDd
-            symbols "on"
-
-        filter "configurations:EditorDebug"
-            defines 
-            {
-                "DEBUG",
-                "PLATFORM_WINDOWS",
-                "WIN32_LEAN_AND_MEAN",
-                "_CRT_SECURE_NO_WARNINGS",
-                "YAML_CPP_STATIC_DEFINE",
-                "LOG_WARNING",
-                "LOG_INFORMATION",
-                "LOG_DEBUG",
-                "LOG_TRACE",
-                "LOG_DEFAULT",
-                "APP_EDITOR_MODE",
-                "PX_PHYSX_COOKING"
-            }
-            buildoptions "/MTd"
-            symbols "on"
-
-        filter "configurations:GameDebug"
-            defines 
-            {
-                "DEBUG",
-                "PLATFORM_WINDOWS",
-                "WIN32_LEAN_AND_MEAN",
-                "_CRT_SECURE_NO_WARNINGS",
-                "YAML_CPP_STATIC_DEFINE",
-                "LOG_WARNING",
-                "LOG_INFORMATION",
-                "LOG_DEBUG",
-                "LOG_TRACE",
-                "LOG_DEFAULT",
-                "APP_GAME_MODE",
-                "PX_PHYSX_COOKING"
-            }
-            buildoptions "/MDd"
-            symbols "on"
-
-        filter "configurations:Release"
-            defines 
-            {
-                "NDEBUG",
-                "PLATFORM_WINDOWS",
-                "WIN32_LEAN_AND_MEAN",
-                "_CRT_SECURE_NO_WARNINGS",
-                "YAML_CPP_STATIC_DEFINE",
-                "PX_PHYSX_COOKING"
-            }
-            buildoptions "/MT"
-            optimize "on"

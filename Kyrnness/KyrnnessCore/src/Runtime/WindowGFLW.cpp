@@ -13,7 +13,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 
 	GameConfig& cfg = UApplication::Get().GetGameConfig();
-	cfg.m_With = width;
+	cfg.m_Width = width;
 	cfg.m_Height = height;
 }
 
@@ -35,14 +35,22 @@ void UWindowGLFW::Initialize()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	m_glfwWindow = glfwCreateWindow(GetWidth(), GetHeight(), "Kyrnness OpenGL", nullptr, nullptr);
+	// Obter o monitor primário e seu modo de vídeo
+	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
+	// Criar janela em fullscreen com a resolução do monitor
+	m_glfwWindow = glfwCreateWindow(mode->width, mode->height, "Kyrnness OpenGL", primaryMonitor, nullptr);
+
 	if (!m_glfwWindow)
 	{
 		glfwTerminate();
 		ThrowRuntimeError("Failed to create window");
 	}
 
-
+	// Atualizar as configurações do jogo com a resolução real
+	GameConfig& cfg = UApplication::Get().GetGameConfig();
+	cfg.m_Width = mode->width;
+	cfg.m_Height = mode->height;
 
 	glfwMakeContextCurrent(m_glfwWindow);
 	glfwSetFramebufferSizeCallback(m_glfwWindow, framebuffer_size_callback);
@@ -239,13 +247,4 @@ void UWindowGLFW::ProcessInput()
 
 		
 	}
-
-	
-
-	//// Atualiza UI
-	//float mouseX, mouseY;
-	//UInputManager::Get().GetMousePosition(mouseX, mouseY);
-	/*m_Application->GetHUD()->GetUIManager()->ProcessInput(mouseX, mouseY,
-		UInputManager::Get().IsMouseDown(),
-		UInputManager::Get().IsMouseUp());*/
 }

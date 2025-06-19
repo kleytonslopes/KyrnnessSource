@@ -23,14 +23,17 @@ public:
     virtual void WaitIdle() override;
     virtual void StartFrame() override;
     virtual void EndFrame() override;
+
+#ifdef DEBUG
     virtual void DrawDebugLine(const glm::vec3& origin, const glm::vec3& target, const glm::vec4& color) override;
     void DebugDrawLine2D(const glm::vec3& from, const glm::vec3& to, const glm::vec4& color);
+#endif
     
 
 private:
-  
+#ifdef DEBUG
     void DebugDrawLine(const glm::vec3& from, const glm::vec3& to, const glm::vec4& color);
-
+#endif
 	entt::registry& m_EnttRegistry;
 };
 

@@ -44,7 +44,6 @@ lib["Libs_Debug"]   = {
     "PhysXVehicle2_static_64.lib",
     --FMOD
     "fmodL_vc.lib",
-
 }
 lib["Libs_Release"] = {
     "PhysX_64.lib", 
@@ -58,7 +57,6 @@ lib["Libs_Release"] = {
     "PhysXVehicle2_static_64.lib",
     --FMOD
     "fmod_vc.lib",
-
 }
 
 function SetupCommonProjectSettings()
@@ -66,38 +64,72 @@ function SetupCommonProjectSettings()
     cppdialect "C++20"
     staticruntime "on"
 
+    targetdir ("%{wks.location}/Build/bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("%{wks.location}/Build/obj/" .. outputdir .. "/%{prj.name}")
+
     filter "system:windows"
         systemversion "latest"
 
     filter "configurations:Debug"
         runtime "Debug"
         symbols "On"
-        links ( lib.Libs_Debug  )
+        buildoptions "/MTd"
+        links ( lib.Libs_Debug )
         libdirs { 
             "%{extern_lib_dir.PHYSX}",
             "%{extern_lib_dir.FMOD}",
         }
+        defines{
+            "DEBUG",
+            "ENCRYPTION_XOR",
+            "PLATFORM_WINDOWS",
+            "WIN32_LEAN_AND_MEAN",
+            "_CRT_SECURE_NO_WARNINGS",
+            "PX_PHYSX_COOKING",
+        }
+
 
 
     filter "configurations:Release"
         runtime "Release"
         optimize "On"
+        buildoptions "/MT"
         links ( lib.Libs_Release )
         libdirs { 
             "%{extern_lib_dir.PHYSX_RELEASE}" ,
             "%{extern_lib_dir.FMOD}",
         }
+        defines{
+            "RELEASE",
+            "NDEBUG",
+            "ENCRYPTION_XOR",
+            "PLATFORM_WINDOWS",
+            "WIN32_LEAN_AND_MEAN",
+            "_CRT_SECURE_NO_WARNINGS",
+            "PX_PHYSX_COOKING",
+        }
+        postbuildcommands{
+            "copy %{wks.location}\\Kyrnness\\Game\\GameContent\\Game.kpak %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\GameContent\\Game.kpak",
+            "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysX_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysX_64.dll",
+            "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXCommon_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXCommon_64.dll",
+            "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXFoundation_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXFoundation_64.dll",
+            "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXCooking_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXCooking_64.dll",
+            "copy %{wks.location}\\ThirdParty\\SDL\\VisualC\\x64\\Release\\SDL3.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\SDL3.dll",
+            "copy %{wks.location}\\ThirdParty\\SteamSDK\\redistributable_bin\\win64\\steam_api64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\steam_api64.dll",
+            "copy %{wks.location}\\ThirdParty\\FMOD\\fmod.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\fmod.dll",
+        }
 
-    filter {}
+    filter {    }
 end
 
 workspace "Kyrnness"
     architecture "x64"
     startproject "Game"
 
-    configurations{ "Debug", "EditorDebug", "GameDebug", "Release" }
+    configurations{ "Debug", "Release" }
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+    assetFolder = "%{wks.location}/Kyrnness/Game/GameContent"
 
     flags
     {

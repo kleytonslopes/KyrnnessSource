@@ -127,7 +127,7 @@ EWindowType UApplication::GetWindowType() const
 
 uint32 UApplication::GetWidth() const
 {
-	return m_GameConfig.m_With;
+	return m_GameConfig.m_Width;
 }
 
 uint32 UApplication::GetHeight() const

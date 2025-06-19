@@ -444,43 +444,6 @@ void UAssetManager::InitializeGData(const std::string& gdataFilePath)
     }
 }
 
-std::vector<uint8_t> UAssetManager::LoadAssetRaw(const std::string& assetPath)
-{
-	auto it = s_AssetMap.find(assetPath);
-	if (it == s_AssetMap.end())
-	{
-		ThrowRuntimeError("Asset não encontrado: " + assetPath);
-	}
-
-	const FAssetEntry& entry = it->second;
-
-	s_AssetFile.seekg(entry.Offset, std::ios::beg);
-
-	std::vector<uint8_t> compressedData(entry.CompressedSize);
-	s_AssetFile.read(reinterpret_cast<char*>(compressedData.data()), entry.CompressedSize);
-
-	std::vector<uint8_t> uncompressedData(entry.UncompressedSize);
-
-	uLongf destLen = static_cast<uLongf>(entry.UncompressedSize);
-	int result = uncompress(uncompressedData.data(), &destLen, compressedData.data(), entry.CompressedSize);
-
-	if (result != Z_OK)
-	{
-		ThrowRuntimeError("Falha ao descomprimir asset: " + assetPath);
-	}
-
-	// Verificar CRC
-	uint32_t calcCrc = ::crc32(0L, Z_NULL, 0);
-	calcCrc = ::crc32(calcCrc, uncompressedData.data(), uncompressedData.size());
-
-	if (calcCrc != entry.CRC32)
-	{
-		ThrowRuntimeError("CRC inválido para asset: " + assetPath);
-	}
-
-	return uncompressedData;
-}
-
 void UAssetManager::LoadAssetMap(const std::string& path)
 {
 	std::ifstream inFile(path, std::ios::binary);
@@ -532,3 +495,79 @@ void UAssetManager::LoadAssetMap(const std::string& path)
 		ThrowRuntimeError("Falha ao reabrir o .gdata para leitura de conteúdo.");
 	}
 }
+
+std::vector<uint8_t> UAssetManager::LoadAssetRaw_NoEncryption(const std::string& assetPath)
+{
+	auto it = s_AssetMap.find(assetPath);
+	if (it == s_AssetMap.end())
+	{
+		ThrowRuntimeError("Asset não encontrado: " + assetPath);
+	}
+
+	const FAssetEntry& entry = it->second;
+
+	s_AssetFile.seekg(entry.Offset, std::ios::beg);
+
+	std::vector<uint8_t> compressedData(entry.CompressedSize);
+	s_AssetFile.read(reinterpret_cast<char*>(compressedData.data()), entry.CompressedSize);
+
+	std::vector<uint8_t> uncompressedData(entry.UncompressedSize);
+
+	uLongf destLen = static_cast<uLongf>(entry.UncompressedSize);
+	int result = uncompress(uncompressedData.data(), &destLen, compressedData.data(), entry.CompressedSize);
+
+	if (result != Z_OK)
+	{
+		ThrowRuntimeError("Falha ao descomprimir asset: " + assetPath);
+	}
+
+	// Verificar CRC
+	uint32_t calcCrc = ::crc32(0L, Z_NULL, 0);
+	calcCrc = ::crc32(calcCrc, uncompressedData.data(), uncompressedData.size());
+
+	if (calcCrc != entry.CRC32)
+	{
+		ThrowRuntimeError("CRC inválido para asset: " + assetPath);
+	}
+
+	return uncompressedData;
+}
+
+std::vector<uint8_t> UAssetManager::LoadAssetRaw_With_XOR(const std::string& assetPath)
+{
+	auto it = s_AssetMap.find(assetPath);
+	if (it == s_AssetMap.end())
+	{
+		ThrowRuntimeError("Asset não encontrado: " + assetPath);
+	}
+
+	const FAssetEntry& entry = it->second;
+
+	std::vector<uint8_t> compressedData(entry.CompressedSize);
+	std::copy(s_GDataFile.begin() + entry.Offset,
+		s_GDataFile.begin() + entry.Offset + entry.CompressedSize,
+		compressedData.begin());
+
+	uint8_t xorKey = static_cast<uint8_t>((entry.CRC32 ^ 0xA5) & 0xFF);
+	XORDecrypt(compressedData, xorKey);
+
+	std::vector<uint8_t> uncompressedData(entry.UncompressedSize);
+	uLongf destLen = entry.UncompressedSize;
+
+	int result = uncompress(uncompressedData.data(), &destLen, compressedData.data(), entry.CompressedSize);
+	if (result != Z_OK)
+	{
+		ThrowRuntimeError("Falha ao descomprimir asset: " + assetPath);
+	}
+
+	return uncompressedData;
+}
+
+void UAssetManager::XORDecrypt(std::vector<uint8_t>& data, uint8_t key)
+{
+	for (size_t i = 0; i < data.size(); ++i)
+	{
+		data[i] ^= key;
+	}
+}
+

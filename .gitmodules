@@ -31,3 +31,6 @@
 [submodule "ThirdParty/NUKLEAR"]
 	path = ThirdParty/NUKLEAR
 	url = https://github.com/Immediate-Mode-UI/Nuklear.git
+[submodule "ThirdParty/TINYASE"]
+	path = ThirdParty/TINYASE
+	url = https://github.com/kokke/tiny-AES-c.git

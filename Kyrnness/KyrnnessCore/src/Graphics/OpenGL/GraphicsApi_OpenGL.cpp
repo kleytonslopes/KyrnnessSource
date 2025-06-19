@@ -44,20 +44,24 @@ void UGraphicsApi_OpenGL::DrawFrame(float deltaTime)
 {
 	StartFrame();
 
+#ifdef DEBUG
 	DrawDebugLine(glm::vec3{ 0, 0, 0 }, glm::vec3{ 1000, 0, 0 }, glm::vec4{ 0.f, 0.f, 1.f, 1.f });
 	DrawDebugLine(glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 1000, 0 }, glm::vec4{ 0.f, 1.f, 0.f, 1.f });
 	DrawDebugLine(glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 0, 1000 }, glm::vec4{ 1.f, 0.f, 0.f, 1.f });
+#endif // DEBUG
 
 	float xpos, ypos;
 
 	m_Application->GetWindow()->GetMousePosition(xpos, ypos);
-	
-	DebugDrawLine2D(glm::vec3{ 0, 0, 0 }, glm::vec3{ xpos, ypos, 0 }, glm::vec4{ 1.f, 1.f, 1.f, 1.f });
 
+#ifdef DEBUG
+	DebugDrawLine2D(glm::vec3{ 0, 0, 0 }, glm::vec3{ xpos, ypos, 0 }, glm::vec4{ 1.f, 1.f, 1.f, 1.f });
 	DebugDrawLine2D(glm::vec3{ 0, 0, 0 }, glm::vec3{ m_Application->GetWidth() , m_Application->GetHeight(), 0 }, glm::vec4{ 0.1f, 0.1f, 0.1f, 1.f });
 	DebugDrawLine2D(glm::vec3{ m_Application->GetWidth(), 0, 0 }, glm::vec3{ 0 , m_Application->GetHeight(), 0 }, glm::vec4{ 0.1f, 0.1f, 0.1f, 1.f });
+#endif // DEBUG
 }
 
+#ifdef DEBUG
 void UGraphicsApi_OpenGL::DebugDrawLine(const glm::vec3& from, const glm::vec3& to, const glm::vec4& color)
 {
 	if (FShaderOpenGLComponent* debugShader = UShaders::GetShader(SHADER_DEBUG))
@@ -216,7 +220,7 @@ void UGraphicsApi_OpenGL::DebugDrawLine2D(const glm::vec3& from, const glm::vec3
 		debugShader->Unbind();
 	}
 }
-
+#endif // DEBUG
 
 void UGraphicsApi_OpenGL::WaitIdle()
 {
@@ -236,7 +240,9 @@ void UGraphicsApi_OpenGL::EndFrame()
 	glUseProgram(0);
 }
 
+#ifdef DEBUG
 void UGraphicsApi_OpenGL::DrawDebugLine(const glm::vec3& origin, const glm::vec3& target, const glm::vec4& color)
 {
 	DebugDrawLine(origin, target, color);
 }
+#endif // DEBUG

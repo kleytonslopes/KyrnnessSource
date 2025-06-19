@@ -8,6 +8,8 @@
 UUIElement::UUIElement()
 {
 	m_Shader = UShaders::GetShader(SHADER_UI);
+
+#if(DEBUG)
 	m_ShaderDebug = UShaders::GetShader(SHADER_UI_DEBUG);
 
 	glGenVertexArrays(1, &m_VAO_Debug);
@@ -25,6 +27,7 @@ UUIElement::UUIElement()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+#endif
 }
 
 void UUIElement::Draw()
@@ -38,10 +41,16 @@ void UUIElement::Draw()
 		glm::vec3 btn_Start2{ x, y + height, 0 };
 		glm::vec3 btn_End2{ x + width, y, 0 };
 
+#if(DEBUG)
 		api->DebugDrawLine2D(btn_Start, btn_End, btnColor);
 		api->DebugDrawLine2D(btn_Start2, btn_End2, btnColor);
+#endif
 	}
 
+}
+
+void UUIElement::UpdateLayout()
+{
 }
 
 glm::mat4 UUIElement::GetProjetion()

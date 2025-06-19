@@ -6,6 +6,73 @@
 
 struct FShaderOpenGLComponent;
 
+enum class EAnchor
+{
+
+	/// <summary>
+	/// <para>*----</para>
+	/// <para>-----</para>
+	/// <para>-----</para>
+	/// </summary>
+	TopLeft,
+
+	/// <summary>
+	/// <para>--*--</para>
+	/// <para>-----</para>
+	/// <para>-----</para>
+	/// </summary>
+	TopCenter,
+
+	/// <summary>
+	/// <para>----*</para>
+	/// <para>-----</para>
+	/// <para>-----</para>
+	/// </summary>
+	TopRight,
+
+	/// <summary>
+	/// <para>-----</para>
+	/// <para>*----</para>
+	/// <para>-----</para>
+	/// </summary>
+	CenterLeft,
+
+	/// <summary>
+	/// <para>-----</para>
+	/// <para>--*--</para>
+	/// <para>-----</para>
+	/// </summary>
+	Center,
+
+	/// <summary>
+	/// <para>-----</para>
+	/// <para>----*</para>
+	/// <para>-----</para>
+	/// </summary>
+	CenterRight,
+
+	/// <summary>
+	/// <para>-----</para>
+	/// <para>-----</para>
+	/// <para>*----</para>
+	/// </summary>
+	BottomLeft,
+
+	/// <summary>
+	/// <para>-----</para>
+	/// <para>-----</para>
+	/// <para>--*--</para>
+	/// </summary>
+	BottomCenter,
+
+	/// <summary>
+	/// <para>-----</para>
+	/// <para>-----</para>
+	/// <para>----*</para>
+	/// </summary>
+	BottomRight
+};
+
 class UUIElement 
 {
 protected:
@@ -20,10 +87,15 @@ protected:
 public:
     float x, y, width, height, scale;
 
+	EAnchor Anchor = EAnchor::TopLeft;
+	float OffsetX = 0.0f;
+	float OffsetY = 0.0f;
+
 	UUIElement();
     virtual ~UUIElement() = default;
 
     virtual void Draw();
+	virtual void UpdateLayout(); 
     virtual void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp) = 0;
     virtual void OnMouseEnter(double mouseX, double mouseY) = 0;
     virtual void OnMouseLeave(double mouseX, double mouseY) = 0;
@@ -41,7 +113,9 @@ protected:
 	unsigned int m_VBO_Debug;
 
 	FShaderOpenGLComponent* m_Shader = nullptr;
+#if(DEBUG)
 	FShaderOpenGLComponent* m_ShaderDebug = nullptr;
+#endif
 
 	glm::mat4 GetProjetion();
 	glm::mat4 GetModel();

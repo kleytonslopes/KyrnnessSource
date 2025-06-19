@@ -27,7 +27,10 @@ public:
     virtual void WaitIdle() = 0;
     virtual void StartFrame() = 0;
     virtual void EndFrame() = 0;
+
+#ifdef DEBUG
     virtual void DrawDebugLine(const glm::vec3& origin, const glm::vec3& target, const glm::vec4& color) = 0;
+#endif // DEBUG
 
 protected:
     UApplication* m_Application = nullptr;

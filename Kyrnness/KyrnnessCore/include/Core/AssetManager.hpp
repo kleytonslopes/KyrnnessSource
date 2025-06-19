@@ -38,7 +38,18 @@ public:
 	static void SaveJson(const std::string& jsonFilePath, const nlohmann::json& jsonData);
 	static GLuint LoadTextureOpenGL(const std::string& filePath);
 	static void InitializeGData(const std::string& gdataFilePath);
-	static std::vector<uint8_t> LoadAssetRaw(const std::string& assetPath);
+
+#if defined(ENCRYPTION_XOR)
+	static std::vector<uint8_t> LoadAssetRaw(const std::string& assetPath)
+	{
+		return LoadAssetRaw_With_XOR(assetPath);
+	}
+#else
+	static std::vector<uint8_t> LoadAssetRaw(const std::string& assetPath)
+	{
+		return LoadAssetRaw_NoEncryption(assetPath);
+	}
+#endif
 	static void LoadAssetMap(const std::string& path);
 	
 
@@ -50,6 +61,10 @@ private:
 	static std::unordered_map<std::string, FAssetEntry> s_AssetMap;
 	static std::ifstream s_AssetFile;
 
+	static std::vector<uint8_t> LoadAssetRaw_NoEncryption(const std::string& assetPath);
+	static std::vector<uint8_t> LoadAssetRaw_With_XOR(const std::string& assetPath);
+
+	static void XORDecrypt(std::vector<uint8_t>& data, uint8_t key);
 };
 
 #endif // KYRNNESS_ASSET_MANAGER_HPP

@@ -237,7 +237,9 @@ bool FCapsuleComponent::SweepGround(float maxDistance, physx::PxSweepHit& outHit
 	physx::PxVec3 p0 = origin;
 	physx::PxVec3 p1 = origin + direction * maxDistance;
 
+#ifdef DEBUG
 	m_Application->GetGraphicsApi()->DrawDebugLine(glm::vec3{ p0.x, p0.y, p0.z }, glm::vec3{ p1.x, p1.y, p1.z }, glm::vec4{ 1.f, 1.f, 1.f, 1.f });
+#endif // DEBUG
 
 	physx::PxPvdSceneClient* pvdClient = m_Application->GetPhysicsSystem()->GetScene()->getScenePvdClient();
 	if (!pvdClient) 

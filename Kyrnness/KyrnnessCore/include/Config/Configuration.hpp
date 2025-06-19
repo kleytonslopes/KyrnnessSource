@@ -10,7 +10,7 @@
 
 struct  GameConfig
 {
-	uint32 m_With;
+	uint32 m_Width;
 	uint32 m_Height;
 	int m_Renderer;
 	int m_WindowType;
@@ -32,7 +32,7 @@ public:
 
 			nlohmann::json j = nlohmann::json::parse(jsonStr);
 
-			config.m_With = j["Resolution"]["Width"];
+			config.m_Width = j["Resolution"]["Width"];
 			config.m_Height = j["Resolution"]["Height"];
 			config.m_Renderer = j["Renderer"];
 			config.m_WindowType = j["WindowType"];
@@ -50,7 +50,7 @@ public:
 	static inline void SaveGameConfig(const GameConfig& config)
 	{
 		nlohmann::json j;
-		j["Resolution"]["Width"] = config.m_With;
+		j["Resolution"]["Width"] = config.m_Width;
 		j["Resolution"]["Height"] = config.m_Height;
 		j["Renderer"] = config.m_Renderer;
 		j["WindowType"] = config.m_WindowType;

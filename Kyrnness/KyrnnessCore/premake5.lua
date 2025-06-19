@@ -5,9 +5,6 @@ project "KyrnnessCore"
     -- pchheader "pch.hpp"
     -- pchsource "src/pch.cpp"
 
-    targetdir ("%{wks.location}/Build/bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("%{wks.location}/Build/obj/" .. outputdir .. "/%{prj.name}")
-
     files
     {
         "include/**.hpp",
@@ -59,75 +56,3 @@ project "KyrnnessCore"
         "fmodL_vc.lib",
         "ZLIB",
     }
-
-    filter "system:windows"
-        systemversion "latest"
-
-        filter "configurations:Debug"
-            defines 
-            {
-                "DEBUG",
-                "PLATFORM_WINDOWS",
-                "WIN32_LEAN_AND_MEAN",
-                "_CRT_SECURE_NO_WARNINGS",
-                "YAML_CPP_STATIC_DEFINE",
-                "LOG_WARNING",
-                "LOG_INFORMATION",
-                "LOG_DEBUG",
-                "LOG_TRACE",
-                "LOG_DEFAULT",
-                "PX_PHYSX_COOKING"
-            }
-            buildoptions "/MTd" --MDd
-            symbols "on"
-
-        filter "configurations:EditorDebug"
-            defines 
-            {
-                "DEBUG",
-                "PLATFORM_WINDOWS",
-                "WIN32_LEAN_AND_MEAN",
-                "_CRT_SECURE_NO_WARNINGS",
-                "YAML_CPP_STATIC_DEFINE",
-                "LOG_WARNING",
-                "LOG_INFORMATION",
-                "LOG_DEBUG",
-                "LOG_TRACE",
-                "LOG_DEFAULT",
-                "APP_EDITOR_MODE",
-                "PX_PHYSX_COOKING"
-            }
-            buildoptions "/MTd"
-            symbols "on"
-
-        filter "configurations:GameDebug"
-            defines 
-            {
-                "DEBUG",
-                "PLATFORM_WINDOWS",
-                "WIN32_LEAN_AND_MEAN",
-                "_CRT_SECURE_NO_WARNINGS",
-                "YAML_CPP_STATIC_DEFINE",
-                "LOG_WARNING",
-                "LOG_INFORMATION",
-                "LOG_DEBUG",
-                "LOG_TRACE",
-                "LOG_DEFAULT",
-                "APP_GAME_MODE",
-                "PX_PHYSX_COOKING"
-            }
-            buildoptions "/MDd"
-            symbols "on"
-
-        filter "configurations:Release"
-            defines 
-            {
-                "NDEBUG",
-                "PLATFORM_WINDOWS",
-                "WIN32_LEAN_AND_MEAN",
-                "_CRT_SECURE_NO_WARNINGS",
-                "YAML_CPP_STATIC_DEFINE",
-                "PX_PHYSX_COOKING"
-            }
-            buildoptions "/MT"
-            optimize "on"
