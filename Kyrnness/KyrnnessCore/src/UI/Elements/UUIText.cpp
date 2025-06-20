@@ -21,8 +21,8 @@ void UUIText::Initialize()
 {
 	UUIElement::Initialize();
 
-	glGenVertexArrays(1, &m_VAO);
-	glGenBuffers(1, &m_VBO);
+	//glGenVertexArrays(1, &m_VAO);
+	//glGenBuffers(1, &m_VBO);
 }
 
 void UUIText::SetText(const std::string& newText)
@@ -72,6 +72,11 @@ void UUIText::UpdateLayout()
 	GenerateMesh();
 }
 
+void UUIText::Draw()
+{
+	DrawSelf();
+}
+
 void UUIText::GenerateMesh()
 {
 	VertexBufferData.clear();
@@ -82,41 +87,36 @@ void UUIText::GenerateMesh()
 	float cursorX = 0.0f;
 	float cursorY = 0.0f;
 
-	// Placeholder: Aqui futuramente você vai consultar o Font->GetGlyph(), Font->GetKerning(), etc.
 	for (char c : Text)
 	{
-		// Exemplo fictício:
-		float glyphWidth = 10.0f;
-		float glyphHeight = 20.0f;
-		float u0 = 0.0f;
-		float v0 = 0.0f;
-		float u1 = 1.0f;
-		float v1 = 1.0f;
+		const FGlyphInfo* glyph = Font->GetGlyph(c);
+		if (!glyph)
+			continue;
 
-		// Calcula quad do caractere
-		float x0 = cursorX;
-		float y0 = cursorY;
-		float x1 = cursorX + glyphWidth;
-		float y1 = cursorY + glyphHeight;
+		float xpos = cursorX + glyph->Bearing.x;
+		float ypos = cursorY - (glyph->Size.y - glyph->Bearing.y);
 
-		// Posição + UVs (triângulo 1)
+		float w = glyph->Size.x;
+		float h = glyph->Size.y;
+
+		glm::vec4 uv = glyph->UV;
+
+		// Primeiro triângulo
 		VertexBufferData.insert(VertexBufferData.end(), {
-			x0, y0, u0, v0,
-			x1, y0, u1, v0,
-			x0, y1, u0, v1,
+			xpos,     ypos + h, uv.x, uv.w,
+			xpos,     ypos,     uv.x, uv.y,
+			xpos + w, ypos,     uv.z, uv.y,
 
-			// Triângulo 2
-			x1, y0, u1, v0,
-			x1, y1, u1, v1,
-			x0, y1, u0, v1
+			xpos,     ypos + h, uv.x, uv.w,
+			xpos + w, ypos,     uv.z, uv.y,
+			xpos + w, ypos + h, uv.z, uv.w
 			});
 
-		cursorX += glyphWidth; // Simulação do avanço
+		cursorX += glyph->Advance;
 	}
 
 	VertexCount = static_cast<int>(VertexBufferData.size() / 4);
 
-	// Upload para o VBO
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, VertexBufferData.size() * sizeof(float), VertexBufferData.data(), GL_DYNAMIC_DRAW);
@@ -143,6 +143,9 @@ void UUIText::DrawSelf()
 		shader->SetMatrix4("uModel", GetWorldModel());
 		shader->SetVector4("uColor", TextColor);
 		shader->SetInt("uTexture", 0);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, Font->GetTextureId());

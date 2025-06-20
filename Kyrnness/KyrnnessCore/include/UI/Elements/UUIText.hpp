@@ -37,6 +37,7 @@ public:
 
     virtual void DrawSelf() override;
     virtual void UpdateLayout() override;
+    virtual void Draw() override;
 
 private:
     void GenerateMesh();

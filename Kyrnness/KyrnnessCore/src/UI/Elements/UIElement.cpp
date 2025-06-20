@@ -95,15 +95,6 @@ void UUIElement::Draw()
 	glBindVertexArray(m_VAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
-
-	//// Agora desenha os filhos normalmente
-	//for (UUIElement* child : Children)
-	//{
-	//	if (child)
-	//	{
-	//		child->Draw();
-	//	}
-	//}
 }
 
 void UUIElement::UpdateLayout()

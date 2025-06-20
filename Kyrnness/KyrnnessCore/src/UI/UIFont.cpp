@@ -1,7 +1,9 @@
 #include "pch.hpp"
 #include "UI/UIFont.hpp"
 #include <ft2build.h>
+#include <Core/AssetManager.hpp>
 #include FT_FREETYPE_H
+#include <stb_image_write.h>
 
 UUIFont::UUIFont(const std::string& filePath, int pixelSize)
 {
@@ -25,10 +27,13 @@ void UUIFont::LoadFont(const std::string& filePath, int pixelSize)
         return;
     }
 
+    std::vector<uint8_t> fontData = UAssetManager::LoadAssetRaw(filePath);
+
     FT_Face face;
-    if (FT_New_Face(ft, filePath.c_str(), 0, &face))
+    FT_Error error = FT_New_Memory_Face(ft, fontData.data(), static_cast<FT_Long>(fontData.size()), 0, &face);
+    if (error)
     {
-        printf("Failed to load font: %s\n", filePath.c_str());
+        printf("Failed to load font from memory: %s\n", filePath.c_str());
         FT_Done_FreeType(ft);
         return;
     }
@@ -82,12 +87,12 @@ void UUIFont::LoadFont(const std::string& filePath, int pixelSize)
         glyph.Bearing = glm::vec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
         glyph.Advance = (float)(face->glyph->advance.x >> 6);
 
-        glyph.UV = glm::vec4(
-            (float)offsetX / atlasW,
-            0.0f,
-            (float)(offsetX + bmp.width) / atlasW,
-            (float)bmp.rows / atlasH
-        );
+        float u0 = (float)offsetX / atlasW;
+        float v0 = 1.0f - ((float)bmp.rows / atlasH);
+        float u1 = (float)(offsetX + bmp.width) / atlasW;
+        float v1 = 1.0f;
+
+        glyph.UV = glm::vec4(u0, v0, u1, v1);
 
         m_Glyphs[c] = glyph;
 
@@ -103,6 +108,8 @@ void UUIFont::LoadFont(const std::string& filePath, int pixelSize)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     FT_Done_Face(face);
     FT_Done_FreeType(ft);

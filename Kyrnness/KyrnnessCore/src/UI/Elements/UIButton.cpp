@@ -25,40 +25,6 @@ void UUIButton::Initialize()
 void UUIButton::Draw()
 {
 	UUIElement::Draw();
-
-	//	if (!m_Shader)
-	//		return;
-
-	//m_Shader->Bind();
-	//m_Shader->SetMatrix4("uProjection", GetProjetion());
-	//m_Shader->SetMatrix4("uModel", GetModel());
-	//m_Shader->SetVector4("uColor", glm::vec4{1.f,1.f, 1.f, 1.f});
-	//m_Shader->SetInt("uTexture", 0);
-
-	////float vertices[] = {
-	////	// Posições (x, y)   // UVs (u, v)
-	//// -0.5f, -0.5f,        0.0f, 0.0f,
-	////  0.5f, -0.5f,        1.0f, 0.0f,
-	//// -0.5f,  0.5f,        0.0f, 1.0f,
-	////  0.5f,  0.5f,        1.0f, 1.0f
-	////};
-
-	//glBindVertexArray(m_VAO);
-	//glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	//glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(float), m_Vertices.data(), GL_STATIC_DRAW);
-
-	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(0);
-
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-	//glEnableVertexAttribArray(1);
-
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, m_TextureID);
-
-	//glBindVertexArray(m_VAO);
-	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
 }
 
 void UUIButton::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp)
@@ -82,24 +48,6 @@ void UUIButton::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool
 			if (OnClick && isMouseDown) OnClick();
 		}
 	}
-
-	//int windowHeight = UApplication::Get().GetHeight();
-	//mouseY = windowHeight - mouseY;
-
-	////LOG(Log, TEXT("Mouse Want Click UIButton: x= %f , y= %f", mouseX, mouseY));
-
-
-	//bool insideX = mouseX >= x && mouseX <= (x + width);
-	//bool insideY = mouseY >= y && mouseY <= (y + height);
-
-	//if (insideX && insideY)
-	//{
-	//	if (hovered && m_MouseFocusState == EMouseFocusState::MFS_MouseEnter)
-	//	{
-	//		m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
-	//		if (OnClick && isMouseDown) OnClick();
-	//	}
-	//}
 }
 
 void UUIButton::OnMouseEnter(double mouseX, double mouseY)
