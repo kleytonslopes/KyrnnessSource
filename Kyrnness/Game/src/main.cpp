@@ -20,7 +20,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	OpenDebugConsole();
 
-	UAssetManager::InitializeGData("Game.kpak");
+	UAssetManager::InitializeGData("GameContent/Game.kpak");
 
 	USteamModule::Get().Initialize();
 

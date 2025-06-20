@@ -56,6 +56,7 @@ void UGameHUD::Initialize()
 			};
 
 		Button->Initialize();
+		//m_UIManager->AddElement(Button);
 	}
 
 	if (Button2)
@@ -103,21 +104,21 @@ void UGameHUD::Initialize()
 	}
 
 
-	//if (ScaleBox)
-	//{
-	//	ScaleBox->x = 0;
-	//	ScaleBox->y = 0.f;
-	//	ScaleBox->width = UApplication::Get().GetWidth();
-	//	ScaleBox->height = UApplication::Get().GetHeight();
-	//	ScaleBox->Anchor = EAnchor::Stretch;
-	//	ScaleBox->OffsetX = 0.0f;
-	//	ScaleBox->OffsetY = 0.0f;
-	//	ScaleBox->ScaleMode = EScaleMode::ScaleToFitBoth;
+	if (ScaleBox)
+	{
+		ScaleBox->x = 0;
+		ScaleBox->y = 0.f;
+		ScaleBox->width = UApplication::Get().GetWidth();
+		ScaleBox->height = UApplication::Get().GetHeight();
+		ScaleBox->Anchor = EAnchor::Stretch;
+		ScaleBox->OffsetX = 0.0f;
+		ScaleBox->OffsetY = 0.0f;
+		ScaleBox->ScaleMode = EScaleMode::ScaleToFitBoth;
 
-	//	ScaleBox->AddChild(Border);
+		ScaleBox->AddChild(Border);
 
-	//	m_UIManager->AddElement(ScaleBox);
-	//}
+		m_UIManager->AddElement(ScaleBox);
+	}
 
 	auto allButtons = FMemoryManager::GetAll<UUIButton>();
 	for (UUIButton* btn : allButtons)
