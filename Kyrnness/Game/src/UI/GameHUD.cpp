@@ -22,17 +22,18 @@ void UGameHUD::Initialize()
 	UHUD::Initialize();
 
 	//UUIScaleBox* ScaleBox = FMemoryManager::Allocate<UUIScaleBox>();
-	//UUIBorder* Border = FMemoryManager::Allocate<UUIBorder>();
-	//UUIButton* Button = FMemoryManager::Allocate<UUIButton>();
-	//UUIButton* Button2 = FMemoryManager::Allocate<UUIButton>();
+	UUIBorder* Border = FMemoryManager::Allocate<UUIBorder>();
+	UUIButton* Button = FMemoryManager::Allocate<UUIButton>();
+	UUIButton* Button2 = FMemoryManager::Allocate<UUIButton>();
 
-	UUIFont* myFont = new UUIFont("Assets/Fonts/Roboto-Regular.ttf", 32);
+	UUIFont* myFont = new UUIFont("Assets/Fonts/Roboto-Regular.ttf", 18);
 	UUIText* myText = FMemoryManager::Allocate<UUIText>();
+	
 	if (myText && myFont)
 	{
-		myText->LocalX = 10.f;
-		myText->LocalY = 10.f;
-		myText->width =1.f;
+		myText->LocalX = 0.f;
+		myText->LocalY = 0.f;
+		myText->width = 1.f;
 		myText->height = 1.f;
 		myText->Anchor = EAnchor::Center;
 
@@ -40,96 +41,80 @@ void UGameHUD::Initialize()
 		myText->SetText("Hello World!");
 		myText->SetColor(glm::vec4(1, 1, 1, 1));
 		myText->Initialize();
+
 		m_UIManager->AddElement(myText);
 	}
 
-	//if (Button)
-	//{
-	//	Button->LocalX = 100.f;
-	//	Button->LocalY = 0.f;
-	//	Button->width = 162.f;
-	//	Button->height = 52.f;
-	//	Button->Anchor = EAnchor::TopLeft;
+	if (Button)
+	{
+		Button->LocalX = 0.f;
+		Button->LocalY = 0.f;
+		Button->width = 162.f;
+		Button->height = 52.f;
+		Button->Anchor = EAnchor::Center;
 
-	//	GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_button_02_normal_r.png");
-	//	Button->SetTextureId(textureId);
+		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_button_02_normal_r.png");
+		Button->SetTextureId(textureId);
 
-	//	Button->OnClick = [Button]() {
-	//		auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
+		Button->OnClick = [Button]() {
+			auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
 
-	//		objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
-	//			{
-	//				audioComp.PlaySoundByName("music");
-	//			});
-	//		};
+			objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
+				{
+					audioComp.PlaySoundByName("music");
+				});
+			};
 
-	//	Button->AddChild(myText);
+		//Button->AddChild(myText);
 
-	//	Button->Initialize();
-	//	m_UIManager->AddElement(Button);
-	//}
+		Button->Initialize();
+		m_UIManager->AddElement(Button);
+	}
 
-	//if (Button2)
-	//{
-	//	Button2->LocalX = 300.f;
-	//	Button2->LocalY = 100.f;
-	//	Button2->width = 162.f;
-	//	Button2->height = 52.f;
-	//	Button2->Anchor = EAnchor::Center;
+	if (Button2)
+	{
+		Button2->LocalX = 300.f;
+		Button2->LocalY = 100.f;
+		Button2->width = 162.f;
+		Button2->height = 52.f;
+		Button2->Anchor = EAnchor::Center;
 
-	//	GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_button_02_normal_r.png");
-	//	Button2->SetTextureId(textureId);
+		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_button_02_normal_r.png");
+		Button2->SetTextureId(textureId);
 
-	//	Button2->OnClick = [Button2]() {
-	//		auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
+		Button2->OnClick = [Button2]() {
+			auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
 
-	//		objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
-	//			{
-	//				audioComp.FadeOutSoundByName("music", 3);
-	//			});
-	//		};
+			objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
+				{
+					audioComp.FadeOutSoundByName("music", 3);
+				});
+			};
 
-	//	Button2->Initialize();
-	//	m_UIManager->AddElement(Button2);
-	//}
+		Button2->Initialize();
+		m_UIManager->AddElement(Button2);
+	}
 
-	//if (Border)
-	//{
-	//	Border->x = 0;
-	//	Border->y = 0.f;
-	//	Border->width = 1602.f;
-	//	Border->height = 802.f;
-	//	Border->Anchor = EAnchor::Center;
-	//	Border->OffsetX = 0.0f;
-	//	Border->OffsetY = 0.0f;
+	if (Border)
+	{
+		Border->x = 0;
+		Border->y = 0.f;
+		Border->width = 1602.f;
+		Border->height = 802.f;
+		Border->Anchor = EAnchor::Center;
+		Border->OffsetX = 0.0f;
+		Border->OffsetY = 0.0f;
 
-	//	Border->AddChild(Button);
-	//	Border->AddChild(Button2);
-	//	//Border->AddChild(myText);
+		Border->AddChild(Button);
+		Border->AddChild(Button2);
+		//Border->AddChild(myText);
 
-	//	GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_menu_panel_bg.png");
-	//	Border->SetTextureId(textureId);
+		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_menu_panel_bg.png");
+		Border->SetTextureId(textureId);
 
-	//	Border->Initialize();
-	//	m_UIManager->AddElement(Border);
-	//}
-
-
-	//if (ScaleBox)
-	//{
-	//	ScaleBox->x = 0;
-	//	ScaleBox->y = 0.f;
-	//	ScaleBox->width = UApplication::Get().GetWidth();
-	//	ScaleBox->height = UApplication::Get().GetHeight();
-	//	ScaleBox->Anchor = EAnchor::Center;
-	//	ScaleBox->OffsetX = 0.0f;
-	//	ScaleBox->OffsetY = 0.0f;
-	//	ScaleBox->ScaleMode = EScaleMode::ScaleToFitBoth;
-
-	//	ScaleBox->AddChild(Border);
-
-	//	m_UIManager->AddElement(ScaleBox);
-	//}
+		Border->Initialize();
+		m_UIManager->AddElement(Border);
+	}
 
 	auto allButtons = FMemoryManager::GetAll<UUIButton>();
 	for (UUIButton* btn : allButtons)

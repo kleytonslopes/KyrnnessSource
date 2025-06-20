@@ -112,7 +112,8 @@ VertexBufferData.insert(VertexBufferData.end(), {
 	xpos + w, ypos + h,  uv.z, uv.y
 });
 
-		cursorX += glyph->Advance; printf("Char: %c | UV: (%f, %f, %f, %f)\n", c, glyph->UV.x, glyph->UV.y, glyph->UV.z, glyph->UV.w);
+		cursorX += glyph->Advance;
+		//printf("Char: %c | UV: (%f, %f, %f, %f)\n", c, glyph->UV.x, glyph->UV.y, glyph->UV.z, glyph->UV.w);
 	}
 
 	VertexCount = static_cast<int>(VertexBufferData.size() / 4);
@@ -130,14 +131,14 @@ VertexBufferData.insert(VertexBufferData.end(), {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	for (size_t i = 0; i < VertexBufferData.size(); i += 4)
+	/*for (size_t i = 0; i < VertexBufferData.size(); i += 4)
 	{
 		printf("Vertex: Pos(%.2f, %.2f) UV(%.2f, %.2f)\n",
 			VertexBufferData[i + 0],
 			VertexBufferData[i + 1],
 			VertexBufferData[i + 2],
 			VertexBufferData[i + 3]);
-	}
+	}*/
 }
 
 void UUIText::DrawSelf()

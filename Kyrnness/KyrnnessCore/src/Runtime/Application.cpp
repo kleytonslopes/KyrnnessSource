@@ -103,6 +103,8 @@ void UApplication::Update(float DeltaTime)
 
 void UApplication::Destroy()
 {
+	m_SoundManager->Shutdown();
+
 	FMemoryManager::Get().Cleanup();
 
 	m_Window->Destroy();

@@ -4,6 +4,7 @@
 #include <Core/AssetManager.hpp>
 #include FT_FREETYPE_H
 #include <stb_image_write.h>
+#include "Runtime/Application.hpp"
 
 UUIFont::UUIFont(const std::string& filePath, int pixelSize)
 {
@@ -42,8 +43,8 @@ void UUIFont::LoadFont(const std::string& filePath, int pixelSize)
 
 	int padding = 2;
 	int maxRowHeight = 0;
-	int atlasW = 512; // Tamanho fixo inicial (pode fazer dinâmico depois)
-	int atlasH = 512;
+	int atlasW = UApplication::Get().GetGameConfig().m_FontAtlasSize;
+	int atlasH = UApplication::Get().GetGameConfig().m_FontAtlasSize;
 
 	std::vector<unsigned char> atlasData(atlasW * atlasH, 0);
 
@@ -82,11 +83,11 @@ void UUIFont::LoadFont(const std::string& filePath, int pixelSize)
 		glyph.Advance = (float)(face->glyph->advance.x >> 6);
 
 		float u0 = (float)x / atlasW;
-		float v0 = (float)y / atlasH;  // Sem inversão (v0 = parte superior)
+		float v0 = (float)y / atlasH;
 		float u1 = (float)(x + bmp.width) / atlasW;
-		float v1 = (float)(y + bmp.rows) / atlasH;  // v1 = parte inferior
+		float v1 = (float)(y + bmp.rows) / atlasH;
 
-		glyph.UV = glm::vec4(u0, v1, u1, v0);  // Note a troca: v1 (inferior) vem antes de v0 (superior)
+		glyph.UV = glm::vec4(u0, v1, u1, v0);
 
 		m_Glyphs[c] = glyph;
 
