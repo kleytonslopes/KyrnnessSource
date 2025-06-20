@@ -32,8 +32,8 @@ void UGameHUD::Initialize()
 	{
 		myText->LocalX = 10.f;
 		myText->LocalY = 10.f;
-		myText->width = 20.f;
-		myText->height = 20.f;
+		myText->width =1.f;
+		myText->height = 1.f;
 		myText->Anchor = EAnchor::Center;
 
 		myText->SetFont(myFont);

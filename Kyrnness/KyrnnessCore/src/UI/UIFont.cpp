@@ -82,15 +82,11 @@ void UUIFont::LoadFont(const std::string& filePath, int pixelSize)
 		glyph.Advance = (float)(face->glyph->advance.x >> 6);
 
 		float u0 = (float)x / atlasW;
+		float v0 = (float)y / atlasH;  // Sem inversão (v0 = parte superior)
 		float u1 = (float)(x + bmp.width) / atlasW;
-		float v0 = (float)y / atlasH;
-		float v1 = (float)(y + bmp.rows) / atlasH;
-		/*
-		float v0 = 1.0f - (float)(y + bmp.rows) / atlasH;
-		float v1 = 1.0f - (float)y / atlasH;
-		*/
+		float v1 = (float)(y + bmp.rows) / atlasH;  // v1 = parte inferior
 
-		glyph.UV = glm::vec4(u0, v0, u1, v1);
+		glyph.UV = glm::vec4(u0, v1, u1, v0);  // Note a troca: v1 (inferior) vem antes de v0 (superior)
 
 		m_Glyphs[c] = glyph;
 
@@ -104,6 +100,7 @@ void UUIFont::LoadFont(const std::string& filePath, int pixelSize)
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &m_TextureID);
 	glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, atlasW, atlasH, 0, GL_RED, GL_UNSIGNED_BYTE, atlasData.data());
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

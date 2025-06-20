@@ -95,22 +95,22 @@ void UUIText::GenerateMesh()
 			continue;
 
 		float xpos = cursorX + glyph->Bearing.x;
-		float ypos = cursorY - (glyph->Size.y - glyph->Bearing.y);
+		float ypos = cursorY - glyph->Bearing.y;
 		float w = glyph->Size.x;
 		float h = glyph->Size.y;
 
 		glm::vec4 uv = glyph->UV;
 
 
-		VertexBufferData.insert(VertexBufferData.end(), {
-	xpos,     ypos + h,  uv.x, uv.y,  // Canto inferior esquerdo
-	xpos,     ypos,      uv.x, uv.w,  // Canto superior esquerdo
-	xpos + w, ypos,      uv.z, uv.w,  // Canto superior direito
+VertexBufferData.insert(VertexBufferData.end(), {
+	xpos,     ypos + h,  uv.x, uv.y,  // Inferior esquerdo (UV: x, y)
+	xpos,     ypos,      uv.x, uv.w,  // Superior esquerdo (UV: x, w)
+	xpos + w, ypos,      uv.z, uv.w,  // Superior direito (UV: z, w)
 
-	xpos,     ypos + h,  uv.x, uv.y,  // Canto inferior esquerdo
-	xpos + w, ypos,      uv.z, uv.w,  // Canto superior direito
-	xpos + w, ypos + h,  uv.z, uv.y   // Canto inferior direito
-			});
+	xpos,     ypos + h,  uv.x, uv.y,
+	xpos + w, ypos,      uv.z, uv.w,
+	xpos + w, ypos + h,  uv.z, uv.y
+});
 
 		cursorX += glyph->Advance; printf("Char: %c | UV: (%f, %f, %f, %f)\n", c, glyph->UV.x, glyph->UV.y, glyph->UV.z, glyph->UV.w);
 	}
@@ -150,7 +150,7 @@ void UUIText::DrawSelf()
 		glm::mat4 mat = { 1.f };
 		shader->Bind();
 		shader->SetMatrix4("uProjection", GetProjetion());
-		shader->SetMatrix4("uModel", mat);// GetWorldModel());
+		shader->SetMatrix4("uModel", GetWorldModel());
 		shader->SetVector4("uColor", TextColor);
 		shader->SetInt("uTexture", 0);
 
