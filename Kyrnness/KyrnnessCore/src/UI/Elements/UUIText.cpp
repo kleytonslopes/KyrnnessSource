@@ -3,6 +3,7 @@
 #include "Runtime/Application.hpp"
 #include "Graphics/Shaders.hpp"
 #include "Components/ShaderOpenGLComponent.hpp"
+#include "glm/glm.hpp"
 
 UUIText::UUIText()
 {
@@ -95,13 +96,12 @@ void UUIText::GenerateMesh()
 
 		float xpos = cursorX + glyph->Bearing.x;
 		float ypos = cursorY - (glyph->Size.y - glyph->Bearing.y);
-
 		float w = glyph->Size.x;
 		float h = glyph->Size.y;
 
 		glm::vec4 uv = glyph->UV;
 
-		// Primeiro triângulo
+
 		VertexBufferData.insert(VertexBufferData.end(), {
 			xpos,     ypos + h, uv.x, uv.w,
 			xpos,     ypos,     uv.x, uv.y,
@@ -112,7 +112,7 @@ void UUIText::GenerateMesh()
 			xpos + w, ypos + h, uv.z, uv.w
 			});
 
-		cursorX += glyph->Advance;
+		cursorX += glyph->Advance; printf("Char: %c | UV: (%f, %f, %f, %f)\n", c, glyph->UV.x, glyph->UV.y, glyph->UV.z, glyph->UV.w);
 	}
 
 	VertexCount = static_cast<int>(VertexBufferData.size() / 4);
@@ -129,6 +129,15 @@ void UUIText::GenerateMesh()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	for (size_t i = 0; i < VertexBufferData.size(); i += 4)
+	{
+		printf("Vertex: Pos(%.2f, %.2f) UV(%.2f, %.2f)\n",
+			VertexBufferData[i + 0],
+			VertexBufferData[i + 1],
+			VertexBufferData[i + 2],
+			VertexBufferData[i + 3]);
+	}
 }
 
 void UUIText::DrawSelf()
@@ -138,9 +147,10 @@ void UUIText::DrawSelf()
 
 	if (FShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI_TEXT))
 	{
+		glm::mat4 mat = { 1.f };
 		shader->Bind();
 		shader->SetMatrix4("uProjection", GetProjetion());
-		shader->SetMatrix4("uModel", GetWorldModel());
+		shader->SetMatrix4("uModel", mat);// GetWorldModel());
 		shader->SetVector4("uColor", TextColor);
 		shader->SetInt("uTexture", 0);
 

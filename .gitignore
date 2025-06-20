@@ -4,7 +4,7 @@ obj/
 bin/
 BKP/
 ThirdParty/
-GameContent/
+OAssets/
 
 *.sln
 *.vcxproj
