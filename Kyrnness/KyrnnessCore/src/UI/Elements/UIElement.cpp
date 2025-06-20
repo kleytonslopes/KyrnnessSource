@@ -73,6 +73,14 @@ void UUIElement::Draw()
 	if (!m_Shader)
 		return;
 
+	if (Children.size() > 0)
+	{
+		for (auto& child : Children)
+		{
+			child->Draw();
+		}
+	}
+
 	m_Shader->Bind();
 	m_Shader->SetMatrix4("uProjection", GetProjetion());
 	m_Shader->SetMatrix4("uModel", GetModel());
@@ -95,6 +103,8 @@ void UUIElement::Draw()
 	glBindVertexArray(m_VAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
+
+
 }
 
 void UUIElement::UpdateLayout()

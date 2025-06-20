@@ -170,6 +170,10 @@ void UPacker::PackDirectory_With_XOR(const fs::path& inputDir, const fs::path& o
 
             FileEntry entry;
             entry.relativePath = pathStr;
+            
+            std::filesystem::path fsPath(pathStr);
+            entry.name = fsPath.stem().string();
+
             entry.uncompressedSize = static_cast<uint32_t>(data.size());
             entry.compressedSize = static_cast<uint32_t>(compressedData.size());
 
@@ -192,6 +196,10 @@ void UPacker::PackDirectory_With_XOR(const fs::path& inputDir, const fs::path& o
     {
         directorySize += sizeof(uint32_t);                        // Path size
         directorySize += static_cast<uint32_t>(e.relativePath.size());  // Path data (sem null terminator)
+        
+        directorySize += sizeof(uint32_t);                        // Name size
+        directorySize += static_cast<uint32_t>(e.name.size());  // Name data (sem null terminator)
+
         directorySize += sizeof(uint32_t) * 4;                    // offset, uncompressedSize, compressedSize, crc32
     }
 
@@ -219,6 +227,10 @@ void UPacker::PackDirectory_With_XOR(const fs::path& inputDir, const fs::path& o
         uint32_t pathSize = static_cast<uint32_t>(e.relativePath.size());
         outFile.write(reinterpret_cast<const char*>(&pathSize), sizeof(uint32_t));
         outFile.write(e.relativePath.data(), pathSize);
+
+        uint32_t nameSize = static_cast<uint32_t>(e.name.size());
+        outFile.write(reinterpret_cast<const char*>(&nameSize), sizeof(uint32_t));
+        outFile.write(e.name.data(), nameSize);
 
         outFile.write(reinterpret_cast<const char*>(&e.offset), sizeof(uint32_t));
         outFile.write(reinterpret_cast<const char*>(&e.uncompressedSize), sizeof(uint32_t));
