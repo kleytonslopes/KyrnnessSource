@@ -82,9 +82,13 @@ void UUIFont::LoadFont(const std::string& filePath, int pixelSize)
 		glyph.Advance = (float)(face->glyph->advance.x >> 6);
 
 		float u0 = (float)x / atlasW;
-		float v0 = 1.0f - (float)(y + bmp.rows) / atlasH;
 		float u1 = (float)(x + bmp.width) / atlasW;
+		float v0 = (float)y / atlasH;
+		float v1 = (float)(y + bmp.rows) / atlasH;
+		/*
+		float v0 = 1.0f - (float)(y + bmp.rows) / atlasH;
 		float v1 = 1.0f - (float)y / atlasH;
+		*/
 
 		glyph.UV = glm::vec4(u0, v0, u1, v1);
 

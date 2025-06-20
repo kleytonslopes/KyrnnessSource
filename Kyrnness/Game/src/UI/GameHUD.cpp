@@ -30,8 +30,8 @@ void UGameHUD::Initialize()
 	UUIText* myText = FMemoryManager::Allocate<UUIText>();
 	if (myText && myFont)
 	{
-		myText->LocalX = 0.f;
-		myText->LocalY = 0.f;
+		myText->LocalX = 10.f;
+		myText->LocalY = 10.f;
 		myText->width = 20.f;
 		myText->height = 20.f;
 		myText->Anchor = EAnchor::Center;

@@ -103,13 +103,13 @@ void UUIText::GenerateMesh()
 
 
 		VertexBufferData.insert(VertexBufferData.end(), {
-			xpos,     ypos + h, uv.x, uv.w,
-			xpos,     ypos,     uv.x, uv.y,
-			xpos + w, ypos,     uv.z, uv.y,
+	xpos,     ypos + h,  uv.x, uv.y,  // Canto inferior esquerdo
+	xpos,     ypos,      uv.x, uv.w,  // Canto superior esquerdo
+	xpos + w, ypos,      uv.z, uv.w,  // Canto superior direito
 
-			xpos,     ypos + h, uv.x, uv.w,
-			xpos + w, ypos,     uv.z, uv.y,
-			xpos + w, ypos + h, uv.z, uv.w
+	xpos,     ypos + h,  uv.x, uv.y,  // Canto inferior esquerdo
+	xpos + w, ypos,      uv.z, uv.w,  // Canto superior direito
+	xpos + w, ypos + h,  uv.z, uv.y   // Canto inferior direito
 			});
 
 		cursorX += glyph->Advance; printf("Char: %c | UV: (%f, %f, %f, %f)\n", c, glyph->UV.x, glyph->UV.y, glyph->UV.z, glyph->UV.w);
@@ -159,6 +159,7 @@ void UUIText::DrawSelf()
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, Font->GetTextureId());
+		glUniform1i(glGetUniformLocation(shader->GetProgramId(), "uTexture"), 0);
 
 		glBindVertexArray(m_VAO);
 		glDrawArrays(GL_TRIANGLES, 0, VertexCount);
