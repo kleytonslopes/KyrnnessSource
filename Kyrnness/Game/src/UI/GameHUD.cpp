@@ -5,6 +5,8 @@
 #include "UI/Elements/UIButton.hpp"
 #include "UI/Elements/UIBorder.hpp"
 #include "UI/Elements/UIScaleBox.hpp"
+#include "UI/Elements/UUIText.hpp"
+#include "UI/UIFont.hpp"
 #include "Core/AssetManager.hpp"
 #include "Graphics/OpenGL/GraphicsApi_OpenGL.hpp"
 #include "Audio/SoundManager.hpp"
@@ -23,6 +25,15 @@ void UGameHUD::Initialize()
 	UUIBorder* Border = FMemoryManager::Allocate<UUIBorder>();
 	UUIButton* Button = FMemoryManager::Allocate<UUIButton>();
 	UUIButton* Button2 = FMemoryManager::Allocate<UUIButton>();
+
+	//UUIFont* myFont = new UUIFont("Assets/Fonts/Roboto-Regular.ttf", 32);
+	//UUIText* myText = FMemoryManager::Allocate<UUIText>();
+	//if (myText && myFont)
+	//{
+	//	myText->SetFont(myFont);
+	//	myText->SetText("Hello World!");
+	//	myText->SetColor(glm::vec4(1, 1, 1, 1));
+	//}
 
 	if (Button)
 	{
@@ -82,6 +93,7 @@ void UGameHUD::Initialize()
 
 		Border->AddChild(Button);
 		Border->AddChild(Button2);
+		//Border->AddChild(myText);
 
 		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_menu_panel_bg.png");
 		Border->SetTextureId(textureId);

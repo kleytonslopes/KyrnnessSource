@@ -20,16 +20,18 @@ include_dir["JSON"]             = "%{wks.location}/ThirdParty/JSON/include"
 include_dir["SteamSDK"]         = "%{wks.location}/ThirdParty/SteamSDK/public"
 include_dir["FMOD"]             = "C:/Program Files (x86)/FMOD SoundSystem/FMOD Studio API Windows/api/core/inc"
 include_dir["ZLIB"]             = "%{wks.location}/ThirdParty/ZLIB"
+include_dir["FreeType"]         = "%{wks.location}/ThirdParty/FreeType/include"
 
 extern_lib_dir = {}
-extern_lib_dir["SDL"]           = "%{wks.location}/ThirdParty/SDL/VisualC/x64/Debug"
-extern_lib_dir["PHYSX"]         = "F:/PhysX/physx/bin/win.x86_64.vc143.mt/debug"
-extern_lib_dir["PHYSX_RELEASE"] = "F:/PhysX/physx/bin/win.x86_64.vc143.mt/release"
-extern_lib_dir["ASSIMP"]        = "%{wks.location}/ThirdParty/ASSIMP/lib/Debug"
-extern_lib_dir["GLFW"]          = "%{wks.location}/ThirdParty/GLFW/src/Debug"
-extern_lib_dir["SteamSDK"]      = "%{wks.location}/ThirdParty/SteamSDK/redistributable_bin/win64"
-extern_lib_dir["VULKAN"]        = "C:/VulkanSDK/1.4.309.0/Lib"
-extern_lib_dir["FMOD"]          = "C:/Program Files (x86)/FMOD SoundSystem/FMOD Studio API Windows/api/core/lib/x64"
+extern_lib_dir["SDL"]            = "%{wks.location}/ThirdParty/SDL/VisualC/x64/Debug"
+extern_lib_dir["PHYSX"]          = "F:/PhysX/physx/bin/win.x86_64.vc143.mt/debug"
+extern_lib_dir["PHYSX_RELEASE"]  = "F:/PhysX/physx/bin/win.x86_64.vc143.mt/release"
+extern_lib_dir["ASSIMP"]         = "%{wks.location}/ThirdParty/ASSIMP/lib/Debug"
+extern_lib_dir["GLFW"]           = "%{wks.location}/ThirdParty/GLFW/src/Debug"
+extern_lib_dir["SteamSDK"]       = "%{wks.location}/ThirdParty/SteamSDK/redistributable_bin/win64"
+extern_lib_dir["VULKAN"]         = "C:/VulkanSDK/1.4.309.0/Lib"
+extern_lib_dir["FMOD"]           = "C:/Program Files (x86)/FMOD SoundSystem/FMOD Studio API Windows/api/core/lib/x64"
+extern_lib_dir["FreeType"]       = "%{wks.location}/ThirdParty/FreeType/objs"
 
 lib = {}
 lib["Libs_Debug"]   = {
@@ -44,6 +46,7 @@ lib["Libs_Debug"]   = {
     "PhysXVehicle2_static_64.lib",
     --FMOD
     "fmodL_vc.lib",
+    "freetype.lib",
 }
 lib["Libs_Release"] = {
     "PhysX_64.lib", 
@@ -57,6 +60,7 @@ lib["Libs_Release"] = {
     "PhysXVehicle2_static_64.lib",
     --FMOD
     "fmod_vc.lib",
+    "freetype.lib",
 }
 
 function SetupCommonProjectSettings()
@@ -78,6 +82,7 @@ function SetupCommonProjectSettings()
         libdirs { 
             "%{extern_lib_dir.PHYSX}",
             "%{extern_lib_dir.FMOD}",
+            "%{extern_lib_dir.FreeType}",
         }
         defines{
             "DEBUG",
@@ -98,6 +103,7 @@ function SetupCommonProjectSettings()
         libdirs { 
             "%{extern_lib_dir.PHYSX_RELEASE}" ,
             "%{extern_lib_dir.FMOD}",
+            "%{extern_lib_dir.FreeType}",
         }
         defines{
             "RELEASE",
@@ -117,6 +123,7 @@ function SetupCommonProjectSettings()
             "copy %{wks.location}\\ThirdParty\\SDL\\VisualC\\x64\\Release\\SDL3.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\SDL3.dll",
             "copy %{wks.location}\\ThirdParty\\SteamSDK\\redistributable_bin\\win64\\steam_api64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\steam_api64.dll",
             "copy %{wks.location}\\ThirdParty\\FMOD\\fmod.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\fmod.dll",
+            "copy %{wks.location}\\ThirdParty\\FreeType\\objs\\freetype.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\freetype.dll",
         }
 
     filter {    }

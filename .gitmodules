@@ -34,3 +34,6 @@
 [submodule "ThirdParty/TINYASE"]
 	path = ThirdParty/TINYASE
 	url = https://github.com/kokke/tiny-AES-c.git
+[submodule "ThirdParty/FreeType"]
+	path = ThirdParty/FreeType
+	url = https://github.com/freetype/freetype.git

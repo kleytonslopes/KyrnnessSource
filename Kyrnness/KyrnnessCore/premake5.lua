@@ -34,6 +34,7 @@ project "KyrnnessCore"
         "%{include_dir.SteamSDK}",
         "%{include_dir.VULKAN}",
         "%{include_dir.ZLIB}",
+        "%{include_dir.FreeType}",
     }
 
     libdirs

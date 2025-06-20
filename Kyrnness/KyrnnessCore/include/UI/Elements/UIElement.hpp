@@ -160,6 +160,13 @@ public:
 
 protected:
 
+	std::vector<float> m_Vertices = {
+		// Posições (x, y)   // UVs (u, v)
+	 -0.5f, -0.5f,        0.0f, 0.0f,
+	  0.5f, -0.5f,        1.0f, 0.0f,
+	 -0.5f,  0.5f,        0.0f, 1.0f,
+	  0.5f,  0.5f,        1.0f, 1.0f
+	};
 
 	unsigned int m_TextureID;
 	unsigned int m_VAO;

@@ -3,30 +3,33 @@
 #define KYRNESS_UI_UIFONT_HPP
 
 #include "Core/Core.hpp"
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
-struct Glyph {
-    float u0, v0;  // topo-esquerda
-    float u1, v1;  // baixo-direita
-    float width; // largura do caractere
+struct FGlyphInfo
+{
+    glm::vec2 Size;
+    glm::vec2 Bearing;
+    float Advance;
+    glm::vec4 UV; // u0, v0, u1, v1
 };
 
 class UUIFont
 {
 public:
-    GLuint texture;
-    std::map<char, Glyph> glyphs;
-    float lineHeight = 16.0f;
-    GLuint vao = 0;
-    GLuint vbo = 0;
-    float size = 0.16f;
+    UUIFont(const std::string& filePath, int pixelSize);
+    ~UUIFont();
 
+    GLuint GetTextureId() const { return m_TextureID; }
+    const FGlyphInfo* GetGlyph(char c) const;
 
-    void Load(const std::string& pngPath, const std::string& csvPath);
-    void DrawText(const std::string& text, float x, float y, float scale = 1.0f);
+private:
+    void LoadFont(const std::string& filePath, int pixelSize);
 
-    float CalculateTextWidth(const std::string& text);
-
-    float GetLineHeight() const;
+    std::map<char, FGlyphInfo> m_Glyphs;
+    GLuint m_TextureID = 0;
+    int m_AtlasWidth = 0;
+    int m_AtlasHeight = 0;
 };
 
 #endif// KYRNESS_UI_UIFONT_HPP

@@ -5,10 +5,11 @@
 #include <string>
 #include <unordered_map>
 
-#define SHADER_DEFAULT "default"
-#define SHADER_DEBUG "debugShader"
-#define SHADER_UI "uiShader"
+#define SHADER_DEFAULT  "default"
+#define SHADER_DEBUG    "debugShader"
+#define SHADER_UI       "uiShader"
 #define SHADER_UI_DEBUG "uiShaderDebug"
+#define SHADER_UI_TEXT  "uiShaderText"
 
 class FShaderOpenGLComponent;
 

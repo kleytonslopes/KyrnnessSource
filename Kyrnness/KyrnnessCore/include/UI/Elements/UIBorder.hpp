@@ -1,6 +1,6 @@
 #pragma once
-#ifndef KYRNESS_UIUIBORDER_HPP
-#define KYRNESS_UIUIBORDER_HPP
+#ifndef KYRNESS_UUIBORDER_HPP
+#define KYRNESS_UUIBORDER_HPP
 
 #include "UI/Elements/UIElement.hpp"
 
@@ -18,4 +18,4 @@ public:
 
 };
 
-#endif// KYRNESS_UIUIBORDER_HPP
+#endif// KYRNESS_UUIBORDER_HPP

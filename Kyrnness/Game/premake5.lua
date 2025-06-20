@@ -34,6 +34,7 @@ project "Game"
         "%{include_dir.VULKAN}",
         "%{include_dir.FMOD}",
         "%{include_dir.ZLIB}",
+        "%{include_dir.FreeType}",
     }
 
     libdirs
@@ -87,5 +88,7 @@ project "Game"
         "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysX_64.dll $(SolutionDir)Kyrnness\\Game\\PhysX_64.dll",
         "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXCommon_64.dll $(SolutionDir)Kyrnness\\Game\\PhysXCommon_64.dll",
         "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXFoundation_64.dll $(SolutionDir)Kyrnness\\Game\\PhysXFoundation_64.dll",
-        "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXCooking_64.dll $(SolutionDir)Kyrnness\\Game\\PhysXCooking_64.dll"
+        "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXCooking_64.dll $(SolutionDir)Kyrnness\\Game\\PhysXCooking_64.dll",
+
+        "copy %{wks.location}\\ThirdParty\\FreeType\\objs\\freetype.dll $(SolutionDir)Kyrnness\\Game\\freetype.dll",
     }
