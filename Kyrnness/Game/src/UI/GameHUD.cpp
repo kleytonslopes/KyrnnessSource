@@ -38,7 +38,7 @@ void UGameHUD::Initialize()
 	if (Button)
 	{
 		Button->LocalX = 100.f;
-		Button->y = 0.f;
+		Button->LocalY = 0.f;
 		Button->width = 162.f;
 		Button->height = 52.f;
 		Button->Anchor = EAnchor::TopLeft;
@@ -56,13 +56,13 @@ void UGameHUD::Initialize()
 			};
 
 		Button->Initialize();
-		//m_UIManager->AddElement(Button);
+		m_UIManager->AddElement(Button);
 	}
 
 	if (Button2)
 	{
 		Button2->LocalX = 300.f;
-		Button2->y = 100.f;
+		Button2->LocalY = 100.f;
 		Button2->width = 162.f;
 		Button2->height = 52.f;
 		Button2->Anchor = EAnchor::Center;
@@ -80,6 +80,7 @@ void UGameHUD::Initialize()
 			};
 
 		Button2->Initialize();
+		m_UIManager->AddElement(Button2);
 	}
 
 	if (Border)
@@ -104,21 +105,21 @@ void UGameHUD::Initialize()
 	}
 
 
-	if (ScaleBox)
-	{
-		ScaleBox->x = 0;
-		ScaleBox->y = 0.f;
-		ScaleBox->width = UApplication::Get().GetWidth();
-		ScaleBox->height = UApplication::Get().GetHeight();
-		ScaleBox->Anchor = EAnchor::Stretch;
-		ScaleBox->OffsetX = 0.0f;
-		ScaleBox->OffsetY = 0.0f;
-		ScaleBox->ScaleMode = EScaleMode::ScaleToFitBoth;
+	//if (ScaleBox)
+	//{
+	//	ScaleBox->x = 0;
+	//	ScaleBox->y = 0.f;
+	//	ScaleBox->width = UApplication::Get().GetWidth();
+	//	ScaleBox->height = UApplication::Get().GetHeight();
+	//	ScaleBox->Anchor = EAnchor::Center;
+	//	ScaleBox->OffsetX = 0.0f;
+	//	ScaleBox->OffsetY = 0.0f;
+	//	ScaleBox->ScaleMode = EScaleMode::ScaleToFitBoth;
 
-		ScaleBox->AddChild(Border);
+	//	ScaleBox->AddChild(Border);
 
-		m_UIManager->AddElement(ScaleBox);
-	}
+	//	m_UIManager->AddElement(ScaleBox);
+	//}
 
 	auto allButtons = FMemoryManager::GetAll<UUIButton>();
 	for (UUIButton* btn : allButtons)

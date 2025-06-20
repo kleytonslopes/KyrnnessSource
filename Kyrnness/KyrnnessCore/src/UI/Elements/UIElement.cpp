@@ -77,10 +77,11 @@ void UUIElement::Draw()
 	m_Shader->SetMatrix4("uProjection", GetProjetion());
 	m_Shader->SetMatrix4("uModel", GetModel());
 	m_Shader->SetInt("uTexture", 0);
+	m_Shader->SetVector4("uColor", glm::vec4{ 1.f,1.f, 1.f, 1.f });
 
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(m_Vertices), m_Vertices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(float), m_Vertices.data(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -95,14 +96,14 @@ void UUIElement::Draw()
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 
-	// Agora desenha os filhos normalmente
-	for (UUIElement* child : Children)
-	{
-		if (child)
-		{
-			child->Draw();
-		}
-	}
+	//// Agora desenha os filhos normalmente
+	//for (UUIElement* child : Children)
+	//{
+	//	if (child)
+	//	{
+	//		child->Draw();
+	//	}
+	//}
 }
 
 void UUIElement::UpdateLayout()

@@ -24,38 +24,40 @@ void UUIButton::Initialize()
 
 void UUIButton::Draw()
 {
-		if (!m_Shader)
-			return;
+	UUIElement::Draw();
 
-	m_Shader->Bind();
-	m_Shader->SetMatrix4("uProjection", GetProjetion());
-	m_Shader->SetMatrix4("uModel", GetModel());
-	m_Shader->SetVector4("uColor", glm::vec4{1.f,1.f, 1.f, 1.f});
-	m_Shader->SetInt("uTexture", 0);
+	//	if (!m_Shader)
+	//		return;
 
-	float vertices[] = {
-		// Posições (x, y)   // UVs (u, v)
-	 -0.5f, -0.5f,        0.0f, 0.0f,
-	  0.5f, -0.5f,        1.0f, 0.0f,
-	 -0.5f,  0.5f,        0.0f, 1.0f,
-	  0.5f,  0.5f,        1.0f, 1.0f
-	};
+	//m_Shader->Bind();
+	//m_Shader->SetMatrix4("uProjection", GetProjetion());
+	//m_Shader->SetMatrix4("uModel", GetModel());
+	//m_Shader->SetVector4("uColor", glm::vec4{1.f,1.f, 1.f, 1.f});
+	//m_Shader->SetInt("uTexture", 0);
 
-	glBindVertexArray(m_VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	////float vertices[] = {
+	////	// Posições (x, y)   // UVs (u, v)
+	//// -0.5f, -0.5f,        0.0f, 0.0f,
+	////  0.5f, -0.5f,        1.0f, 0.0f,
+	//// -0.5f,  0.5f,        0.0f, 1.0f,
+	////  0.5f,  0.5f,        1.0f, 1.0f
+	////};
 
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	//glBindVertexArray(m_VAO);
+	//glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	//glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(float), m_Vertices.data(), GL_STATIC_DRAW);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(0);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_TextureID);
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	//glEnableVertexAttribArray(1);
 
-	glBindVertexArray(m_VAO);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
+	//glBindVertexArray(m_VAO);
+	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 }
 
