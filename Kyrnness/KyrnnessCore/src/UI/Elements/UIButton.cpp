@@ -16,6 +16,8 @@ float vertices[] = {
 
 void UUIButton::Initialize()
 {
+	UUIElement::Initialize();
+
 	glGenVertexArrays(1, &m_VAO);
 	glGenBuffers(1, &m_VBO);
 }
@@ -54,11 +56,13 @@ void UUIButton::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool
 	int windowHeight = UApplication::Get().GetHeight();
 	mouseY = windowHeight - mouseY;
 
-	//LOG(Log, TEXT("Mouse Want Click UIButton: x= %f , y= %f", mouseX, mouseY));
+	glm::vec2 totalScale = GetAccumulatedScale();
 
+	float scaledMouseX = static_cast<float>(mouseX) / totalScale.x;
+	float scaledMouseY = static_cast<float>(mouseY) / totalScale.y;
 
-	bool insideX = mouseX >= x && mouseX <= (x + width);
-	bool insideY = mouseY >= y && mouseY <= (y + height);
+	bool insideX = scaledMouseX >= x && scaledMouseX <= (x + width);
+	bool insideY = scaledMouseY >= y && scaledMouseY <= (y + height);
 
 	if (insideX && insideY)
 	{
@@ -68,6 +72,24 @@ void UUIButton::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool
 			if (OnClick && isMouseDown) OnClick();
 		}
 	}
+
+	//int windowHeight = UApplication::Get().GetHeight();
+	//mouseY = windowHeight - mouseY;
+
+	////LOG(Log, TEXT("Mouse Want Click UIButton: x= %f , y= %f", mouseX, mouseY));
+
+
+	//bool insideX = mouseX >= x && mouseX <= (x + width);
+	//bool insideY = mouseY >= y && mouseY <= (y + height);
+
+	//if (insideX && insideY)
+	//{
+	//	if (hovered && m_MouseFocusState == EMouseFocusState::MFS_MouseEnter)
+	//	{
+	//		m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
+	//		if (OnClick && isMouseDown) OnClick();
+	//	}
+	//}
 }
 
 void UUIButton::OnMouseEnter(double mouseX, double mouseY)

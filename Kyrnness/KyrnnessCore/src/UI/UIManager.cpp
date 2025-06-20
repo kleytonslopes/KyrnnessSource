@@ -16,6 +16,7 @@ UUIManager::~UUIManager()
 
 void UUIManager::Initialize()
 {
+    UApplication().Get().OnResolutionUpdatedEvent.AddListener(this, &UUIManager::OnResolutionUpdated);
 	UInputManager::Get().OnMouseButtonEvent.AddListener(this, &UUIManager::ProcessInput);
 	//UInputManager::Get().OnMouseMoveEvent.AddListener(this, &UUIManager::OnMouseEnter);
 	UInputManager::Get().OnMouseMoveEvent.AddListener(this, &UUIManager::OnUpdateMouseFocus);
@@ -41,7 +42,7 @@ void UUIManager::ProcessInput(float mx, float my, bool isMouseDown, bool isMouse
 {
     for (auto& e : m_Elements)
     {
-        e->HandleInput(mx, my, isMouseDown, isMouseUp);
+        e->PropagateInput(mx, my, isMouseDown, isMouseUp);
     }
 }
 
@@ -49,7 +50,7 @@ void UUIManager::OnMouseEnter(float mx, float my)
 {
     for (auto& e : m_Elements)
     {
-        e->OnMouseEnter(mx, my);
+        e->PropagateMouseEnter(mx, my);
     }
 }
 
@@ -57,7 +58,7 @@ void UUIManager::OnMouseLeave(float mx, float my)
 {
     for (auto& e : m_Elements)
     {
-        e->OnMouseLeave(mx, my);
+        e->PropagateMouseLeave(mx, my);
     }
 }
 
@@ -73,7 +74,20 @@ void UUIManager::OnUpdateMouseFocus(float mx, float my)
 
     for (auto& e : m_Elements)
     {
-        e->OnUpdateMouseFocus(mx, my);
+        e->PropagateUpdateMouseFocus(mx, my);
+    }
+}
+
+void UUIManager::OnResolutionUpdated(int width, int eight)
+{
+    UpdateLayoutAll();
+}
+
+void UUIManager::UpdateLayoutAll()
+{
+    for (auto& e : m_Elements)
+    {
+        e->UpdateLayout();
     }
 }
 

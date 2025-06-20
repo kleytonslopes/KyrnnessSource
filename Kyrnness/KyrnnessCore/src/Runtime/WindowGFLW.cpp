@@ -15,6 +15,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	GameConfig& cfg = UApplication::Get().GetGameConfig();
 	cfg.m_Width = width;
 	cfg.m_Height = height;
+
+	UApplication::Get().OnResolutionUpdated(width, height);
 }
 
 UWindowGLFW::UWindowGLFW(UApplication* application) : UWindow(application)

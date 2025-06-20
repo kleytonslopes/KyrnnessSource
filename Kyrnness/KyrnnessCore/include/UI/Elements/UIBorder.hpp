@@ -14,10 +14,6 @@ public:
     void Initialize();
 
     void Draw() override;
-    void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp) override;
-    void OnMouseEnter(double mouseX, double mouseY) override;
-    void OnMouseLeave(double mouseX, double mouseY) override;
-    void OnUpdateMouseFocus(double mouseX, double mouseY) override;
 
 
 };

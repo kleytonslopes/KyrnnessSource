@@ -4,6 +4,7 @@
 #include "Graphics/Shaders.hpp"
 #include "Graphics/OpenGL/GraphicsApi_OpenGL.hpp"
 #include "Runtime/Application.hpp"
+#include "UI/Elements/UIScaleBox.hpp"
 
 UUIElement::UUIElement()
 {
@@ -37,6 +38,14 @@ void UUIElement::AddChild(UUIElement* child)
         child->Parent = this;
         Children.push_back(child);
     }
+}
+
+void UUIElement::Initialize()
+{
+    BaseX = x;
+    BaseY = y;
+    BaseWidth = width;
+    BaseHeight = height;
 }
 
 void UUIElement::Draw()
@@ -85,9 +94,10 @@ void UUIElement::UpdateLayout()
         parentH = Parent->height;
     }
 
-    // Calcula baseX e baseY conforme anchor
     float baseX = parentX;
     float baseY = parentY;
+    float finalWidth = width;
+    float finalHeight = height;
 
     switch (Anchor)
     {
@@ -135,18 +145,91 @@ void UUIElement::UpdateLayout()
         baseX = parentX + (parentW - width);
         baseY = parentY + (parentH - height);
         break;
+
+    case EAnchor::Stretch:
+        baseX = parentX + Margin.Left;
+        baseY = parentY + Margin.Top;
+        finalWidth = parentW - (Margin.Left + Margin.Right);
+        finalHeight = parentH - (Margin.Top + Margin.Bottom);
+        break;
+    }
+
+    // Aplica margem para os outros Anchors (exceto Stretch que já aplicou antes)
+    if (Anchor != EAnchor::Stretch)
+    {
+        baseX += Margin.Left - Margin.Right;
+        baseY += Margin.Top - Margin.Bottom;
     }
 
     // A posição final (absoluta) é: Anchor + Offset + LocalX/LocalY
     x = baseX + OffsetX + LocalX;
     y = baseY + OffsetY + LocalY;
 
-    // Recalcula layout dos filhos
+    // Ajusta o tamanho final
+    if (Anchor == EAnchor::Stretch)
+    {
+        width = finalWidth;
+        height = finalHeight;
+    }
+
+    // Recursivo pros filhos
     for (UUIElement* child : Children)
     {
         if (child)
         {
             child->UpdateLayout();
+        }
+    }
+}
+
+void UUIElement::PropagateInput(float mx, float my, bool isMouseDown, bool isMouseUp)
+{
+    HandleInput(mx, my, isMouseDown, isMouseUp);
+
+    for (UUIElement* child : Children)
+    {
+        if (child)
+        {
+            child->PropagateInput(mx, my, isMouseDown, isMouseUp);
+        }
+    }
+}
+
+void UUIElement::PropagateMouseEnter(double mouseX, double mouseY)
+{
+    OnMouseEnter(mouseX, mouseY);
+
+    for (UUIElement* child : Children)
+    {
+        if (child)
+        {
+            child->PropagateMouseEnter(mouseX, mouseY);
+        }
+    }
+}
+
+void UUIElement::PropagateMouseLeave(double mouseX, double mouseY)
+{
+    OnMouseLeave(mouseX, mouseY);
+
+    for (UUIElement* child : Children)
+    {
+        if (child)
+        {
+            child->PropagateMouseLeave(mouseX, mouseY);
+        }
+    }
+}
+
+void UUIElement::PropagateUpdateMouseFocus(double mouseX, double mouseY)
+{
+    OnUpdateMouseFocus(mouseX, mouseY);
+
+    for (UUIElement* child : Children)
+    {
+        if (child)
+        {
+            child->PropagateUpdateMouseFocus(mouseX, mouseY);
         }
     }
 }
@@ -164,6 +247,23 @@ glm::mat4 UUIElement::GetWorldModel()
     {
         return model;
     }
+}
+
+glm::vec2 UUIElement::GetAccumulatedScale()
+{
+    glm::vec2 totalScale(1.0f, 1.0f);
+
+    UUIElement* current = this;
+    while (current != nullptr)
+    {
+        if (UUIScaleBox* scaleBox = dynamic_cast<UUIScaleBox*>(current))
+        {
+            totalScale.x *= scaleBox->GetCurrentScale().x;
+            totalScale.y *= scaleBox->GetCurrentScale().y;
+        }
+        current = current->Parent;
+    }
+    return totalScale;
 }
 
 glm::mat4 UUIElement::GetProjetion()

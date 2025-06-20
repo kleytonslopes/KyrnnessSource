@@ -110,6 +110,11 @@ void UApplication::Destroy()
 	LOG(Warning, "UApplication::Destroy");
 }
 
+void UApplication::OnResolutionUpdated(int newWidth, int newHeght)
+{
+	OnResolutionUpdatedEvent.Broadcast(newWidth, newHeght);
+}
+
 void UApplication::SetupHUDFactory(std::function<std::unique_ptr<UHUD>(UApplication*)> Factory)
 {
 	m_HUDFactory = std::move(Factory);

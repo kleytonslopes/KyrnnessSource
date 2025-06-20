@@ -4,6 +4,7 @@
 #include "UI/UIManager.hpp"
 #include "UI/Elements/UIButton.hpp"
 #include "UI/Elements/UIBorder.hpp"
+#include "UI/Elements/UIScaleBox.hpp"
 #include "Core/AssetManager.hpp"
 #include "Graphics/OpenGL/GraphicsApi_OpenGL.hpp"
 #include "Audio/SoundManager.hpp"
@@ -18,6 +19,7 @@ void UGameHUD::Initialize()
 {
 	UHUD::Initialize();
 
+	UUIScaleBox* ScaleBox = FMemoryManager::Allocate<UUIScaleBox>();
 	UUIBorder* Border = FMemoryManager::Allocate<UUIBorder>();
 	UUIButton* Button = FMemoryManager::Allocate<UUIButton>();
 	UUIButton* Button2 = FMemoryManager::Allocate<UUIButton>();
@@ -87,6 +89,23 @@ void UGameHUD::Initialize()
 		Border->Initialize();
 		m_UIManager->AddElement(Border);
 	}
+
+
+	//if (ScaleBox)
+	//{
+	//	ScaleBox->x = 0;
+	//	ScaleBox->y = 0.f;
+	//	ScaleBox->width = UApplication::Get().GetWidth();
+	//	ScaleBox->height = UApplication::Get().GetHeight();
+	//	ScaleBox->Anchor = EAnchor::Stretch;
+	//	ScaleBox->OffsetX = 0.0f;
+	//	ScaleBox->OffsetY = 0.0f;
+	//	ScaleBox->ScaleMode = EScaleMode::ScaleToFitBoth;
+
+	//	ScaleBox->AddChild(Border);
+
+	//	m_UIManager->AddElement(ScaleBox);
+	//}
 
 	auto allButtons = FMemoryManager::GetAll<UUIButton>();
 	for (UUIButton* btn : allButtons)

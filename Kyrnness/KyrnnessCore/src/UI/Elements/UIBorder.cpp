@@ -6,6 +6,8 @@ extern void DrawQuad(float x, float y, float w, float h, GLuint tex, const glm::
 
 void UUIBorder::Initialize()
 {
+	UUIElement::Initialize();
+
 	glGenVertexArrays(1, &m_VAO);
 	glGenBuffers(1, &m_VBO);
 }
@@ -44,20 +46,4 @@ void UUIBorder::Draw()
 
 	glBindVertexArray(m_VAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-}
-
-void UUIBorder::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp)
-{
-}
-
-void UUIBorder::OnMouseEnter(double mouseX, double mouseY)
-{
-}
-
-void UUIBorder::OnMouseLeave(double mouseX, double mouseY)
-{
-}
-
-void UUIBorder::OnUpdateMouseFocus(double mouseX, double mouseY)
-{
 }

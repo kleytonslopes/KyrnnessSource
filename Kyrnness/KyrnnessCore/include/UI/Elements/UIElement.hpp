@@ -6,6 +6,14 @@
 
 struct FShaderOpenGLComponent;
 
+struct FMargin
+{
+	float Left = 0.0f;
+	float Top = 0.0f;
+	float Right = 0.0f;
+	float Bottom = 0.0f;
+};
+
 enum class EAnchor
 {
 
@@ -70,7 +78,22 @@ enum class EAnchor
 	/// <para>-----</para>
 	/// <para>----*</para>
 	/// </summary>
-	BottomRight
+	BottomRight,
+
+	/// <summary>
+    /// <para>*****</para>
+    /// <para>*---*</para>
+    /// <para>*****</para>
+    /// </summary>
+	Stretch
+};
+
+enum class EScaleMode
+{
+	None,
+	ScaleToFitX,
+	ScaleToFitY,
+	ScaleToFitBoth
 };
 
 class UUIElement 
@@ -88,7 +111,18 @@ public:
 	UUIElement* Parent = nullptr;
 	std::vector<UUIElement*> Children;
 
-    float x, y, width, height, scale;
+    //float scale;
+
+	float x = 0.0f;
+	float y = 0.0f;
+	float width = 100.0f;
+	float height = 100.0f;
+
+	// Salva o tamanho/layout original (pré-scale)
+	float BaseX = 0.0f;
+	float BaseY = 0.0f;
+	float BaseWidth = 100.0f;
+	float BaseHeight = 100.0f;
 
 	float LocalX = 0.0f;
 	float LocalY = 0.0f;
@@ -96,23 +130,33 @@ public:
 	EAnchor Anchor = EAnchor::TopLeft;
 	float OffsetX = 0.0f;
 	float OffsetY = 0.0f;
+	FMargin Margin;
 
 	UUIElement();
     virtual ~UUIElement() = default;
 
 	void AddChild(UUIElement* child);
 
+	virtual void Initialize();
     virtual void Draw();
 	virtual void UpdateLayout(); 
-    virtual void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp) = 0;
-    virtual void OnMouseEnter(double mouseX, double mouseY) = 0;
-    virtual void OnMouseLeave(double mouseX, double mouseY) = 0;
-	virtual void OnUpdateMouseFocus(double mouseX, double mouseY) = 0;
+	virtual void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp) {}
+	virtual void OnMouseEnter(double mouseX, double mouseY) { }
+	virtual void OnMouseLeave(double mouseX, double mouseY) { }
+	virtual void OnUpdateMouseFocus(double mouseX, double mouseY) { }
+
+	void PropagateInput(float mx, float my, bool isMouseDown, bool isMouseUp);
+	void PropagateMouseEnter(double mouseX, double mouseY);
+	void PropagateMouseLeave(double mouseX, double mouseY);
+	void PropagateUpdateMouseFocus(double mouseX, double mouseY);
+
 	
 	void SetTextureId(unsigned int value) { m_TextureID = value; }
 	void SetVAO(unsigned int value) { m_VAO = value; }
 
-	glm::mat4 GetWorldModel();
+	virtual glm::mat4 GetWorldModel();
+
+	glm::vec2 GetAccumulatedScale();
 
 protected:
 

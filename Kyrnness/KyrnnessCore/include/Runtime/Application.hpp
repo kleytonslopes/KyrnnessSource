@@ -31,6 +31,7 @@ public:
     static UApplication& Get();
 
     FFunctionEvent<float> OnUpdateEvent;
+    FFunctionEvent<int, int> OnResolutionUpdatedEvent;
 
     UApplication();
     virtual ~UApplication();
@@ -44,7 +45,7 @@ public:
     void PostInitialize() override;
     void Update(float DeltaTime) override;
     void Destroy() override;
-
+    void OnResolutionUpdated(int newWidth, int newHeght);
     void Run();
 
     template<typename T>

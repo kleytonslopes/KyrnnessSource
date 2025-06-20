@@ -25,7 +25,8 @@ public:
 	void OnMouseEnter(float mx, float my);
 	void OnMouseLeave(float mx, float my);
 	void OnUpdateMouseFocus(float mx, float my);
-	
+	void OnResolutionUpdated(int width, int eight);
+	void UpdateLayoutAll();
 
 
 private:
