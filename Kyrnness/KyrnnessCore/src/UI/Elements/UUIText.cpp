@@ -146,7 +146,7 @@ void UUIText::DrawSelf()
 	if (!Font || VertexCount == 0)
 		return;
 
-	if (FShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI_TEXT))
+	if (UShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI_TEXT))
 	{
 		glm::mat4 mat = { 1.f };
 		shader->Bind();

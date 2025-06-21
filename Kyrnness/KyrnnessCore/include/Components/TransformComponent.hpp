@@ -6,7 +6,7 @@
 #include "Components/Component.hpp"
 #include "glm/glm.hpp"
 
-class FTransformComponent : public UComponent
+class UTransformComponent : public UComponent
 {
 public:
 

@@ -191,14 +191,14 @@ void UUIElement::UpdateLayout()
 		break;
 	}
 
-	// Aplica margem para os outros Anchors (exceto Stretch que já aplicou antes)
+	// Aplica margem para os outros Anchors (exceto Stretch que jï¿½ aplicou antes)
 	if (Anchor != EAnchor::Stretch)
 	{
 		baseX += Margin.Left - Margin.Right;
 		baseY += Margin.Top - Margin.Bottom;
 	}
 
-	// A posição final (absoluta) é: Anchor + Offset + LocalX/LocalY
+	// A posiï¿½ï¿½o final (absoluta) ï¿½: Anchor + Offset + LocalX/LocalY
 	x = baseX + OffsetX + LocalX;
 	y = baseY + OffsetY + LocalY;
 
@@ -354,7 +354,7 @@ void UUIElement::DrawSelf()
 		glm::mat4 model = GetWorldModel();
 		glm::mat4 projection = GetProjetion();
 
-		if (FShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI))
+		if (UShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI))
 		{
 			shader->Bind();
 			shader->SetMatrix4("uProjection", projection);

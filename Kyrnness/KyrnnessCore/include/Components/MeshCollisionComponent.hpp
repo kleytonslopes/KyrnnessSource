@@ -6,17 +6,17 @@
 
 #include "Content/MeshAsset.hpp"
 
-class FMeshCollisionComponent : public FCollisionComponent
+class UMeshCollisionComponent : public UCollisionComponent
 {
 	using Super = UComponent;
 public:
-	FMeshCollisionComponent() = default;
-	virtual ~FMeshCollisionComponent() = default;
+	UMeshCollisionComponent() = default;
+	virtual ~UMeshCollisionComponent() = default;
 
-	FMeshCollisionComponent(const FMeshCollisionComponent&) = delete;
-	FMeshCollisionComponent& operator=(const FMeshCollisionComponent&) = delete;
-	FMeshCollisionComponent(FMeshCollisionComponent&&) = delete;
-	FMeshCollisionComponent& operator=(FMeshCollisionComponent&&) = delete;
+	UMeshCollisionComponent(const UMeshCollisionComponent&) = delete;
+	UMeshCollisionComponent& operator=(const UMeshCollisionComponent&) = delete;
+	UMeshCollisionComponent(UMeshCollisionComponent&&) = delete;
+	UMeshCollisionComponent& operator=(UMeshCollisionComponent&&) = delete;
 
 
 	void SetMeshAsset(const FMeshAsset& meshAsset);

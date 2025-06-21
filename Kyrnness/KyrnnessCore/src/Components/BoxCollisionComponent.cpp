@@ -1,11 +1,11 @@
 #include "pch.hpp"
 #include "Components/BoxCollisionComponent.hpp"
 
-nlohmann::json FBoxCollisionComponent::GetJsonData()
+nlohmann::json UBoxCollisionComponent::GetJsonData()
 {
 	nlohmann::json jsonData;
 
-	jsonData["Type"] = "FBoxCollisionComponent";
+	jsonData["Type"] = "UBoxCollisionComponent";
 	jsonData["Update"] = bCanUpdate;
 
 	return jsonData;

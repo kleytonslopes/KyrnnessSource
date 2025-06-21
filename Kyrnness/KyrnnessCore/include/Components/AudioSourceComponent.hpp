@@ -21,16 +21,16 @@ struct FActiveFade
 	EFadeType Type = EFadeType::FadeIn;
 };
 
-class FAudioSourceComponent : public UComponent
+class UAudioSourceComponent : public UComponent
 {
 	using Super = UComponent;
 public:
-	FAudioSourceComponent() = default;
+	UAudioSourceComponent() = default;
 
-	FAudioSourceComponent(const FAudioSourceComponent&) = delete;
-	FAudioSourceComponent& operator=(const FAudioSourceComponent&) = delete;
-	FAudioSourceComponent(FAudioSourceComponent&&) = delete;
-	FAudioSourceComponent& operator=(FAudioSourceComponent&&) = delete;
+	UAudioSourceComponent(const UAudioSourceComponent&) = delete;
+	UAudioSourceComponent& operator=(const UAudioSourceComponent&) = delete;
+	UAudioSourceComponent(UAudioSourceComponent&&) = delete;
+	UAudioSourceComponent& operator=(UAudioSourceComponent&&) = delete;
 
 	void Play();
 	void PlaySoundByName(const std::string& soundName, float volume = 1.0f);

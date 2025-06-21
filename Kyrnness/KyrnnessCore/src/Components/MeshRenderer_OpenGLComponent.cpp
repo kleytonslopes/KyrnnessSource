@@ -2,7 +2,7 @@
 #include "Components/MeshRenderer_OpenGLComponent.hpp"
 #include "Components/ShaderOpenGLComponent.hpp"
 
-FMeshRenderer_OpenGLComponent::FMeshRenderer_OpenGLComponent(FMeshAsset& meshAsset/*std::vector<Vertex> vertices, std::vector<uint32> indices*/, FShaderOpenGLComponent* shaderComponent)
+UMeshRenderer_OpenGLComponent::UMeshRenderer_OpenGLComponent(FMeshAsset& meshAsset/*std::vector<Vertex> vertices, std::vector<uint32> indices*/, UShaderOpenGLComponent* shaderComponent)
 	//: m_Vertices(vertices)
 	//, m_Indices(indices)
 	: m_MeshAsset(meshAsset)
@@ -11,7 +11,7 @@ FMeshRenderer_OpenGLComponent::FMeshRenderer_OpenGLComponent(FMeshAsset& meshAss
 	Initialize();
 }
 
-void FMeshRenderer_OpenGLComponent::OnInitialize()
+void UMeshRenderer_OpenGLComponent::OnInitialize()
 {
 	CreateVAO();
 	CreateVBO();
@@ -39,7 +39,7 @@ void FMeshRenderer_OpenGLComponent::OnInitialize()
 
 }
 
-void FMeshRenderer_OpenGLComponent::Render(const TRenderParameters& renderParameters)
+void UMeshRenderer_OpenGLComponent::Render(const TRenderParameters& renderParameters)
 {
 	uint32 diffuseNr = 1;
 	uint32 specularNr = 1;
@@ -77,37 +77,37 @@ void FMeshRenderer_OpenGLComponent::Render(const TRenderParameters& renderParame
 
 }
 
-void FMeshRenderer_OpenGLComponent::Bind()
+void UMeshRenderer_OpenGLComponent::Bind()
 {
 	glBindVertexArray(m_VAO);
 }
 
-nlohmann::json FMeshRenderer_OpenGLComponent::GetJsonData()
+nlohmann::json UMeshRenderer_OpenGLComponent::GetJsonData()
 {
 	return nlohmann::json();
 }
 
-void FMeshRenderer_OpenGLComponent::CreateVAO()
+void UMeshRenderer_OpenGLComponent::CreateVAO()
 {
 	glGenVertexArrays(1, &m_VAO);
 	glBindVertexArray(m_VAO);
 }
 
-void FMeshRenderer_OpenGLComponent::CreateVBO()
+void UMeshRenderer_OpenGLComponent::CreateVBO()
 {
 	glGenBuffers(1, &m_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, m_MeshAsset.vertices.size() * sizeof(Vertex), &m_MeshAsset.vertices[0], GL_STATIC_DRAW);
 }
 
-void FMeshRenderer_OpenGLComponent::CreateEBO()
+void UMeshRenderer_OpenGLComponent::CreateEBO()
 {
 	glGenBuffers(1, &m_EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_MeshAsset.indices.size() * sizeof(unsigned int), &m_MeshAsset.indices[0], GL_STATIC_DRAW);
 }
 
-void FMeshRenderer_OpenGLComponent::CreateFBO()
+void UMeshRenderer_OpenGLComponent::CreateFBO()
 {
 	glGenFramebuffers(1, &m_FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
@@ -125,7 +125,7 @@ void FMeshRenderer_OpenGLComponent::CreateFBO()
 	}
 }
 
-void FMeshRenderer_OpenGLComponent::CreateTexture()
+void UMeshRenderer_OpenGLComponent::CreateTexture()
 {
 	if (m_MeshAsset.images.size() == 0)
 	{

@@ -4,16 +4,16 @@
 
 #include "Components/Component.hpp"
 
-class FInputComponent : public UComponent
+class UInputComponent : public UComponent
 {
 public:
-	FInputComponent() = default;
-	virtual ~FInputComponent() = default;
+	UInputComponent() = default;
+	virtual ~UInputComponent() = default;
 
-	FInputComponent(const FInputComponent&) = delete;
-	FInputComponent& operator=(const FInputComponent&) = delete;
-	FInputComponent(FInputComponent&&) = delete;
-	FInputComponent& operator=(FInputComponent&&) = delete;
+	UInputComponent(const UInputComponent&) = delete;
+	UInputComponent& operator=(const UInputComponent&) = delete;
+	UInputComponent(UInputComponent&&) = delete;
+	UInputComponent& operator=(UInputComponent&&) = delete;
 
 	void RegisterInputAction(const std::string& actionName, const std::function<void()>& callback);
 

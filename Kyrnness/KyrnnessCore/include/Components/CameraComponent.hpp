@@ -5,9 +5,9 @@
 
 #include "Components/Component.hpp"
 
-struct FTransformComponent;
+struct UTransformComponent;
 
-class FCameraComponent : public UComponent
+class UCameraComponent : public UComponent
 {
 public:
 	float Fov = 45.0f;

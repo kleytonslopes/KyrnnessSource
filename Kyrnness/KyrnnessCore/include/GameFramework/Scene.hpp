@@ -7,8 +7,8 @@
 #include "nlohmann/json.hpp"
 
 class UApplication;
-class FShaderOpenGLComponent;
-class FCameraComponent;
+class UShaderOpenGLComponent;
+class UCameraComponent;
 class UComponent;
 
 struct TSceneObject
@@ -85,8 +85,8 @@ private:
 
 	float m_Gravity = -20.8f;
 
-	FShaderOpenGLComponent* m_DefaultShader = nullptr;
-	FCameraComponent* m_MainCamera = nullptr;
+	UShaderOpenGLComponent* m_DefaultShader = nullptr;
+	UCameraComponent* m_MainCamera = nullptr;
 	TSceneObject* m_SelectedObject = nullptr;
 
 	void MakeScene();

@@ -5,20 +5,20 @@
 
 #include "Components/Component.hpp"
 
-class FTransformComponent;
+class UTransformComponent;
 
-class FCapsuleComponent : public UComponent
+class UCapsuleComponent : public UComponent
 {
 	using Super = UComponent;
 public:
-	FCapsuleComponent();
+	UCapsuleComponent();
 
-	virtual ~FCapsuleComponent() = default;
+	virtual ~UCapsuleComponent() = default;
 
-	FCapsuleComponent(const FCapsuleComponent&) = delete;
-	FCapsuleComponent& operator=(const FCapsuleComponent&) = delete;
-	FCapsuleComponent(FCapsuleComponent&&) = delete;
-	FCapsuleComponent& operator=(FCapsuleComponent&&) = delete;
+	UCapsuleComponent(const UCapsuleComponent&) = delete;
+	UCapsuleComponent& operator=(const UCapsuleComponent&) = delete;
+	UCapsuleComponent(UCapsuleComponent&&) = delete;
+	UCapsuleComponent& operator=(UCapsuleComponent&&) = delete;
 
 	virtual nlohmann::json GetJsonData() override;
 
@@ -50,7 +50,7 @@ private:
 	float m_VerticalVelocity = 0.f;
 	float m_JumpForce = 8.0f;
 
-	FTransformComponent* m_TransformComponent = nullptr;
+	UTransformComponent* m_TransformComponent = nullptr;
 
 	physx::PxQueryFilterData m_CollisionFilter;
 	physx::PxController* m_CapsuleController = NULL;

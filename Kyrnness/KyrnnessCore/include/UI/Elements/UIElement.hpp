@@ -4,7 +4,7 @@
 
 #include "Core/Core.hpp"
 
-struct FShaderOpenGLComponent;
+struct UShaderOpenGLComponent;
 
 struct FMargin
 {
@@ -111,7 +111,7 @@ public:
 	float width = 100.0f;
 	float height = 100.0f;
 
-	// Salva o tamanho/layout original (pré-scale)
+	// Salva o tamanho/layout original (prï¿½-scale)
 	float BaseX = 0.0f;
 	float BaseY = 0.0f;
 	float BaseWidth = 100.0f;
@@ -165,7 +165,7 @@ protected:
 	bool bPressed = false;
 
 	std::vector<float> m_Vertices = {
-		// Posições (x, y)   // UVs (u, v)
+		// Posiï¿½ï¿½es (x, y)   // UVs (u, v)
 	 -0.5f, -0.5f,        0.0f, 0.0f,
 	  0.5f, -0.5f,        1.0f, 0.0f,
 	 -0.5f,  0.5f,        0.0f, 1.0f,
@@ -173,7 +173,7 @@ protected:
 	};
 
 //	float vertices[] = {
-//	// Posições (x, y)   // UVs (u, v)
+//	// Posiï¿½ï¿½es (x, y)   // UVs (u, v)
 // -0.5f, -0.5f,        0.0f, 0.0f,
 //  0.5f, -0.5f,        1.0f, 0.0f,
 // -0.5f,  0.5f,        0.0f, 1.0f,
@@ -187,9 +187,9 @@ protected:
 	unsigned int m_VAO_Debug;
 	unsigned int m_VBO_Debug;
 
-	FShaderOpenGLComponent* m_Shader = nullptr;
+	UShaderOpenGLComponent* m_Shader = nullptr;
 #if(DEBUG)
-	FShaderOpenGLComponent* m_ShaderDebug = nullptr;
+	UShaderOpenGLComponent* m_ShaderDebug = nullptr;
 #endif
 
 	glm::mat4 GetProjetion();

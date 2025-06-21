@@ -12,7 +12,7 @@ class TSceneObject;
 
 struct TComponentBuilder
 {
-	FShaderOpenGLComponent* defaultShader = nullptr;
+	UShaderOpenGLComponent* defaultShader = nullptr;
 	UApplication* application = nullptr;
 };
 

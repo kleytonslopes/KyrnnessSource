@@ -4,18 +4,18 @@
 
 #include "Components/Component.hpp"
 
-class FPlayerComponent : public UComponent
+class UPlayerComponent : public UComponent
 {
 	using Super = UComponent;
 	using InputAction = std::function<void(int)>;
 public:
-	FPlayerComponent() = default;
-	virtual ~FPlayerComponent() = default;
+	UPlayerComponent() = default;
+	virtual ~UPlayerComponent() = default;
 
-	FPlayerComponent(const FPlayerComponent&) = delete;
-	FPlayerComponent& operator=(const FPlayerComponent&) = delete;
-	FPlayerComponent(FPlayerComponent&&) = delete;
-	FPlayerComponent& operator=(FPlayerComponent&&) = delete;
+	UPlayerComponent(const UPlayerComponent&) = delete;
+	UPlayerComponent& operator=(const UPlayerComponent&) = delete;
+	UPlayerComponent(UPlayerComponent&&) = delete;
+	UPlayerComponent& operator=(UPlayerComponent&&) = delete;
 
 	virtual void SetupPlayerInput();
 	

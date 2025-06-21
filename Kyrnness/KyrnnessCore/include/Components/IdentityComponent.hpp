@@ -5,16 +5,16 @@
 
 #include "Components/Component.hpp"
 
-class FIdentityComponent : public UComponent
+class UIdentityComponent : public UComponent
 {
 public:
-	FIdentityComponent(const std::string& objectName);
-	virtual ~FIdentityComponent() = default;
+	UIdentityComponent(const std::string& objectName);
+	virtual ~UIdentityComponent() = default;
 
-	FIdentityComponent(const FIdentityComponent&) = delete;
-	FIdentityComponent& operator=(const FIdentityComponent&) = delete;
-	FIdentityComponent(FIdentityComponent&&) = delete;
-	FIdentityComponent& operator=(FIdentityComponent&&) = delete;
+	UIdentityComponent(const UIdentityComponent&) = delete;
+	UIdentityComponent& operator=(const UIdentityComponent&) = delete;
+	UIdentityComponent(UIdentityComponent&&) = delete;
+	UIdentityComponent& operator=(UIdentityComponent&&) = delete;
 
 	std::string GetId() const { return Id; }
 	std::string GetObjectName() const { return Name; }

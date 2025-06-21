@@ -4,17 +4,17 @@
 
 #include "Components/CollisionComponent.hpp"
 
-class FBoxCollisionComponent : public FCollisionComponent
+class UBoxCollisionComponent : public UCollisionComponent
 {
-	using Super = FCollisionComponent;
+	using Super = UCollisionComponent;
 
 public:
-	FBoxCollisionComponent() = default;
+	UBoxCollisionComponent() = default;
 
-	FBoxCollisionComponent(const FBoxCollisionComponent&) = delete;
-	FBoxCollisionComponent& operator=(const FBoxCollisionComponent&) = delete;
-	FBoxCollisionComponent(FBoxCollisionComponent&&) = delete;
-	FBoxCollisionComponent& operator=(FBoxCollisionComponent&&) = delete;
+	UBoxCollisionComponent(const UBoxCollisionComponent&) = delete;
+	UBoxCollisionComponent& operator=(const UBoxCollisionComponent&) = delete;
+	UBoxCollisionComponent(UBoxCollisionComponent&&) = delete;
+	UBoxCollisionComponent& operator=(UBoxCollisionComponent&&) = delete;
 
 	virtual nlohmann::json GetJsonData() override;
 };

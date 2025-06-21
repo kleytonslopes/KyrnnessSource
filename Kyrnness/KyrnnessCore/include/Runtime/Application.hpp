@@ -115,7 +115,7 @@ public:
     entt::registry& GetEnttRegistry() { return m_EnttRegistry; }
     entt::registry& GetRegistry() { return m_EnttRegistry; }
 
-    GameConfig& GetGameConfig() { return m_GameConfig; }
+    FGameConfig& GetGameConfig() { return m_GameConfig; }
 
 protected:
     void LoadConfiguration();
@@ -143,7 +143,7 @@ private:
 
     entt::registry m_EnttRegistry;
 
-    GameConfig m_GameConfig{};
+    FGameConfig m_GameConfig{};
 
     void CalculeDeltaTime(FTime& currentTime);
 

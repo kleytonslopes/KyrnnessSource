@@ -8,16 +8,16 @@
 #include "Physics/Callback/IgnoreControllerFilterCallback.hpp"
 #include "Graphics/GraphicsApi.hpp"
 
-FCapsuleComponent::FCapsuleComponent()
+UCapsuleComponent::UCapsuleComponent()
 {
 
 }
 
-void FCapsuleComponent::OnInitialize()
+void UCapsuleComponent::OnInitialize()
 {
 	if (m_Application)
 	{
-		FTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+		UTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 
 		
 		m_CollisionFilter.data.word0 = CollisionGroup::Player; // Grupo da capsula
@@ -53,7 +53,7 @@ void FCapsuleComponent::OnInitialize()
 	Super::OnInitialize();
 }
 
-void FCapsuleComponent::OnUpdate(float DeltaTime)
+void UCapsuleComponent::OnUpdate(float DeltaTime)
 {
 	UpdateVerticalMovement(DeltaTime);
 
@@ -65,11 +65,11 @@ void FCapsuleComponent::OnUpdate(float DeltaTime)
 	Super::OnUpdate(DeltaTime);
 }
 
-nlohmann::json FCapsuleComponent::GetJsonData()
+nlohmann::json UCapsuleComponent::GetJsonData()
 {
 	nlohmann::json jsonData;
 
-	jsonData["Type"] = "FCapsuleComponent";
+	jsonData["Type"] = "UCapsuleComponent";
 	jsonData["Update"] = bCanUpdate;
 	jsonData["Radius"] = m_Radius;
 	jsonData["Height"] = m_Height;
@@ -78,7 +78,7 @@ nlohmann::json FCapsuleComponent::GetJsonData()
 	return jsonData;
 }
 
-void FCapsuleComponent::UpdateVerticalMovement(float deltaTime)
+void UCapsuleComponent::UpdateVerticalMovement(float deltaTime)
 {
 	physx::PxSweepHit hit;
 	//bool isGrounded = SweepGround(1.5f, hit);
@@ -113,7 +113,7 @@ void FCapsuleComponent::UpdateVerticalMovement(float deltaTime)
 	}
 }
 
-void FCapsuleComponent::Move(glm::vec3 direction, float scale)
+void UCapsuleComponent::Move(glm::vec3 direction, float scale)
 {
 	if (m_Application)
 	{
@@ -131,7 +131,7 @@ void FCapsuleComponent::Move(glm::vec3 direction, float scale)
 	}
 }
 
-void FCapsuleComponent::Jump()
+void UCapsuleComponent::Jump()
 {
 	if (!m_CapsuleController) return;
 
@@ -143,7 +143,7 @@ void FCapsuleComponent::Jump()
 	}
 }
 
-bool FCapsuleComponent::IsOnGround() const
+bool UCapsuleComponent::IsOnGround() const
 {
 	/*
 	*/
@@ -155,7 +155,7 @@ bool FCapsuleComponent::IsOnGround() const
 	//return (m_LastControllerState.collisionFlags & PxControllerCollisionFlag::eCOLLISION_DOWN) != 0;
 }
 
-bool FCapsuleComponent::CheckGround(float maxDistance, physx::PxRaycastHit& hitOut) const
+bool UCapsuleComponent::CheckGround(float maxDistance, physx::PxRaycastHit& hitOut) const
 {
 	physx::PxExtendedVec3 origin = m_CapsuleController->getFootPosition(); // base da c�psula
 	physx::PxVec3 direction = physx::PxVec3(0, -1, 0); // para baixo
@@ -182,7 +182,7 @@ bool FCapsuleComponent::CheckGround(float maxDistance, physx::PxRaycastHit& hitO
 	//scene->sweep(capsule, pose, PxVec3(0, -1, 0), 0.2f, hit, PxHitFlag::eDEFAULT);
 }
 
-bool FCapsuleComponent::SweepGround(float maxDistance, physx::PxSweepHit& outHit) const
+bool UCapsuleComponent::SweepGround(float maxDistance, physx::PxSweepHit& outHit) const
 {
 	if (!m_CapsuleController || !m_Application)
 		return false;

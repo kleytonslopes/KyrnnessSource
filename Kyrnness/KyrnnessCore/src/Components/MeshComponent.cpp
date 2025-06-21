@@ -4,41 +4,41 @@
 #include "Core/Vertex.hpp"
 
 
-FMeshComponent::FMeshComponent(const std::string& meshName, const std::string& meshFilePath)
+UMeshComponent::UMeshComponent(const std::string& meshName, const std::string& meshFilePath)
 	: m_MeshName(meshName), m_MeshFilePath(meshFilePath)
 {
 	FLogger::Log("MeshComponent created with name: " + meshName + " and file path: " + meshFilePath);
 }
 
-void FMeshComponent::OnInitialize()
+void UMeshComponent::OnInitialize()
 {
 	LoadMeshFile();
 
 	Super::OnInitialize();
 }
 
-void FMeshComponent::OnDestroy()
+void UMeshComponent::OnDestroy()
 {
 	FLogger::Warning("MeshComponent destroyed: " + m_MeshName);
 
 	Super::OnDestroy();
 }
 
-std::vector<Vertex> FMeshComponent::GetVertices() const
+std::vector<Vertex> UMeshComponent::GetVertices() const
 {
 	return m_MeshAsset.vertices;
 }
 
-std::vector<uint32> FMeshComponent::GetIndices() const
+std::vector<uint32> UMeshComponent::GetIndices() const
 {
 	return m_MeshAsset.indices;
 }
 
-nlohmann::json FMeshComponent::GetJsonData()
+nlohmann::json UMeshComponent::GetJsonData()
 {
 	nlohmann::json jsonData;
 
-	jsonData["Type"] = "FMeshComponent";
+	jsonData["Type"] = "UMeshComponent";
 	jsonData["Update"] = bCanUpdate;
 	jsonData["MeshName"] = m_MeshName;
 	jsonData["MeshPath"] = m_MeshFilePath;
@@ -46,7 +46,7 @@ nlohmann::json FMeshComponent::GetJsonData()
 	return jsonData;
 }
 
-void FMeshComponent::LoadMeshFile()
+void UMeshComponent::LoadMeshFile()
 {
 	//FMeshAsset meshAsset;
 

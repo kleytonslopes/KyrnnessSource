@@ -6,17 +6,17 @@
 #include "Components/Component.hpp"
 #include "Content/MeshAsset.hpp"
 
-class FMeshComponent : public UComponent
+class UMeshComponent : public UComponent
 {
 	using Super = UComponent;
 public:
-	FMeshComponent(const std::string& meshName, const std::string& meshFilePath);
-	virtual ~FMeshComponent() = default;
+	UMeshComponent(const std::string& meshName, const std::string& meshFilePath);
+	virtual ~UMeshComponent() = default;
 
-	FMeshComponent(const FMeshComponent&) = delete;
-	FMeshComponent& operator=(const FMeshComponent&) = delete;
-	FMeshComponent(FMeshComponent&&) = delete;
-	FMeshComponent& operator=(FMeshComponent&&) = delete;
+	UMeshComponent(const UMeshComponent&) = delete;
+	UMeshComponent& operator=(const UMeshComponent&) = delete;
+	UMeshComponent(UMeshComponent&&) = delete;
+	UMeshComponent& operator=(UMeshComponent&&) = delete;
 
 	std::vector<Vertex> GetVertices() const;
 	std::vector<uint32> GetIndices() const;

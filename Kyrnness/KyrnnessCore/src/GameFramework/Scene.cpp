@@ -59,9 +59,9 @@ void UScene::DrawScene(float deltaTime)
 	if (registry.valid(m_MainCameraEntity))
 	{
 
-		auto objectsScene = registry.view<FTransformComponent, FMeshRenderer_OpenGLComponent>();
+		auto objectsScene = registry.view<UTransformComponent, UMeshRenderer_OpenGLComponent>();
 
-		FCameraComponent& cameraScene = registry.get<FCameraComponent>(m_MainCameraEntity);
+		UCameraComponent& cameraScene = registry.get<UCameraComponent>(m_MainCameraEntity);
 
 		cameraScene.UpdateAspectRatio(m_Application->GetWidth(), m_Application->GetHeight());
 
@@ -239,11 +239,11 @@ void UScene::CreateMainCamera()
 
 	if (m_Application->GetEnttRegistry().valid(m_MainCameraEntity))
 	{
-		m_Application->GetEnttRegistry().emplace<FTransformComponent>(m_MainCameraEntity);
-		m_Application->GetEnttRegistry().emplace<FCameraComponent>(m_MainCameraEntity);
-		m_Application->GetEnttRegistry().emplace<FIdentityComponent>(m_MainCameraEntity, "MainCamera");
+		m_Application->GetEnttRegistry().emplace<UTransformComponent>(m_MainCameraEntity);
+		m_Application->GetEnttRegistry().emplace<UCameraComponent>(m_MainCameraEntity);
+		m_Application->GetEnttRegistry().emplace<UIdentityComponent>(m_MainCameraEntity, "MainCamera");
 
-		auto view = m_Application->GetEnttRegistry().view<FTransformComponent, FCameraComponent>();
+		auto view = m_Application->GetEnttRegistry().view<UTransformComponent, UCameraComponent>();
 
 		view.each([this](const auto entity, auto& transform, auto& camera)
 			{
@@ -264,9 +264,9 @@ void UScene::CreateShaders()
 
 	if (m_Application->GetEnttRegistry().valid(m_DefaultShaderEntity))
 	{
-		m_Application->GetEnttRegistry().emplace<FShaderOpenGLComponent>(m_DefaultShaderEntity, defaultShaderName, "Assets/Shaders/OpenGL/vert.glsl", "Assets/Shaders/OpenGL/frag.glsl");
+		m_Application->GetEnttRegistry().emplace<UShaderOpenGLComponent>(m_DefaultShaderEntity, defaultShaderName, "Assets/Shaders/OpenGL/vert.glsl", "Assets/Shaders/OpenGL/frag.glsl");
 
-		FShaderOpenGLComponent& shaderComponent = m_Application->GetEnttRegistry().get<FShaderOpenGLComponent>(m_DefaultShaderEntity);
+		UShaderOpenGLComponent& shaderComponent = m_Application->GetEnttRegistry().get<UShaderOpenGLComponent>(m_DefaultShaderEntity);
 		shaderComponent.Initialize();
 
 		m_DefaultShader = &shaderComponent;
@@ -277,9 +277,9 @@ void UScene::CreateShaders()
 
 	if (m_Application->GetEnttRegistry().valid(debugShader))
 	{
-		m_Application->GetEnttRegistry().emplace<FShaderOpenGLComponent>(debugShader, "debugShader", "Assets/Shaders/OpenGL/debug_vert.glsl", "Assets/Shaders/OpenGL/debug_frag.glsl");
+		m_Application->GetEnttRegistry().emplace<UShaderOpenGLComponent>(debugShader, "debugShader", "Assets/Shaders/OpenGL/debug_vert.glsl", "Assets/Shaders/OpenGL/debug_frag.glsl");
 
-		FShaderOpenGLComponent& shaderComponent = m_Application->GetEnttRegistry().get<FShaderOpenGLComponent>(debugShader);
+		UShaderOpenGLComponent& shaderComponent = m_Application->GetEnttRegistry().get<UShaderOpenGLComponent>(debugShader);
 		shaderComponent.Initialize();
 	}
 
@@ -288,9 +288,9 @@ void UScene::CreateShaders()
 
 	if (m_Application->GetEnttRegistry().valid(uiShader))
 	{
-		m_Application->GetEnttRegistry().emplace<FShaderOpenGLComponent>(uiShader, "uiShader", "uiShader.vert", "uiShader.frag");
+		m_Application->GetEnttRegistry().emplace<UShaderOpenGLComponent>(uiShader, "uiShader", "uiShader.vert", "uiShader.frag");
 
-		FShaderOpenGLComponent& shaderComponent = m_Application->GetEnttRegistry().get<FShaderOpenGLComponent>(uiShader);
+		UShaderOpenGLComponent& shaderComponent = m_Application->GetEnttRegistry().get<UShaderOpenGLComponent>(uiShader);
 		shaderComponent.Initialize();
 	}
 }
@@ -300,14 +300,14 @@ void UScene::SpawnEntity(const TSceneObject& sceneObject)
 	auto& registry = m_Application->GetEnttRegistry();
 	entt::entity entity = registry.create();
 
-	auto& transform = registry.emplace<FTransformComponent>(entity);
+	auto& transform = registry.emplace<UTransformComponent>(entity);
 	transform.Location = sceneObject.m_Position;
 	transform.Rotation = sceneObject.m_Rotation;
 	transform.Scale = sceneObject.m_Scale;
 	transform.ForwardVector = sceneObject.m_ForwardVector;
 	transform.UpVector = sceneObject.m_UpVector;
 
-	auto& identity = registry.emplace<FIdentityComponent>(entity, sceneObject.m_ObjectName);
+	auto& identity = registry.emplace<UIdentityComponent>(entity, sceneObject.m_ObjectName);
 	identity.SetId(sceneObject.m_Id);
 	identity.SetName(sceneObject.m_ObjectName);
 
@@ -343,7 +343,7 @@ void UScene::SpawnEntityFromJson(const nlohmann::json& jsonObject)
 			}
 		}
 
-		FTransformComponent& transform = registry.get<FTransformComponent>(entity);
+		UTransformComponent& transform = registry.get<UTransformComponent>(entity);
 		sceneObject->m_Position = transform.Location;
 		sceneObject->m_Rotation = transform.Rotation;
 		sceneObject->m_ForwardVector = transform.ForwardVector;
@@ -354,7 +354,7 @@ void UScene::SpawnEntityFromJson(const nlohmann::json& jsonObject)
 
 		if (objectName == "MainCamera")
 		{
-			m_MainCamera = &registry.get<FCameraComponent>(m_MainCameraEntity);
+			m_MainCamera = &registry.get<UCameraComponent>(m_MainCameraEntity);
 		}
 
 		m_SceneData.m_Objects.emplace_back(sceneObject);
@@ -367,7 +367,7 @@ void TSceneObject::SetPosition(const glm::vec3& position)
 	m_Position = position;
 	if (m_Entity != entt::null)
 	{
-		auto& transform = UApplication::Get().GetEnttRegistry().get<FTransformComponent>(m_Entity);
+		auto& transform = UApplication::Get().GetEnttRegistry().get<UTransformComponent>(m_Entity);
 		transform.Location = position;
 	}
 }
@@ -377,7 +377,7 @@ void TSceneObject::SetRotation(const glm::vec3& rotation)
 	m_Rotation = rotation;
 	if (m_Entity != entt::null)
 	{
-		auto& transform = UApplication::Get().GetEnttRegistry().get<FTransformComponent>(m_Entity);
+		auto& transform = UApplication::Get().GetEnttRegistry().get<UTransformComponent>(m_Entity);
 		transform.Rotation = rotation;
 	}
 }

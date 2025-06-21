@@ -12,7 +12,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 
-	GameConfig& cfg = UApplication::Get().GetGameConfig();
+	FGameConfig& cfg = UApplication::Get().GetGameConfig();
 	cfg.m_Width = width;
 	cfg.m_Height = height;
 

@@ -64,7 +64,7 @@ void UGraphicsApi_OpenGL::DrawFrame(float deltaTime)
 #ifdef DEBUG
 void UGraphicsApi_OpenGL::DebugDrawLine(const glm::vec3& from, const glm::vec3& to, const glm::vec4& color)
 {
-	if (FShaderOpenGLComponent* debugShader = UShaders::GetShader(SHADER_DEBUG))
+	if (UShaderOpenGLComponent* debugShader = UShaders::GetShader(SHADER_DEBUG))
 	{
 		unsigned int VBO, VAO, CVBO;
 		GLfloat points[6];
@@ -84,7 +84,7 @@ void UGraphicsApi_OpenGL::DebugDrawLine(const glm::vec3& from, const glm::vec3& 
 		sColor[4] = color.y;
 		sColor[5] = color.z;
 
-		auto entities = m_EnttRegistry.view<FTransformComponent, FCameraComponent>();
+		auto entities = m_EnttRegistry.view<UTransformComponent, UCameraComponent>();
 
 		glm::vec3 location = World::ZeroVector;
 		glm::vec3 forwardVector = World::ForwardVector;//{ 0.f, 0.f, -1.f };
@@ -150,7 +150,7 @@ void UGraphicsApi_OpenGL::DebugDrawLine(const glm::vec3& from, const glm::vec3& 
 
 void UGraphicsApi_OpenGL::DebugDrawLine2D(const glm::vec3& from, const glm::vec3& to, const glm::vec4& color)
 {
-	if (FShaderOpenGLComponent* debugShader = UShaders::GetShader(SHADER_UI_DEBUG))
+	if (UShaderOpenGLComponent* debugShader = UShaders::GetShader(SHADER_UI_DEBUG))
 	{
 		unsigned int VBO, VAO, CVBO;
 		GLfloat points[6];

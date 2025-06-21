@@ -66,11 +66,11 @@ void UUIManager::OnMouseLeave(float mx, float my)
 
 void UUIManager::OnUpdateMouseFocus(float mx, float my)
 {
-	// Garantindo que estamos usando o espaço da janela
+	// Garantindo que estamos usando o espaï¿½o da janela
 	int windowWidth = UApplication::Get().GetWidth();
 	int windowHeight = UApplication::Get().GetHeight();
 
-	// Opcional, só se você quiser garantir clamping
+	// Opcional, sï¿½ se vocï¿½ quiser garantir clamping
 	mx = glm::clamp(mx, 0.0f, (float)windowWidth);
 	my = glm::clamp(my, 0.0f, (float)windowHeight);
 
@@ -128,7 +128,7 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 			element->Initialize();
 		}
 
-		// Específico para botão
+		// Especï¿½fico para botï¿½o
 		if (UUIButton* button = dynamic_cast<UUIButton*>(element))
 		{
 			//button->SetText(node.value("Text", ""));
@@ -143,7 +143,7 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 			std::string onClickFunc = node.value("OnClick", "");
 			if (!onClickFunc.empty())
 			{
-				//button->OnClickLuaFunction = onClickFunc;  // Você vai chamar via Lua mais tarde
+				//button->OnClickLuaFunction = onClickFunc;  // Vocï¿½ vai chamar via Lua mais tarde
 			}
 		}
 
@@ -214,7 +214,7 @@ void DrawQuad(float x, float y, float w, float h, GLuint texture, const glm::vec
 	glm::vec4 color2 = color;
 
 
-	if (FShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI))
+	if (UShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI))
 	{
 		shader->Bind();
 		shader->SetMatrix4("projection", glm::ortho(0.0f, UApplication::Get().GetWidth<float>(), UApplication::Get().GetHeight<float>(), 0.0f));

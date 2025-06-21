@@ -4,17 +4,17 @@
 
 #include "Components/Component.hpp"
 
-class FShaderOpenGLComponent : public UComponent
+class UShaderOpenGLComponent : public UComponent
 {
 	using Super = UComponent;
 public:
-	FShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile);
-	virtual ~FShaderOpenGLComponent() = default;
+	UShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile);
+	virtual ~UShaderOpenGLComponent() = default;
 
-	FShaderOpenGLComponent(const FShaderOpenGLComponent&) = delete;
-	FShaderOpenGLComponent& operator=(const FShaderOpenGLComponent&) = delete;
-	FShaderOpenGLComponent(FShaderOpenGLComponent&&) = delete;
-	FShaderOpenGLComponent& operator=(FShaderOpenGLComponent&&) = delete;
+	UShaderOpenGLComponent(const UShaderOpenGLComponent&) = delete;
+	UShaderOpenGLComponent& operator=(const UShaderOpenGLComponent&) = delete;
+	UShaderOpenGLComponent(UShaderOpenGLComponent&&) = delete;
+	UShaderOpenGLComponent& operator=(UShaderOpenGLComponent&&) = delete;
 
 	
 	virtual void Bind();

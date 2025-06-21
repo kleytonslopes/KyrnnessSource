@@ -4,26 +4,11 @@
 #include "Components/ShaderOpenGLComponent.hpp"
 #include "Runtime/Application.hpp"
 
-//extern void DrawQuad(float x, float y, float w, float h, GLuint tex, const glm::vec4 color);
-
-//float vertices[] = {
-//	// Posi��es (x, y)   // UVs (u, v)
-// -0.5f, -0.5f,        0.0f, 0.0f,
-//  0.5f, -0.5f,        1.0f, 0.0f,
-// -0.5f,  0.5f,        0.0f, 1.0f,
-//  0.5f,  0.5f,        1.0f, 1.0f
-//};
-
 void UUIButton::Initialize()
 {
 	UUIElement::Initialize();
 
 	SetTextureId(m_TextureIdle);
-}
-
-void UUIButton::Draw()
-{
-	UUIElement::Draw();
 }
 
 void UUIButton::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp)

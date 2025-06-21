@@ -4,10 +4,10 @@
 #include "Components/MeshComponent.hpp"
 #include "Runtime/Application.hpp"
 
-void FCollisionComponent::OnInitialize()
+void UCollisionComponent::OnInitialize()
 {
-	FTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
-	FMeshComponent& meshComponent = m_Application->GetEnttRegistry().get<FMeshComponent>(m_EntityOwner);
+	UTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
+	UMeshComponent& meshComponent = m_Application->GetEnttRegistry().get<UMeshComponent>(m_EntityOwner);
 
 	std::vector<glm::vec3> positions;
 	positions.reserve(meshComponent.GetVertices().size());
@@ -22,11 +22,11 @@ void FCollisionComponent::OnInitialize()
 	Super::OnInitialize();
 }
 
-nlohmann::json FCollisionComponent::GetJsonData()
+nlohmann::json UCollisionComponent::GetJsonData()
 {
 	nlohmann::json jsonData;
 
-	jsonData["Type"] = "FCollisionComponent";
+	jsonData["Type"] = "UCollisionComponent";
 	jsonData["Update"] = bCanUpdate;
 	jsonData["Mass"] = m_Mass;
 	jsonData["BoundBox"] = { m_BoundBox.x, m_BoundBox.y, m_BoundBox.z };
@@ -35,10 +35,10 @@ nlohmann::json FCollisionComponent::GetJsonData()
 	return jsonData;
 }
 
-void FCollisionComponent::SetMass(float mass)
+void UCollisionComponent::SetMass(float mass)
 {
 }
 
-void FCollisionComponent::SetBoundBox(const glm::vec3& boundBox)
+void UCollisionComponent::SetBoundBox(const glm::vec3& boundBox)
 {
 }

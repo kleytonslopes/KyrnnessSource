@@ -11,7 +11,7 @@ void UController::Initialize()
 {
 	if (m_Application)
 	{
-		auto view = m_Application->GetEnttRegistry().view<FCapsuleComponent>();
+		auto view = m_Application->GetEnttRegistry().view<UCapsuleComponent>();
 
 		view.each([this](const auto entity, auto& capsule)
 			{

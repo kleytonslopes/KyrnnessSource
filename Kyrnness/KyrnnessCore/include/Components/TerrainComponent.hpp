@@ -6,17 +6,17 @@
 #include "GameFramework/Terrain.hpp"
 #include "Content/MeshAsset.hpp"
 
-class FTerrainComponent : public UComponent
+class UTerrainComponent : public UComponent
 {
 	using Super = UComponent;
 public:
-	FTerrainComponent() = default;
-	virtual ~FTerrainComponent() = default;
+	UTerrainComponent() = default;
+	virtual ~UTerrainComponent() = default;
 
-	FTerrainComponent(const FTerrainComponent&) = delete;
-	FTerrainComponent& operator=(const FTerrainComponent&) = delete;
-	FTerrainComponent(FTerrainComponent&&) = delete;
-	FTerrainComponent& operator=(FTerrainComponent&&) = delete;
+	UTerrainComponent(const UTerrainComponent&) = delete;
+	UTerrainComponent& operator=(const UTerrainComponent&) = delete;
+	UTerrainComponent(UTerrainComponent&&) = delete;
+	UTerrainComponent& operator=(UTerrainComponent&&) = delete;
 
 	std::vector<Vertex> GetVertices() const;
 	std::vector<uint32> GetIndices() const;

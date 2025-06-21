@@ -3,12 +3,12 @@
 #include "Components/TransformComponent.hpp"
 #include "Runtime/Application.hpp"
 
-void FCameraComponent::UpdateAspectRatio(float width, float height)
+void UCameraComponent::UpdateAspectRatio(float width, float height)
 {
 	AspectRatio = width / height;
 }
 
-void FCameraComponent::UpdateDirectionFromYawPitch(float yaw, float pitch)
+void UCameraComponent::UpdateDirectionFromYawPitch(float yaw, float pitch)
 {
 	if (m_Application)
 	{
@@ -18,7 +18,7 @@ void FCameraComponent::UpdateDirectionFromYawPitch(float yaw, float pitch)
 		if (Pitch > 89.0f) Pitch = 89.0f;
 		if (Pitch < -89.0f) Pitch = -89.0f;
 
-		FTransformComponent& transform = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+		UTransformComponent& transform = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 
 		glm::vec3 direction;
 		direction.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
@@ -32,11 +32,11 @@ void FCameraComponent::UpdateDirectionFromYawPitch(float yaw, float pitch)
 	}
 }
 
-nlohmann::json FCameraComponent::GetJsonData()
+nlohmann::json UCameraComponent::GetJsonData()
 {
 	nlohmann::json jsonData;
 
-	jsonData["Type"] = "FCameraComponent";
+	jsonData["Type"] = "UCameraComponent";
 	jsonData["Update"] = bCanUpdate;
 	jsonData["Fov"] = Fov;
 	jsonData["Near"] = Near;
@@ -46,21 +46,21 @@ nlohmann::json FCameraComponent::GetJsonData()
 	return jsonData;
 }
 
-float FCameraComponent::GetAspectRatio() const
+float UCameraComponent::GetAspectRatio() const
 {
 	return AspectRatio;
 }
 
-FMatrix FCameraComponent::GetProjectionMatrix() const
+FMatrix UCameraComponent::GetProjectionMatrix() const
 {
 	return FMatrix::Perspective(FMath::Radians(Fov), AspectRatio, Near, Far);
 }
 
-FMatrix FCameraComponent::GetViewMatrix() const
+FMatrix UCameraComponent::GetViewMatrix() const
 {
 	if (m_Application)
 	{
-		FTransformComponent& transform = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+		UTransformComponent& transform = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 
 		FVector location = transform.Location + LocationOffset;
 
