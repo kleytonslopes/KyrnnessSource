@@ -2,9 +2,8 @@
 #ifndef KYRNNESS_EVENT_FUNCTION_HPP
 #define KYRNNESS_EVENT_FUNCTION_HPP
 
-#include <vector>
-#include <functional>
-#include <unordered_map>
+#include "Core/TypesDefinition.hpp"
+
 #include <cstddef>
 
 class FDelegateHandle
@@ -20,16 +19,15 @@ public:
 	bool operator!=(const FDelegateHandle& other) const { return m_ID != other.m_ID; }
 
 private:
-	size_t m_ID = 0; // ID == 0 significa "inválido"
+	size_t m_ID = 0; // ID == 0 significa "invï¿½lido"
 };
 
 template<typename... Args>
 class FFunctionEvent
 {
 public:
-    using HandlerType = std::function<void(Args...)>;
+    using HandlerType = TFunction<void(Args...)>;
 
-    // Adiciona função lambda, std::function, etc
     FDelegateHandle AddListener(const HandlerType& listener)
     {
         FDelegateHandle handle(++m_LastID);
@@ -37,7 +35,6 @@ public:
         return handle;
     }
 
-    // Adiciona membro de classe: obj e método
     template<typename ClassType>
     FDelegateHandle AddListener(ClassType* instance, void (ClassType::* method)(Args...))
     {
@@ -69,7 +66,7 @@ public:
 
 private:
     size_t m_LastID = 0;
-    std::unordered_map<size_t, HandlerType> m_Listeners;
+    TMap<size_t, HandlerType> m_Listeners;
 };
 
 #endif// KYRNNESS_EVENT_FUNCTION_HPP

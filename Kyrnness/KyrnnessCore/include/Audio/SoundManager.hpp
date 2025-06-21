@@ -57,7 +57,7 @@ public:
 private:
     FMOD::System* m_System = nullptr;
     std::vector<FMOD::Channel*> m_ActiveChannels;
-    std::unordered_map<std::string, SoundData> m_SoundData;
+    TMap<std::string, SoundData> m_SoundData;
 
     FMOD::ChannelGroup* m_MasterGroup = nullptr;
     FMOD::ChannelGroup* m_UIGroup = nullptr;

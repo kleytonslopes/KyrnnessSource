@@ -1,7 +1,7 @@
 #include "pch.hpp"
 #include "Components/InputComponent.hpp"
 
-void UInputComponent::RegisterInputAction(const std::string& actionName, const std::function<void()>& callback)
+void UInputComponent::RegisterInputAction(const std::string& actionName, const TFunction<void()>& callback)
 {
 	if (m_InputActions.find(actionName) == m_InputActions.end())
 	{

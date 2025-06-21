@@ -3,7 +3,7 @@
 #include "Components/ShaderOpenGLComponent.hpp"
 #include "MemoryManager.hpp"
 
-std::unordered_map<std::string, FShaderAsset> UShaders::m_Shaders;
+TMap<std::string, FShaderAsset> UShaders::m_Shaders;
 
 void UShaders::Initialize()
 {

@@ -8,7 +8,7 @@
 #include "Input/InputManager.hpp"
 
 
-using InputAction = std::function<void(int)>;
+using InputAction = TFunction<void(int)>;
 
 void UPlayerComponent::OnInitialize()
 {

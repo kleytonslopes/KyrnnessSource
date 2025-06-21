@@ -11,9 +11,9 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
-static std::unordered_map<std::string, FMeshAsset> m_MeshCache;
-std::unordered_map<std::string, FAssetEntry> UAssetManager::s_AssetMap;
-std::unordered_map<std::string, FAssetTexture> UAssetManager::m_TextureLoaded;
+static TMap<std::string, FMeshAsset> m_MeshCache;
+TMap<std::string, FAssetEntry> UAssetManager::s_AssetMap;
+TMap<std::string, FAssetTexture> UAssetManager::m_TextureLoaded;
 std::ifstream UAssetManager::s_AssetFile;
 /*
 void UAssetManager::LoadMeshAsset(const std::string& meshFilePath, FMeshAsset& meshAsset)
@@ -41,7 +41,7 @@ void UAssetManager::LoadMeshAsset(const std::string& meshFilePath, FMeshAsset& m
 
 	for (const auto& mesh : model.meshes)
 	{
-		hasUBOX = mesh.name.rfind("UBOX_", 0) == 0; // começa com "UBOX_"
+		hasUBOX = mesh.name.rfind("UBOX_", 0) == 0; // comeï¿½a com "UBOX_"
 
 		for (const auto& primitive : mesh.primitives) {
 			if (primitive.mode != TINYGLTF_MODE_TRIANGLES) {
@@ -160,7 +160,7 @@ void UAssetManager::LoadMeshAsset(const std::string& meshFilePath, FMeshAsset& m
 		return;
 	}
 
-	// Carregar binário do .glb da memória
+	// Carregar binï¿½rio do .glb da memï¿½ria
 	std::vector<uint8_t> meshData;
 	try
 	{
@@ -185,7 +185,7 @@ void UAssetManager::LoadMeshAsset(const std::string& meshFilePath, FMeshAsset& m
 		return;
 	}
 
-	// O resto do código (parse dos vertices, indices e texturas) permanece igual:
+	// O resto do cï¿½digo (parse dos vertices, indices e texturas) permanece igual:
 	bool hasUBOX = false;
 
 	for (const auto& mesh : model.meshes)
@@ -354,7 +354,7 @@ GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath, bool isUI)
 		return it->second.m_TextureId;
 	}
 
-	// Carregar o arquivo de textura da memória
+	// Carregar o arquivo de textura da memï¿½ria
 	std::vector<uint8_t> textureData;
 	try
 	{
@@ -407,7 +407,7 @@ GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath, bool isUI)
 
 void UAssetManager::InitializeGData(const std::string& gdataFilePath)
 {
-	// Ler tudo pra memória
+	// Ler tudo pra memï¿½ria
 	std::ifstream file(gdataFilePath, std::ios::binary | std::ios::ate);
 	if (!file)
 	{
@@ -431,7 +431,7 @@ void UAssetManager::InitializeGData(const std::string& gdataFilePath)
 	GDataHeader* header = reinterpret_cast<GDataHeader*>(s_GDataFile.data());
 	if (std::string(header->Magic, 4) != "KGPK")
 	{
-		throw std::runtime_error("GData: Header inválido");
+		throw std::runtime_error("GData: Header invï¿½lido");
 	}
 
 	size_t offset = sizeof(GDataHeader);
@@ -471,7 +471,7 @@ void UAssetManager::InitializeGData(const std::string& gdataFilePath)
 	s_AssetFile.open(gdataFilePath, std::ios::binary);
 	if (!s_AssetFile)
 	{
-		throw std::runtime_error("Falha ao reabrir o .gdata para leitura de conteúdo.");
+		throw std::runtime_error("Falha ao reabrir o .gdata para leitura de conteï¿½do.");
 	}
 }
 
@@ -488,7 +488,7 @@ void UAssetManager::LoadAssetMap(const std::string& path)
 	inFile.read(magic, 4);
 	if (std::string(magic, 4) != "KGPK")
 	{
-		ThrowRuntimeError("Arquivo .gdata inválido: " + path);
+		ThrowRuntimeError("Arquivo .gdata invï¿½lido: " + path);
 		return;
 	}
 
@@ -523,7 +523,7 @@ void UAssetManager::LoadAssetMap(const std::string& path)
 	s_AssetFile.open(path, std::ios::binary);
 	if (!s_AssetFile)
 	{
-		ThrowRuntimeError("Falha ao reabrir o .gdata para leitura de conteúdo.");
+		ThrowRuntimeError("Falha ao reabrir o .gdata para leitura de conteï¿½do.");
 	}
 }
 
@@ -532,7 +532,7 @@ std::vector<uint8_t> UAssetManager::LoadAssetRaw_NoEncryption(const std::string&
 	auto it = s_AssetMap.find(assetPath);
 	if (it == s_AssetMap.end())
 	{
-		ThrowRuntimeError("Asset não encontrado: " + assetPath);
+		ThrowRuntimeError("Asset nï¿½o encontrado: " + assetPath);
 	}
 
 	const FAssetEntry& entry = it->second;
@@ -558,7 +558,7 @@ std::vector<uint8_t> UAssetManager::LoadAssetRaw_NoEncryption(const std::string&
 
 	if (calcCrc != entry.CRC32)
 	{
-		ThrowRuntimeError("CRC inválido para asset: " + assetPath);
+		ThrowRuntimeError("CRC invï¿½lido para asset: " + assetPath);
 	}
 
 	return uncompressedData;
@@ -569,7 +569,7 @@ std::vector<uint8_t> UAssetManager::LoadAssetRaw_With_XOR(const std::string& ass
 	auto it = s_AssetMap.find(assetPath);
 	if (it == s_AssetMap.end())
 	{
-		ThrowRuntimeError("Asset não encontrado: " + assetPath);
+		ThrowRuntimeError("Asset nï¿½o encontrado: " + assetPath);
 	}
 
 	const FAssetEntry& entry = it->second;

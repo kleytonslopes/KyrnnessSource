@@ -102,8 +102,8 @@ public:
 	UUIElement* Parent = nullptr;
 	std::vector<UUIElement*> Children;
 
-	std::function<void()> OnClick;
-	std::function<void(bool)> OnHovered;
+	TFunction<void()> OnClick;
+	TFunction<void(bool)> OnHovered;
     //float scale;
 
 	float x = 0.0f;

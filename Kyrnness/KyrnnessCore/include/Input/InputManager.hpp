@@ -45,7 +45,7 @@ private:
 	bool m_MouseDown = false;
 	bool m_MouseUp = false;
 
-	std::unordered_map<uint32, TInputKey> m_Inputs;
+	TMap<uint32, TInputKey> m_Inputs;
 
 	bool b_ShowMouseCursor = true;
 

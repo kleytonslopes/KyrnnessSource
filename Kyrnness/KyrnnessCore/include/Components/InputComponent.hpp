@@ -15,12 +15,12 @@ public:
 	UInputComponent(UInputComponent&&) = delete;
 	UInputComponent& operator=(UInputComponent&&) = delete;
 
-	void RegisterInputAction(const std::string& actionName, const std::function<void()>& callback);
+	void RegisterInputAction(const std::string& actionName, const TFunction<void()>& callback);
 
 	virtual nlohmann::json GetJsonData() override;
 
 private:
-	std::unordered_map<std::string, std::function<void()>> m_InputActions;
+	TMap<std::string, TFunction<void()>> m_InputActions;
 };
 
 #endif// KYRNNESS_INPUT_COMPONENT_HPP

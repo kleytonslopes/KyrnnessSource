@@ -70,7 +70,7 @@ private:
 
 	std::unique_ptr<UPhysicsDebug> m_PhysicsDebug;
 
-	std::unordered_map<physx::PxController*, physx::PxController*> m_CharacterControllers;
+	TMap<physx::PxController*, physx::PxController*> m_CharacterControllers;
 
 	physx::PxDefaultAllocator m_DefaultAllocatorCallback;
 	physx::PxDefaultErrorCallback m_DefaultErrorCallback;

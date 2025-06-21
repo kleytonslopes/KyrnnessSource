@@ -5,8 +5,8 @@
 #include "GameFramework/Scene.hpp"
 
 
-using ComponentBuilder = std::function<void(entt::registry&, entt::entity, const nlohmann::json&, TSceneObject*)>;
-std::unordered_map<std::string, UComponentBuilder::ComponentBuilder> UComponentBuilder::g_ComponentBuilders;
+using ComponentBuilder = TFunction<void(entt::registry&, entt::entity, const nlohmann::json&, TSceneObject*)>;
+TMap<std::string, UComponentBuilder::ComponentBuilder> UComponentBuilder::g_ComponentBuilders;
 TComponentBuilder UComponentBuilder::g_ComponentBuilderParameters;
 
 bool UComponentBuilder::Contains(const std::string& type)

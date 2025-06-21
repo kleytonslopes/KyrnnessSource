@@ -34,7 +34,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	UApplication::Get().SetHUDClass<UGameHUD>();
 
-	TFrequencyThread SteamUpdateFrequency(10.0, []() {
+	FFrequencyThread SteamUpdateFrequency(10.0, []() {
 		USteamModule::Get().Update(0.f);
 		});
 

@@ -8,6 +8,7 @@
 #include <mutex>
 #include <typeindex>
 #include "Core/Logger.hpp"
+#include "Core/Core.hpp"
 
 class FMemoryManager
 {
@@ -18,7 +19,7 @@ public:
 		return instance;
 	}
 
-	// Alocação global
+	// Alocaï¿½ï¿½o global
 	template<typename T, typename... Args>
 	static T* Allocate(Args&&... args)
 	{
@@ -49,9 +50,9 @@ public:
 	}
 
 private:
-	using Deleter = std::function<void(void*)>;
+	using Deleter = TFunction<void(void*)>;
 
-	std::unordered_map<void*, Deleter> m_Allocations;
+	TMap<void*, Deleter> m_Allocations;
 	std::unordered_multimap<std::type_index, void*> m_TypeMap;
 	std::mutex mtx;;
 

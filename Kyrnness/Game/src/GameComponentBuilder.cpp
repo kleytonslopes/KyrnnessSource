@@ -2,7 +2,7 @@
 #include "Components/MyPlayerComponent.hpp"
 #include "GameFramework/Scene.hpp"
 
-using ComponentBuilder = std::function<void(entt::registry&, entt::entity, const nlohmann::json&, TSceneObject*)>;
+using ComponentBuilder = TFunction<void(entt::registry&, entt::entity, const nlohmann::json&, TSceneObject*)>;
 
 void FGameComponentBuilder::RegisterGameComponents()
 {

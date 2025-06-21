@@ -32,7 +32,7 @@ public:
 	static bool Unbind(const std::string& shaderName);
 
 private:
-	static std::unordered_map<std::string, FShaderAsset> m_Shaders;
+	static TMap<std::string, FShaderAsset> m_Shaders;
 
 	static void CompileShaders();
 };

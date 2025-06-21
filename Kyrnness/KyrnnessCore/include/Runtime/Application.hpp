@@ -76,7 +76,7 @@ public:
         return m_HUD.get();
     }
 
-    void SetupHUDFactory(std::function<std::unique_ptr<UHUD>(UApplication*)> Factory);
+    void SetupHUDFactory(TFunction<std::unique_ptr<UHUD>(UApplication*)> Factory);
    
     template<typename THUD>
     void SetHUDClass()
@@ -137,7 +137,7 @@ private:
     std::unique_ptr<UHUD> m_HUD;
     std::unique_ptr<USoundManager> m_SoundManager;
 
-    std::function<std::unique_ptr<UHUD>(UApplication*)> m_HUDFactory;
+    TFunction<std::unique_ptr<UHUD>(UApplication*)> m_HUDFactory;
 
 	float m_DeltaTime = 0.0f;
 

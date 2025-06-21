@@ -29,7 +29,7 @@ public:
 
 	bool bIsSelectable = true;
 
-	std::unordered_map<std::string, UComponent*> m_Components;
+	TMap<std::string, UComponent*> m_Components;
 
 	void SetPosition(const glm::vec3& position);
 	void SetRotation(const glm::vec3& rotation);
@@ -47,7 +47,7 @@ struct TScene
 class UScene
 {
 	const std::string defaultShaderName = "DefaultShader";
-	using InputAction = std::function<void(float)>;
+	using InputAction = TFunction<void(float)>;
 
 public:
 	UScene(UApplication* application);
@@ -76,7 +76,7 @@ private:
 	UApplication* m_Application = nullptr;
 	TScene m_SceneData;
 
-	std::unordered_map<int32, InputAction> m_InputActions;
+	TMap<int32, InputAction> m_InputActions;
 
 	entt::entity m_MainCameraEntity = entt::null;
 	entt::entity m_DefaultShaderEntity = entt::null;

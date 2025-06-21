@@ -7,7 +7,7 @@
 class UPlayerComponent : public UComponent
 {
 	using Super = UComponent;
-	using InputAction = std::function<void(int)>;
+	using InputAction = TFunction<void(int)>;
 public:
 	UPlayerComponent() = default;
 	virtual ~UPlayerComponent() = default;
@@ -30,7 +30,7 @@ public:
 	virtual nlohmann::json GetJsonData() override;
 
 protected:
-	std::unordered_map<int32, InputAction> m_InputActions;
+	TMap<int32, InputAction> m_InputActions;
 	float m_MoveSpeed = 3.0f; 
 	float m_MouseSensitivity = 40.f;
 

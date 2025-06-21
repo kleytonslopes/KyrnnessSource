@@ -62,13 +62,13 @@ public:
 	
 
 private:
-	//inline static std::unordered_map<std::string, FAssetEntry> s_AssetMap;
+	//inline static TMap<std::string, FAssetEntry> s_AssetMap;
 	inline static std::vector<uint8_t> s_GDataFile;
 	//static std::ifstream s_AssetFile;
 
-	static std::unordered_map<std::string, FAssetEntry> s_AssetMap;
+	static TMap<std::string, FAssetEntry> s_AssetMap;
 	static std::ifstream s_AssetFile;
-	static std::unordered_map<std::string, FAssetTexture> m_TextureLoaded;
+	static TMap<std::string, FAssetTexture> m_TextureLoaded;
 
 	static std::vector<uint8_t> LoadAssetRaw_NoEncryption(const std::string& assetPath);
 	static std::vector<uint8_t> LoadAssetRaw_With_XOR(const std::string& assetPath);
