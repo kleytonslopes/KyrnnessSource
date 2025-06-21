@@ -67,8 +67,6 @@ void UApplication::PreInitialize()
 	//Create Sound Manager
 	m_SoundManager = std::make_unique<USoundManager>();
 
-
-
 	//Create Graphics API
 	switch (m_GameConfig.m_Renderer)
 	{
@@ -99,13 +97,9 @@ void UApplication::PreInitialize()
 
 	//Create HUD
 	if (m_HUDFactory)
-	{
 		m_HUD = m_HUDFactory(this);
-	}
 	else
-	{
 		ThrowRuntimeError("HUD factory not set!");
-	}
 }
 
 void UApplication::OnInitialize()
@@ -123,10 +117,9 @@ void UApplication::OnInitialize()
 
 void UApplication::OnPostInitialize()
 {
-	//UApplication::Get().GetSoundManager()->PlaySound("music");
-	//GameLoop();
+	///UApplication::Get().GetSoundManager()->PlaySound("music", ESoundCategory::Music);
 
-	UClass::OnPostInitialize();
+	Super::OnPostInitialize();
 }
 
 void UApplication::OnUpdate(float DeltaTime)

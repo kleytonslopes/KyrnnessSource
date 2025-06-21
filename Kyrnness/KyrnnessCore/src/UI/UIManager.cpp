@@ -133,6 +133,13 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 		{
 			//button->SetText(node.value("Text", ""));
 
+			GLuint texIdle = UAssetManager::LoadTextureOpenGL(node["TextureIdle"].get<std::string>(), true);
+			GLuint texHovered = UAssetManager::LoadTextureOpenGL(node["TextureHovered"].get<std::string>(), true);
+
+			button->SetTextureIdle(texIdle);
+			button->SetTextureHovered(texHovered);
+			button->Initialize();
+
 			std::string onClickFunc = node.value("OnClick", "");
 			if (!onClickFunc.empty())
 			{

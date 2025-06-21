@@ -219,6 +219,32 @@ void UUIElement::UpdateLayout()
 	}
 }
 
+void UUIElement::OnUpdateMouseFocus(double mouseX, double mouseY)
+{
+	bool insideX = mouseX >= x && mouseX <= (x + width);
+	bool insideY = mouseY >= y && mouseY <= (y + height);
+	bool isInside = insideX && insideY;
+
+
+
+	if (isInside && !bHovered)
+	{
+		bHovered = true;
+		m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
+		FLogger::Log("Mouse Entered UIButton: x= %f , y= %f", mouseX, mouseY);
+
+		if (OnHovered) OnHovered(true);
+	}
+	else if (!isInside && bHovered)
+	{
+		bHovered = false;
+		m_MouseFocusState = EMouseFocusState::MFS_None;
+		FLogger::Log("Mouse Leave UIButton: x= %f , y= %f", mouseX, mouseY);
+
+		if (OnHovered) OnHovered(false);
+	}
+}
+
 void UUIElement::PropagateInput(float mx, float my, bool isMouseDown, bool isMouseUp)
 {
 	HandleInput(mx, my, isMouseDown, isMouseUp);

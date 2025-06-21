@@ -20,7 +20,8 @@
           "LocalX": -615,
           "LocalY": -260,
           "Text": "New Game",
-          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "OnClick": "OnNewGameButtonClicked"
         },
         {
@@ -31,7 +32,8 @@
           "LocalX": -615,
           "LocalY": -200,
           "Text": "Host Game",
-          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "OnClick": "OnHostGameButtonClicked"
         },
         {
@@ -42,7 +44,8 @@
           "LocalX": -615,
           "LocalY": -140,
           "Text": "Join Game",
-          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "OnClick": "OnJoinGameButtonClicked"
         },
         {
@@ -53,7 +56,8 @@
           "LocalX": -615,
           "LocalY": -80,
           "Text": "Settings",
-          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "OnClick": "OnSettingsButtonClicked"
         },
         {
@@ -64,7 +68,8 @@
           "LocalX": -615,
           "LocalY": -20,
           "Text": "Mods",
-          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "OnClick": "OnModsButtonClicked"
         },
         {
@@ -75,7 +80,8 @@
           "LocalX": -615,
           "LocalY": 260,
           "Text": "QuitGame",
-          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "OnClick": "OnQuitGameButtonClicked"
         }
       ]

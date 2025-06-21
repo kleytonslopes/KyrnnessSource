@@ -98,19 +98,12 @@ enum class EScaleMode
 
 class UUIElement 
 {
-protected:
-	enum class EMouseFocusState
-	{
-		MFS_None,
-		MFS_MouseEnter,
-		MFS_MouseLeave
-	};
-
-	EMouseFocusState m_MouseFocusState = EMouseFocusState::MFS_None;
 public:
 	UUIElement* Parent = nullptr;
 	std::vector<UUIElement*> Children;
 
+	std::function<void()> OnClick;
+	std::function<void(bool)> OnHovered;
     //float scale;
 
 	float x = 0.0f;
@@ -143,7 +136,7 @@ public:
 	virtual void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp) {}
 	virtual void OnMouseEnter(double mouseX, double mouseY) { }
 	virtual void OnMouseLeave(double mouseX, double mouseY) { }
-	virtual void OnUpdateMouseFocus(double mouseX, double mouseY) { }
+	virtual void OnUpdateMouseFocus(double mouseX, double mouseY);
 
 	void PropagateInput(float mx, float my, bool isMouseDown, bool isMouseUp);
 	void PropagateMouseEnter(double mouseX, double mouseY);
@@ -159,6 +152,17 @@ public:
 	glm::vec2 GetAccumulatedScale();
 
 protected:
+	enum class EMouseFocusState
+	{
+		MFS_None,
+		MFS_MouseEnter,
+		MFS_MouseLeave
+	};
+
+	EMouseFocusState m_MouseFocusState = EMouseFocusState::MFS_None;
+
+	bool bHovered = false;
+	bool bPressed = false;
 
 	std::vector<float> m_Vertices = {
 		// Posições (x, y)   // UVs (u, v)
