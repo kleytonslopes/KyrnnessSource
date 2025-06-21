@@ -16,10 +16,7 @@
 
 void UUIButton::Initialize()
 {
-	//UUIElement::Initialize();
-
-	glGenVertexArrays(1, &m_VAO);
-	glGenBuffers(1, &m_VBO);
+	UUIElement::Initialize();
 }
 
 void UUIButton::Draw()

@@ -12,16 +12,31 @@
 #include "Audio/SoundManager.hpp"
 #include "Components/TransformComponent.hpp"
 #include "Components/AudioSourceComponent.hpp"
+#include "nlohmann/json.hpp"
 
 UGameHUD::UGameHUD(UApplication* application) : UHUD(application)
 {
 }
 
+#define TEM
+
 void UGameHUD::Initialize()
 {
 	UHUD::Initialize();
 
+#ifndef TEMP
+
+
+	nlohmann::json uiJson = UAssetManager::LoadJson("Content/UI/UI_MainMenu.json");
+
+	UUIElement* rootElement = m_UIManager->CreateElementFromJson(uiJson);
+	m_UIManager->AddElement(rootElement);
+
+#else
+
+
 	//UUIScaleBox* ScaleBox = FMemoryManager::Allocate<UUIScaleBox>();
+	UUIBorder* Root = FMemoryManager::Allocate<UUIBorder>();
 	UUIBorder* Border = FMemoryManager::Allocate<UUIBorder>();
 	UUIButton* NewGameButton = FMemoryManager::Allocate<UUIButton>();
 	UUIButton* HostGameButton = FMemoryManager::Allocate<UUIButton>();
@@ -30,7 +45,7 @@ void UGameHUD::Initialize()
 
 	UUIFont* myFont = new UUIFont("Assets/Fonts/Roboto-Regular.ttf", 18);
 	UUIText* myText = FMemoryManager::Allocate<UUIText>();
-	
+
 	if (myText && myFont)
 	{
 		myText->LocalX = 0.f;
@@ -44,7 +59,7 @@ void UGameHUD::Initialize()
 		myText->SetColor(glm::vec4(1, 1, 1, 1));
 		myText->Initialize();
 
-		m_UIManager->AddElement(myText);
+		//m_UIManager->AddElement(myText);
 	}
 
 	if (NewGameButton)
@@ -68,7 +83,7 @@ void UGameHUD::Initialize()
 			};
 
 		NewGameButton->Initialize();
-		m_UIManager->AddElement(NewGameButton);
+		//m_UIManager->AddElement(NewGameButton);
 	}
 
 	if (HostGameButton)
@@ -92,7 +107,7 @@ void UGameHUD::Initialize()
 			};
 
 		HostGameButton->Initialize();
-		m_UIManager->AddElement(HostGameButton);
+		//m_UIManager->AddElement(HostGameButton);
 	}
 
 	if (JoinGameButton)
@@ -116,7 +131,7 @@ void UGameHUD::Initialize()
 			};
 
 		JoinGameButton->Initialize();
-		m_UIManager->AddElement(JoinGameButton);
+		//m_UIManager->AddElement(JoinGameButton);
 	}
 
 	if (Button2)
@@ -140,7 +155,7 @@ void UGameHUD::Initialize()
 			};
 
 		Button2->Initialize();
-		m_UIManager->AddElement(Button2);
+		//m_UIManager->AddElement(Button2);
 	}
 
 	if (Border)
@@ -161,14 +176,37 @@ void UGameHUD::Initialize()
 		Border->SetTextureId(textureId);
 
 		Border->Initialize();
-		m_UIManager->AddElement(Border);
+		//m_UIManager->AddElement(Border);
 	}
+	if (Root)
+	{
+		Root->x = 0;
+		Root->y = 0.f;
+		Root->width = 2560;
+		Root->height = 1080;
+		Root->Anchor = EAnchor::Center;
+		Root->OffsetX = 0.0f;
+		Root->OffsetY = 0.0f;
+
+		Root->AddChild(Border);
+		//Border->AddChild(myText);
+
+		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_bg_mainmenu.png");
+		Root->SetTextureId(textureId);
+
+		Root->Initialize();
+		m_UIManager->AddElement(Root);
+	}
+	
 
 	auto allButtons = FMemoryManager::GetAll<UUIButton>();
 	for (UUIButton* btn : allButtons)
 	{
 		LOG(Log, TEXT("Button at: %p", btn));
 	}
+#endif // TEMP	
+
+
 }
 
 void UGameHUD::Draw(float deltaTime)

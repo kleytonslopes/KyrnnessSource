@@ -87,7 +87,7 @@ void UWindowGLFW::Initialize()
 
 	//glfwSetInputMode(m_glfwWindow, GLFW_STICKY_KEYS, GL_TRUE);
 	glfwSetInputMode(m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	glfwSetMouseButtonCallback(m_glfwWindow, [](GLFWwindow* window, int button, int action, int mods)
 		{

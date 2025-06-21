@@ -1,0 +1,84 @@
+{
+  "Type": "UUIBorder",
+  "Anchor": "Center",
+  "Width": 2560,
+  "Height": 1080,
+  "Texture": "Assets/Textures/UI/tex_bg_mainmenu.png",
+  "Children": [
+    {
+      "Type": "UUIBorder",
+      "Anchor": "Center",
+      "Width": 1602,
+      "Height": 802,
+      "Texture": "Assets/Textures/UI/tex_ui_menu_panel_bg.png",
+      "Children": [
+        {
+          "Type": "UUIButton",
+          "Anchor": "Center",
+          "Width": 330,
+          "Height": 52,
+          "LocalX": -615,
+          "LocalY": -260,
+          "Text": "New Game",
+          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "OnClick": "OnNewGameButtonClicked"
+        },
+        {
+          "Type": "UUIButton",
+          "Anchor": "Center",
+          "Width": 330,
+          "Height": 52,
+          "LocalX": -615,
+          "LocalY": -200,
+          "Text": "Host Game",
+          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "OnClick": "OnHostGameButtonClicked"
+        },
+        {
+          "Type": "UUIButton",
+          "Anchor": "Center",
+          "Width": 330,
+          "Height": 52,
+          "LocalX": -615,
+          "LocalY": -140,
+          "Text": "Join Game",
+          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "OnClick": "OnJoinGameButtonClicked"
+        },
+        {
+          "Type": "UUIButton",
+          "Anchor": "Center",
+          "Width": 330,
+          "Height": 52,
+          "LocalX": -615,
+          "LocalY": -80,
+          "Text": "Settings",
+          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "OnClick": "OnSettingsButtonClicked"
+        },
+        {
+          "Type": "UUIButton",
+          "Anchor": "Center",
+          "Width": 330,
+          "Height": 52,
+          "LocalX": -615,
+          "LocalY": -20,
+          "Text": "Mods",
+          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "OnClick": "OnModsButtonClicked"
+        },
+        {
+          "Type": "UUIButton",
+          "Anchor": "Center",
+          "Width": 330,
+          "Height": 52,
+          "LocalX": -615,
+          "LocalY": 260,
+          "Text": "QuitGame",
+          "Texture": "Assets/Textures/UI/tex_ui_button_03_normal.png",
+          "OnClick": "OnQuitGameButtonClicked"
+        }
+      ]
+    }
+  ]
+}

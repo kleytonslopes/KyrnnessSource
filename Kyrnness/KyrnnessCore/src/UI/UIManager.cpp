@@ -6,6 +6,7 @@
 #include <entt/entt.hpp>
 #include "Input/InputManager.hpp"
 #include "Graphics/Shaders.hpp"
+#include "UI/MinimalElements.hpp";
 
 UUIManager::UUIManager(UApplication* application) : m_Application(application)
 {
@@ -90,6 +91,70 @@ void UUIManager::UpdateLayoutAll()
 	{
 		e->UpdateLayout();
 	}
+}
+
+UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
+{
+	std::string type = node.value("Type", "");
+
+	UUIElement* element = nullptr;
+
+	if (type == "UUIBorder")
+		element = FMemoryManager::Allocate<UUIBorder>();
+	else if (type == "UUIButton")
+		element = FMemoryManager::Allocate<UUIButton>();
+	else if (type == "UUIText")
+		element = FMemoryManager::Allocate<UUIText>();
+	else if (type == "UIScaleBox")
+		element = FMemoryManager::Allocate<UUIScaleBox>();
+	// Adicione outros tipos conforme for criando
+
+	if (element)
+	{
+		// Propriedades comuns
+		element->Anchor = EAnchor::Center; //ParseAnchor(node.value("Anchor", "TopLeft"));
+		element->width = node.value("Width", 100.0f);
+		element->height = node.value("Height", 30.0f);
+		element->OffsetX = node.value("OffsetX", 0.0f);
+		element->OffsetY = node.value("OffsetY", 0.0f);
+		element->LocalX = node.value("LocalX", 0.0f);
+		element->LocalY = node.value("LocalY", 0.0f);
+
+		// Textura (se existir)
+		if (node.contains("Texture"))
+		{
+			GLuint tex = UAssetManager::LoadTextureOpenGL(node["Texture"].get<std::string>(), true);
+			element->SetTextureId(tex);
+			element->Initialize();
+		}
+
+		// Específico para botão
+		if (UUIButton* button = dynamic_cast<UUIButton*>(element))
+		{
+			//button->SetText(node.value("Text", ""));
+
+			std::string onClickFunc = node.value("OnClick", "");
+			if (!onClickFunc.empty())
+			{
+				//button->OnClickLuaFunction = onClickFunc;  // Você vai chamar via Lua mais tarde
+			}
+		}
+
+		// Recurse em Children
+		if (node.contains("Children"))
+		{
+			for (const auto& childNode : node["Children"])
+			{
+				if (UUIElement* child = CreateElementFromJson(childNode))
+				{
+					element->AddChild(child);
+				}
+			}
+		}
+	}
+
+
+	return element;
 }
 
 // Texture loader

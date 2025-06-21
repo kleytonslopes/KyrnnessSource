@@ -44,7 +44,7 @@ public:
 	static TScene LoadScene(const std::string& sceneFilePath);
 	static nlohmann::json LoadJson(const std::string& jsonFilePath);
 	static void SaveJson(const std::string& jsonFilePath, const nlohmann::json& jsonData);
-	static GLuint LoadTextureOpenGL(const std::string& filePath);
+	static GLuint LoadTextureOpenGL(const std::string& filePath, bool isUI = false);
 	static void InitializeGData(const std::string& gdataFilePath);
 
 #if defined(ENCRYPTION_XOR)

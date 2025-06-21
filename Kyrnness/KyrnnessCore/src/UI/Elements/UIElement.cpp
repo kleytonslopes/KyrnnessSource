@@ -87,6 +87,8 @@ void UUIElement::Draw()
 	m_Shader->SetInt("uTexture", 0);
 	m_Shader->SetVector4("uColor", glm::vec4{ 1.f,1.f, 1.f, 1.f });
 
+
+
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(float), m_Vertices.data(), GL_STATIC_DRAW);
@@ -101,9 +103,14 @@ void UUIElement::Draw()
 	glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
 	glBindVertexArray(m_VAO);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 
+	m_Shader->Unbind();
 
 }
 

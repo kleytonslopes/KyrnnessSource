@@ -346,7 +346,7 @@ void UAssetManager::SaveJson(const std::string& jsonFilePath, const nlohmann::js
 		ThrowRuntimeError("Failed to write json data to file: " + jsonFilePath);
 }
 
-GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath)
+GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath, bool isUI)
 {
 	auto it = m_TextureLoaded.find(filePath);
 	if (it != m_TextureLoaded.end())
@@ -382,8 +382,17 @@ GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (!isUI)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+	if (isUI)
+	{
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
 
 	stbi_image_free(data);
 
@@ -460,10 +469,10 @@ void UAssetManager::InitializeGData(const std::string& gdataFilePath)
 	}
 
 	s_AssetFile.open(gdataFilePath, std::ios::binary);
-    if (!s_AssetFile)
-    {
-        throw std::runtime_error("Falha ao reabrir o .gdata para leitura de conteúdo.");
-    }
+	if (!s_AssetFile)
+	{
+		throw std::runtime_error("Falha ao reabrir o .gdata para leitura de conteúdo.");
+	}
 }
 
 void UAssetManager::LoadAssetMap(const std::string& path)
