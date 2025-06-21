@@ -99,8 +99,18 @@ public:
 	EWindowType GetWindowType() const;
 
     uint32 GetWidth() const;
-    
     uint32 GetHeight() const;
+    
+    template<typename T>
+    T GetWidth() const
+    {
+        return static_cast<T>(m_GameConfig.m_Width);
+    }
+    template<typename T>
+    T GetHeight() const
+    {
+        return static_cast<T>(m_GameConfig.m_Height);
+    }
 
     entt::registry& GetEnttRegistry() { return m_EnttRegistry; }
     entt::registry& GetRegistry() { return m_EnttRegistry; }

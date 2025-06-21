@@ -103,6 +103,8 @@ void UApplication::Update(float DeltaTime)
 
 void UApplication::Destroy()
 {
+	m_SoundManager->Shutdown();
+
 	FMemoryManager::Get().Cleanup();
 
 	m_Window->Destroy();
@@ -260,6 +262,7 @@ void UApplication::InitializeShaders()
 	UShaders::Register(FShaderAsset( SHADER_DEFAULT ,"Assets/Shaders/OpenGL/vert.glsl"            , "Assets/Shaders/OpenGL/frag.glsl" ));
 	UShaders::Register(FShaderAsset( SHADER_DEBUG   ,"Assets/Shaders/OpenGL/debug_vert.glsl"      , "Assets/Shaders/OpenGL/debug_frag.glsl" ));
 	UShaders::Register(FShaderAsset( SHADER_UI      ,"Assets/Shaders/OpenGL/ui_vert.glsl"         , "Assets/Shaders/OpenGL/ui_frag.glsl"  ));
+	UShaders::Register(FShaderAsset( SHADER_UI_TEXT ,"Assets/Shaders/OpenGL/ui_text_vert.glsl"    , "Assets/Shaders/OpenGL/ui_text_frag.glsl"  ));
 	UShaders::Register(FShaderAsset( SHADER_UI_DEBUG,"Assets/Shaders/OpenGL/debug_ui_vert.glsl"   , "Assets/Shaders/OpenGL/debug_ui_frag.glsl"  ));
 
 	UShaders::Initialize();

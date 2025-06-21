@@ -4,6 +4,7 @@
 
 #include <vector>
 #include "UI/Elements/UIElement.hpp"
+#include "nlohmann/json.hpp"
 
 
 class UApplication;
@@ -27,6 +28,7 @@ public:
 	void OnUpdateMouseFocus(float mx, float my);
 	void OnResolutionUpdated(int width, int eight);
 	void UpdateLayoutAll();
+	UUIElement* CreateElementFromJson(const nlohmann::json& node);
 
 
 private:

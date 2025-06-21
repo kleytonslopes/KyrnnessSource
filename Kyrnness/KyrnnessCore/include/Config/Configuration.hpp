@@ -16,6 +16,7 @@ struct  GameConfig
 	int m_WindowType;
 	uint32 m_FrameRate = 60;
 	std::string m_MainMenuMap = "";
+	int m_FontAtlasSize = 512;
 };
 
 class FConfig
@@ -38,6 +39,7 @@ public:
 			config.m_WindowType = j["WindowType"];
 			config.m_FrameRate = j["FrameRate"];
 			config.m_MainMenuMap = j["MainMenuMap"];
+			config.m_FontAtlasSize = j["FontAtlasSize"];
 		}
 		catch (const std::exception& e)
 		{
@@ -56,6 +58,7 @@ public:
 		j["WindowType"] = config.m_WindowType;
 		j["FrameRate"] = config.m_FrameRate;
 		j["MainMenuMap"] = config.m_MainMenuMap;
+		j["FontAtlasSize"] = config.m_FontAtlasSize;
 
 		std::ofstream file("Config/GameConfig.json");
 		if (!file)

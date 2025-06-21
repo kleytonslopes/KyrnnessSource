@@ -1,128 +1,126 @@
 #include "pch.hpp"
 #include "UI/UIFont.hpp"
-#include <fstream>
-#include <sstream>
-#include "stb_image.h"
+#include <ft2build.h>
+#include <Core/AssetManager.hpp>
+#include FT_FREETYPE_H
+#include <stb_image_write.h>
 #include "Runtime/Application.hpp"
-#include <entt/entt.hpp>
-#include "Components/ShaderOpenGLComponent.hpp"
-#include <GL/gl.h>
 
-void UUIFont::Load(const std::string& pngPath, const std::string& csvPath)
+UUIFont::UUIFont(const std::string& filePath, int pixelSize)
 {
-	int w, h, c;
-	unsigned char* data = stbi_load(pngPath.c_str(), &w, &h, &c, STBI_rgb_alpha);
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	LoadFont(filePath, pixelSize);
+}
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+UUIFont::~UUIFont()
+{
+	if (m_TextureID != 0)
+	{
+		glDeleteTextures(1, &m_TextureID);
+	}
+}
 
-	stbi_image_free(data);
-
-	std::ifstream file(csvPath);
-	std::string line;
-	while (std::getline(file, line)) {
-        int texWidth = w;
-        int texHeight = h;
-
-		std::stringstream ss(line);
-		char ch;
-		int x, y, w, h;
-		ss >> ch; ss.ignore();
-		ss >> x; ss.ignore();
-		ss >> y; ss.ignore();
-		ss >> w; ss.ignore();
-		ss >> h;
-        glyphs[ch] = {
-            x / (float)texWidth,
-            y / (float)texHeight,
-            (x + w) / (float)texWidth,
-            (y + h) / (float)texHeight,
-            (float)w
-        };
+void UUIFont::LoadFont(const std::string& filePath, int pixelSize)
+{
+	FT_Library ft;
+	if (FT_Init_FreeType(&ft))
+	{
+		printf("Failed to init FreeType\n");
+		return;
 	}
 
-	lineHeight = 128.0f;
+	std::vector<uint8_t> fontData = UAssetManager::LoadAssetRaw(filePath);
 
-    std::cout << "Fonte carregada: texture ID = " << texture << ", glyphs = " << glyphs.size() << std::endl;
+	FT_Face face;
+	FT_Error error = FT_New_Memory_Face(ft, fontData.data(), static_cast<FT_Long>(fontData.size()), 0, &face);
+	if (error)
+	{
+		printf("Failed to load font from memory: %s\n", filePath.c_str());
+		FT_Done_FreeType(ft);
+		return;
+	}
+
+	FT_Set_Pixel_Sizes(face, 0, pixelSize);
+
+	int padding = 2;
+	int maxRowHeight = 0;
+	int atlasW = UApplication::Get().GetGameConfig().m_FontAtlasSize;
+	int atlasH = UApplication::Get().GetGameConfig().m_FontAtlasSize;
+
+	std::vector<unsigned char> atlasData(atlasW * atlasH, 0);
+
+	int x = padding;
+	int y = padding;
+	maxRowHeight = 0;
+
+	for (char c = 32; c < 127; c++)
+	{
+		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+			continue;
+
+		FT_Bitmap& bmp = face->glyph->bitmap;
+
+		if (x + bmp.width + padding >= atlasW)
+		{
+			x = padding;
+			y += maxRowHeight + padding;
+			maxRowHeight = 0;
+		}
+
+		for (int row = 0; row < bmp.rows; row++)
+		{
+			for (int col = 0; col < bmp.width; col++)
+			{
+				int atlasX = x + col;
+				int atlasY = y + row;
+				if (atlasX < atlasW && atlasY < atlasH)
+					atlasData[atlasY * atlasW + atlasX] = bmp.buffer[row * bmp.pitch + col];
+			}
+		}
+
+		FGlyphInfo glyph;
+		glyph.Size = glm::vec2(bmp.width, bmp.rows);
+		glyph.Bearing = glm::vec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
+		glyph.Advance = (float)(face->glyph->advance.x >> 6);
+
+		float u0 = (float)x / atlasW;
+		float v0 = (float)y / atlasH;
+		float u1 = (float)(x + bmp.width) / atlasW;
+		float v1 = (float)(y + bmp.rows) / atlasH;
+
+		glyph.UV = glm::vec4(u0, v1, u1, v0);
+
+		m_Glyphs[c] = glyph;
+
+		x += bmp.width + padding;
+		maxRowHeight = std::max(maxRowHeight, (int)bmp.rows);
+	}
+
+	m_AtlasWidth = atlasW;
+	m_AtlasHeight = atlasH;
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &m_TextureID);
+	glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, atlasW, atlasH, 0, GL_RED, GL_UNSIGNED_BYTE, atlasData.data());
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	FT_Done_Face(face);
+	FT_Done_FreeType(ft);
+	stbi_write_png("FontAtlasDebug.png", atlasW, atlasH, 1, atlasData.data(), atlasW);
+
 }
 
-void UUIFont::DrawText(const std::string& text, float x, float y, float scale)
+const FGlyphInfo* UUIFont::GetGlyph(char c) const
 {
-    if (vao == 0) {
-        glGenVertexArrays(1, &vao);
-        glGenBuffers(1, &vbo);
-        glBindVertexArray(vao);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 4, nullptr, GL_DYNAMIC_DRAW);
+	auto it = m_Glyphs.find(c);
+	if (it != m_Glyphs.end())
+		return &it->second;
 
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-        glEnableVertexAttribArray(1);
-    }
-
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-    auto shaderEntities = UApplication::Get().GetEnttRegistry().view<FShaderOpenGLComponent>();
-    shaderEntities.each([&](const auto entity, auto& shader)
-        {
-            if (shader.GetShaderName() == "uiShader")
-            {
-                shader.Bind();
-                shader.SetMatrix4("projection", glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f));
-                shader.SetMatrix4("model", glm::mat4(1.0f));
-                shader.SetVector4("color", glm::vec4(1.0f));
-                shader.SetInt("tex", 0); // texture unit 0
-            }
-
-        });
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    for (char ch : text) {
-        if (glyphs.count(ch) == 0) continue;
-        const Glyph& g = glyphs[ch];
-
-        float w = g.width * scale * size;
-        float h = lineHeight * scale * size;
-
-        float vertices[] = {
-            x,     y,     g.u0, g.v0,
-            x + w, y,     g.u1, g.v0,
-            x + w, y + h, g.u1, g.v1,
-            x,     y + h, g.u0, g.v1
-        };
-
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-
-        x += w;
-    }
-
-    glBindVertexArray(0);
-}
-float UUIFont::CalculateTextWidth(const std::string& text)
-{
-    float width = 0.0f;
-    for (char ch : text) {
-        if (glyphs.count(ch)) {
-            width += glyphs.at(ch).width;
-        }
-    }
-    return width;
-}
-float UUIFont::GetLineHeight() const
-{
-    return lineHeight;
+	return nullptr;
 }
 //

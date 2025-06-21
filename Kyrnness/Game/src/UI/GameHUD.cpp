@@ -5,37 +5,75 @@
 #include "UI/Elements/UIButton.hpp"
 #include "UI/Elements/UIBorder.hpp"
 #include "UI/Elements/UIScaleBox.hpp"
+#include "UI/Elements/UUIText.hpp"
+#include "UI/UIFont.hpp"
 #include "Core/AssetManager.hpp"
 #include "Graphics/OpenGL/GraphicsApi_OpenGL.hpp"
 #include "Audio/SoundManager.hpp"
 #include "Components/TransformComponent.hpp"
 #include "Components/AudioSourceComponent.hpp"
+#include "nlohmann/json.hpp"
 
 UGameHUD::UGameHUD(UApplication* application) : UHUD(application)
 {
 }
 
+#define TEM
+
 void UGameHUD::Initialize()
 {
 	UHUD::Initialize();
 
-	UUIScaleBox* ScaleBox = FMemoryManager::Allocate<UUIScaleBox>();
+#ifndef TEMP
+
+
+	nlohmann::json uiJson = UAssetManager::LoadJson("Content/UI/UI_MainMenu.json");
+
+	UUIElement* rootElement = m_UIManager->CreateElementFromJson(uiJson);
+	m_UIManager->AddElement(rootElement);
+
+#else
+
+
+	//UUIScaleBox* ScaleBox = FMemoryManager::Allocate<UUIScaleBox>();
+	UUIBorder* Root = FMemoryManager::Allocate<UUIBorder>();
 	UUIBorder* Border = FMemoryManager::Allocate<UUIBorder>();
-	UUIButton* Button = FMemoryManager::Allocate<UUIButton>();
+	UUIButton* NewGameButton = FMemoryManager::Allocate<UUIButton>();
+	UUIButton* HostGameButton = FMemoryManager::Allocate<UUIButton>();
+	UUIButton* JoinGameButton = FMemoryManager::Allocate<UUIButton>();
 	UUIButton* Button2 = FMemoryManager::Allocate<UUIButton>();
 
-	if (Button)
+	UUIFont* myFont = new UUIFont("Assets/Fonts/Roboto-Regular.ttf", 18);
+	UUIText* myText = FMemoryManager::Allocate<UUIText>();
+
+	if (myText && myFont)
 	{
-		Button->LocalX = 100.f;
-		Button->y = 0.f;
-		Button->width = 162.f;
-		Button->height = 52.f;
-		Button->Anchor = EAnchor::TopLeft;
+		myText->LocalX = 0.f;
+		myText->LocalY = 0.f;
+		myText->width = 1.f;
+		myText->height = 1.f;
+		myText->Anchor = EAnchor::Center;
 
-		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_button_02_normal_r.png");
-		Button->SetTextureId(textureId);
+		myText->SetFont(myFont);
+		myText->SetText("Hello World!");
+		myText->SetColor(glm::vec4(1, 1, 1, 1));
+		myText->Initialize();
 
-		Button->OnClick = [Button]() {
+		//m_UIManager->AddElement(myText);
+	}
+
+	if (NewGameButton)
+	{
+		NewGameButton->LocalX = -615.f;
+		NewGameButton->LocalY = -260.f;
+		NewGameButton->width = 330;
+		NewGameButton->height = 52.f;
+		NewGameButton->Anchor = EAnchor::Center;
+
+		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_button_03_normal.png");
+		NewGameButton->SetTextureId(textureId);
+
+		NewGameButton->OnClick = [NewGameButton]() {
 			auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
 
 			objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
@@ -44,13 +82,62 @@ void UGameHUD::Initialize()
 				});
 			};
 
-		Button->Initialize();
+		NewGameButton->Initialize();
+		//m_UIManager->AddElement(NewGameButton);
+	}
+
+	if (HostGameButton)
+	{
+		HostGameButton->LocalX = -615.f;
+		HostGameButton->LocalY = -260.f;
+		HostGameButton->width = 330;
+		HostGameButton->height = 52.f;
+		HostGameButton->Anchor = EAnchor::Center;
+
+		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_button_03_normal.png");
+		HostGameButton->SetTextureId(textureId);
+
+		HostGameButton->OnClick = [HostGameButton]() {
+			auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
+
+			objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
+				{
+					audioComp.PlaySoundByName("music");
+				});
+			};
+
+		HostGameButton->Initialize();
+		//m_UIManager->AddElement(HostGameButton);
+	}
+
+	if (JoinGameButton)
+	{
+		JoinGameButton->LocalX = -615.f;
+		JoinGameButton->LocalY = -140.f;
+		JoinGameButton->width = 330;
+		JoinGameButton->height = 52.f;
+		JoinGameButton->Anchor = EAnchor::Center;
+
+		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_button_03_normal.png");
+		JoinGameButton->SetTextureId(textureId);
+
+		JoinGameButton->OnClick = [JoinGameButton]() {
+			auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
+
+			objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
+				{
+					audioComp.PlaySoundByName("music");
+				});
+			};
+
+		JoinGameButton->Initialize();
+		//m_UIManager->AddElement(JoinGameButton);
 	}
 
 	if (Button2)
 	{
 		Button2->LocalX = 300.f;
-		Button2->y = 100.f;
+		Button2->LocalY = 100.f;
 		Button2->width = 162.f;
 		Button2->height = 52.f;
 		Button2->Anchor = EAnchor::Center;
@@ -68,6 +155,7 @@ void UGameHUD::Initialize()
 			};
 
 		Button2->Initialize();
+		//m_UIManager->AddElement(Button2);
 	}
 
 	if (Border)
@@ -80,38 +168,45 @@ void UGameHUD::Initialize()
 		Border->OffsetX = 0.0f;
 		Border->OffsetY = 0.0f;
 
-		Border->AddChild(Button);
 		Border->AddChild(Button2);
+		Border->AddChild(NewGameButton);
+		//Border->AddChild(myText);
 
 		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_ui_menu_panel_bg.png");
 		Border->SetTextureId(textureId);
 
 		Border->Initialize();
-		m_UIManager->AddElement(Border);
+		//m_UIManager->AddElement(Border);
 	}
+	if (Root)
+	{
+		Root->x = 0;
+		Root->y = 0.f;
+		Root->width = 2560;
+		Root->height = 1080;
+		Root->Anchor = EAnchor::Center;
+		Root->OffsetX = 0.0f;
+		Root->OffsetY = 0.0f;
 
+		Root->AddChild(Border);
+		//Border->AddChild(myText);
 
-	//if (ScaleBox)
-	//{
-	//	ScaleBox->x = 0;
-	//	ScaleBox->y = 0.f;
-	//	ScaleBox->width = UApplication::Get().GetWidth();
-	//	ScaleBox->height = UApplication::Get().GetHeight();
-	//	ScaleBox->Anchor = EAnchor::Stretch;
-	//	ScaleBox->OffsetX = 0.0f;
-	//	ScaleBox->OffsetY = 0.0f;
-	//	ScaleBox->ScaleMode = EScaleMode::ScaleToFitBoth;
+		GLuint textureId = UAssetManager::LoadTextureOpenGL("Assets/Textures/UI/tex_bg_mainmenu.png");
+		Root->SetTextureId(textureId);
 
-	//	ScaleBox->AddChild(Border);
-
-	//	m_UIManager->AddElement(ScaleBox);
-	//}
+		Root->Initialize();
+		m_UIManager->AddElement(Root);
+	}
+	
 
 	auto allButtons = FMemoryManager::GetAll<UUIButton>();
 	for (UUIButton* btn : allButtons)
 	{
 		LOG(Log, TEXT("Button at: %p", btn));
 	}
+#endif // TEMP	
+
+
 }
 
 void UGameHUD::Draw(float deltaTime)

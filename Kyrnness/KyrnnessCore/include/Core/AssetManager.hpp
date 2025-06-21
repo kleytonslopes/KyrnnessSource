@@ -14,10 +14,18 @@ struct TScene;
 
 struct FAssetEntry
 {
+	std::string Name;
 	uint64_t Offset;
 	uint32_t CompressedSize;
 	uint32_t UncompressedSize;
 	uint32_t CRC32;
+};
+
+struct FAssetTexture
+{
+	std::string m_Name;
+	std::string m_Path;
+	unsigned int m_TextureId = 0;
 };
 
 class UAssetManager
@@ -36,7 +44,7 @@ public:
 	static TScene LoadScene(const std::string& sceneFilePath);
 	static nlohmann::json LoadJson(const std::string& jsonFilePath);
 	static void SaveJson(const std::string& jsonFilePath, const nlohmann::json& jsonData);
-	static GLuint LoadTextureOpenGL(const std::string& filePath);
+	static GLuint LoadTextureOpenGL(const std::string& filePath, bool isUI = false);
 	static void InitializeGData(const std::string& gdataFilePath);
 
 #if defined(ENCRYPTION_XOR)
@@ -60,6 +68,7 @@ private:
 
 	static std::unordered_map<std::string, FAssetEntry> s_AssetMap;
 	static std::ifstream s_AssetFile;
+	static std::unordered_map<std::string, FAssetTexture> m_TextureLoaded;
 
 	static std::vector<uint8_t> LoadAssetRaw_NoEncryption(const std::string& assetPath);
 	static std::vector<uint8_t> LoadAssetRaw_With_XOR(const std::string& assetPath);

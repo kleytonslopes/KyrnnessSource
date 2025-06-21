@@ -13,6 +13,7 @@
 
 static std::unordered_map<std::string, FMeshAsset> m_MeshCache;
 std::unordered_map<std::string, FAssetEntry> UAssetManager::s_AssetMap;
+std::unordered_map<std::string, FAssetTexture> UAssetManager::m_TextureLoaded;
 std::ifstream UAssetManager::s_AssetFile;
 /*
 void UAssetManager::LoadMeshAsset(const std::string& meshFilePath, FMeshAsset& meshAsset)
@@ -345,8 +346,14 @@ void UAssetManager::SaveJson(const std::string& jsonFilePath, const nlohmann::js
 		ThrowRuntimeError("Failed to write json data to file: " + jsonFilePath);
 }
 
-GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath)
+GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath, bool isUI)
 {
+	auto it = m_TextureLoaded.find(filePath);
+	if (it != m_TextureLoaded.end())
+	{
+		return it->second.m_TextureId;
+	}
+
 	// Carregar o arquivo de textura da memória
 	std::vector<uint8_t> textureData;
 	try
@@ -375,10 +382,26 @@ GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (!isUI)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+	if (isUI)
+	{
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
 
 	stbi_image_free(data);
+
+	FAssetTexture newLoadedTextureAsset;
+	newLoadedTextureAsset.m_Path = filePath;
+	newLoadedTextureAsset.m_TextureId = textureID;
+
+	m_TextureLoaded[filePath] = newLoadedTextureAsset;
+
 	return textureID;
 }
 
@@ -421,7 +444,15 @@ void UAssetManager::InitializeGData(const std::string& gdataFilePath)
 		std::string path(reinterpret_cast<char*>(&s_GDataFile[offset]), pathSize);
 		offset += pathSize;
 
+		uint32_t nameSize = *reinterpret_cast<uint32_t*>(&s_GDataFile[offset]);
+		offset += sizeof(uint32_t);
+
+		std::string name(reinterpret_cast<char*>(&s_GDataFile[offset]), nameSize);
+		offset += nameSize;
+
 		FAssetEntry entry;
+		entry.Name = name;
+
 		entry.Offset = *reinterpret_cast<uint32_t*>(&s_GDataFile[offset]);
 		offset += sizeof(uint32_t);
 
@@ -437,11 +468,11 @@ void UAssetManager::InitializeGData(const std::string& gdataFilePath)
 		s_AssetMap[path] = entry;
 	}
 
-	    s_AssetFile.open(gdataFilePath, std::ios::binary);
-    if (!s_AssetFile)
-    {
-        throw std::runtime_error("Falha ao reabrir o .gdata para leitura de conteúdo.");
-    }
+	s_AssetFile.open(gdataFilePath, std::ios::binary);
+	if (!s_AssetFile)
+	{
+		throw std::runtime_error("Falha ao reabrir o .gdata para leitura de conteúdo.");
+	}
 }
 
 void UAssetManager::LoadAssetMap(const std::string& path)
