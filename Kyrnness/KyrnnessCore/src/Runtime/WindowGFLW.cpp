@@ -68,6 +68,10 @@ void UWindowGLFW::Initialize()
 		ThrowRuntimeError("Failed to initialize GLAD");
 	}
 
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glfwSwapBuffers(m_glfwWindow);
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -76,6 +80,7 @@ void UWindowGLFW::Initialize()
 	io.ConfigFlags != ImGuiConfigFlags_NavEnableSetMousePos;
 	//io.ConfigFlags |= ImGuiConfigFlags_DockingEnable; // Enable Docking
 	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
+	
 	ImGui::StyleColorsDark();
 
 	ImGui_ImplGlfw_InitForOpenGL(m_glfwWindow, true);
@@ -87,7 +92,8 @@ void UWindowGLFW::Initialize()
 
 	//glfwSetInputMode(m_glfwWindow, GLFW_STICKY_KEYS, GL_TRUE);
 	glfwSetInputMode(m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+
 
 	glfwSetMouseButtonCallback(m_glfwWindow, [](GLFWwindow* window, int button, int action, int mods)
 		{
@@ -109,6 +115,7 @@ void UWindowGLFW::Initialize()
 
 			ImGui_ImplGlfw_CursorPosCallback(window, xpos, ypos);
 		});
+
 }
 
 void UWindowGLFW::Destroy()

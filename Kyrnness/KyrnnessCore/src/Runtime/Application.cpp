@@ -35,7 +35,7 @@ UApplication::~UApplication()
 void UApplication::Run()
 {
 	FLogger::Log("Initializing Application...");
-
+	
 	Initialize();
 
 	GameLoop();
@@ -44,15 +44,73 @@ void UApplication::Run()
 void UApplication::PreInitialize()
 {
 	Super::PreInitialize();
-	
+
 	UInputManager::Get().SetupApplication(this);
 	LoadConfiguration();
+	
+	//Create Window
+	switch (m_GameConfig.m_WindowType)
+	{
+	case EWindowType::WT_GLFW:
+		m_Window = std::make_unique<UWindowGLFW>(this);
+		break;
+	case EWindowType::WT_SDL:
+		m_Window = std::make_unique<UWindowSDL>(this);
+		break;
+	default:
+		m_Window = std::make_unique<UWindowSDL>(this);
+		break;
+	}
+
+	InitializeWindow();
+
+	//Create Sound Manager
+	m_SoundManager = std::make_unique<USoundManager>();
+
+
+
+	//Create Graphics API
+	switch (m_GameConfig.m_Renderer)
+	{
+	case EGraphicsApi::GA_OpenGL:
+		m_GraphicsApi = std::make_unique<UGraphicsApi_OpenGL>(this);
+		break;
+	case EGraphicsApi::GA_Vulkan:
+		break;
+	default:
+		break;
+	}
+
+	//Register Shaders
+	UShaders::Register(FShaderAsset(SHADER_DEFAULT, "Assets/Shaders/OpenGL/vert.glsl", "Assets/Shaders/OpenGL/frag.glsl"));
+	UShaders::Register(FShaderAsset(SHADER_DEBUG, "Assets/Shaders/OpenGL/debug_vert.glsl", "Assets/Shaders/OpenGL/debug_frag.glsl"));
+	UShaders::Register(FShaderAsset(SHADER_UI, "Assets/Shaders/OpenGL/ui_vert.glsl", "Assets/Shaders/OpenGL/ui_frag.glsl"));
+	UShaders::Register(FShaderAsset(SHADER_UI_TEXT, "Assets/Shaders/OpenGL/ui_text_vert.glsl", "Assets/Shaders/OpenGL/ui_text_frag.glsl"));
+	UShaders::Register(FShaderAsset(SHADER_UI_DEBUG, "Assets/Shaders/OpenGL/debug_ui_vert.glsl", "Assets/Shaders/OpenGL/debug_ui_frag.glsl"));
+
+	//Create Controller
+	m_Controller = std::make_unique<UController>(this);
+
+	//Create Physics System
+	m_PhysicsSystem = std::make_unique<UPhysicsSystem>(this);
+
+	//Create Scene
+	m_Scene = std::make_unique<UScene>(this);
+
+	//Create HUD
+	if (m_HUDFactory)
+	{
+		m_HUD = m_HUDFactory(this);
+	}
+	else
+	{
+		ThrowRuntimeError("HUD factory not set!");
+	}
 }
 
 void UApplication::OnInitialize()
 {
 	InitializeAudio();
-	InitializeWindow();
 	InitializeGraphicsApi();
 	InitializeShaders();
 	InitializeController();
@@ -112,7 +170,7 @@ void UApplication::OnUpdate(float DeltaTime)
 	//	0.0f, 1.0f, 0.0f  // Up vector padr�o
 	//);
 
-	
+
 }
 
 void UApplication::OnDestroy()
@@ -165,6 +223,10 @@ void UApplication::LoadConfiguration()
 
 void UApplication::GameLoop()
 {
+	while (m_State != EClassState::CS_Initialized)
+	{
+		FLogger::Log("Waiting Process Initialization...");
+	}
 	m_SoundManager->Update();
 
 	const double targetFrameTime = 1.0 / m_GameConfig.m_FrameRate;
@@ -211,7 +273,7 @@ void UApplication::LoadGameConfiguration()
 
 void UApplication::InitializeAudio()
 {
-	m_SoundManager = std::make_unique<USoundManager>();
+	//m_SoundManager = std::make_unique<USoundManager>();
 	m_SoundManager->Initialize();
 
 	m_SoundManager->SetVolume(ESoundCategory::UI, 0.5);
@@ -223,7 +285,7 @@ void UApplication::InitializeAudio()
 
 void UApplication::InitializeWindow()
 {
-	switch (m_GameConfig.m_WindowType)
+	/*switch (m_GameConfig.m_WindowType)
 	{
 	case EWindowType::WT_GLFW:
 		m_Window = std::make_unique<UWindowGLFW>(this);
@@ -234,7 +296,7 @@ void UApplication::InitializeWindow()
 	default:
 		m_Window = std::make_unique<UWindowSDL>(this);
 		break;
-	}
+	}*/
 
 	if (!m_Window)
 	{
@@ -249,7 +311,7 @@ void UApplication::InitializeWindow()
 
 void UApplication::InitializeController()
 {
-	m_Controller = std::make_unique<UController>(this);
+	/*m_Controller = std::make_unique<UController>(this);*/
 	if (m_Controller)
 	{
 		m_Controller->Initialize();
@@ -262,7 +324,7 @@ void UApplication::InitializeController()
 
 void UApplication::InitializeScene()
 {
-	m_Scene = std::make_unique<UScene>(this);
+	/*m_Scene = std::make_unique<UScene>(this);*/
 	if (m_Scene)
 	{
 		m_Scene->Initialize();
@@ -275,18 +337,18 @@ void UApplication::InitializeScene()
 
 void UApplication::InitializeShaders()
 {
-	UShaders::Register(FShaderAsset(SHADER_DEFAULT, "Assets/Shaders/OpenGL/vert.glsl", "Assets/Shaders/OpenGL/frag.glsl"));
+	/*UShaders::Register(FShaderAsset(SHADER_DEFAULT, "Assets/Shaders/OpenGL/vert.glsl", "Assets/Shaders/OpenGL/frag.glsl"));
 	UShaders::Register(FShaderAsset(SHADER_DEBUG, "Assets/Shaders/OpenGL/debug_vert.glsl", "Assets/Shaders/OpenGL/debug_frag.glsl"));
 	UShaders::Register(FShaderAsset(SHADER_UI, "Assets/Shaders/OpenGL/ui_vert.glsl", "Assets/Shaders/OpenGL/ui_frag.glsl"));
 	UShaders::Register(FShaderAsset(SHADER_UI_TEXT, "Assets/Shaders/OpenGL/ui_text_vert.glsl", "Assets/Shaders/OpenGL/ui_text_frag.glsl"));
-	UShaders::Register(FShaderAsset(SHADER_UI_DEBUG, "Assets/Shaders/OpenGL/debug_ui_vert.glsl", "Assets/Shaders/OpenGL/debug_ui_frag.glsl"));
+	UShaders::Register(FShaderAsset(SHADER_UI_DEBUG, "Assets/Shaders/OpenGL/debug_ui_vert.glsl", "Assets/Shaders/OpenGL/debug_ui_frag.glsl"));*/
 
 	UShaders::Initialize();
 }
 
 void UApplication::InitializeGraphicsApi()
 {
-	switch (m_GameConfig.m_Renderer)
+	/*switch (m_GameConfig.m_Renderer)
 	{
 	case EGraphicsApi::GA_OpenGL:
 		m_GraphicsApi = std::make_unique<UGraphicsApi_OpenGL>(this);
@@ -295,7 +357,7 @@ void UApplication::InitializeGraphicsApi()
 		break;
 	default:
 		break;
-	}
+	}*/
 
 	if (!m_Window)
 	{
@@ -310,7 +372,7 @@ void UApplication::InitializeGraphicsApi()
 
 void UApplication::InitializePhysicsSystem()
 {
-	m_PhysicsSystem = std::make_unique<UPhysicsSystem>(this);
+	/*m_PhysicsSystem = std::make_unique<UPhysicsSystem>(this);*/
 	if (m_PhysicsSystem)
 	{
 		m_PhysicsSystem->Initialize();
@@ -323,20 +385,12 @@ void UApplication::InitializePhysicsSystem()
 
 void UApplication::InitialzieHUD()
 {
-	if (m_HUDFactory)
+	if (m_HUD)
 	{
-		m_HUD = m_HUDFactory(this);
-		if (m_HUD)
-		{
-			m_HUD->Initialize();
-		}
-		else
-		{
-			ThrowRuntimeError("HUD factory returned null!");
-		}
+		m_HUD->Initialize();
 	}
 	else
 	{
-		ThrowRuntimeError("HUD factory not set!");
+		ThrowRuntimeError("HUD factory returned null!");
 	}
 }
