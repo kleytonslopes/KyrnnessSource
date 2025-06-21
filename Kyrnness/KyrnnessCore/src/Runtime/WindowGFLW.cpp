@@ -40,11 +40,11 @@ void UWindowGLFW::Initialize()
 #if DEBUG
 	m_glfwWindow = glfwCreateWindow(GetWidth(), GetHeight(), "Kyrnness OpenGL", nullptr, nullptr);
 #else
-	// Obter o monitor primário e seu modo de vídeo
+	// Obter o monitor primï¿½rio e seu modo de vï¿½deo
 	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
 
-	// Criar janela em fullscreen com a resolução do monitor
+	// Criar janela em fullscreen com a resoluï¿½ï¿½o do monitor
 	m_glfwWindow = glfwCreateWindow(mode->width, mode->height, "Kyrnness OpenGL", primaryMonitor, nullptr);
 #endif
 
@@ -55,7 +55,7 @@ void UWindowGLFW::Initialize()
 	}
 
 #if RELEASE
-	// Atualizar as configurações do jogo com a resolução real
+	// Atualizar as configuraï¿½ï¿½es do jogo com a resoluï¿½ï¿½o real
 	GameConfig& cfg = UApplication::Get().GetGameConfig();
 	cfg.m_Width = mode->width;
 	cfg.m_Height = mode->height;
@@ -115,7 +115,7 @@ void UWindowGLFW::Destroy()
 {
 	glfwTerminate();
 
-	LOG(Warning, "UWindowGLFW::Destroy");
+	FLogger::Warning("UWindowGLFW::Destroy");
 }
 
 void UWindowGLFW::PollEvents()
@@ -200,7 +200,7 @@ void UWindowGLFW::OnMouseButton(int button, int action, int mods)
 		double x, y;
 		glfwGetCursorPos(m_glfwWindow, &x, &y);
 
-		// Converte coordenadas se necessário
+		// Converte coordenadas se necessï¿½rio
 		y = GetHeight() - y; // Inverte Y se seu sistema tem Y para baixo
 
 		// Notifica o InputManager

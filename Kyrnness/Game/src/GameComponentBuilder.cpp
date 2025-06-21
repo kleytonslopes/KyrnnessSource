@@ -6,7 +6,7 @@ using ComponentBuilder = std::function<void(entt::registry&, entt::entity, const
 
 void FGameComponentBuilder::RegisterGameComponents()
 {
-	FComponentBuilder::GetComponentBuilders()["FMyPlayerComponent"] = RegisterMyPlayerComponent(FGameComponentBuilder::GetComponentBuilderParameters());
+	UComponentBuilder::GetComponentBuilders()["FMyPlayerComponent"] = RegisterMyPlayerComponent(FGameComponentBuilder::GetComponentBuilderParameters());
 }
 
 ComponentBuilder FGameComponentBuilder::RegisterMyPlayerComponent(const TComponentBuilder& componentBuilderParameters)

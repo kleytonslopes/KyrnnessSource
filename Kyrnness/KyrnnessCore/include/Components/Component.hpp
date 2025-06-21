@@ -7,7 +7,7 @@
 
 class UApplication;
 
-class FComponent
+class UComponent
 {
 public:
 	entt::entity GetEntityOwner() const { return m_EntityOwner; }
@@ -28,7 +28,7 @@ protected:
 
 
 
-	friend class FComponentBuilder;
+	friend class UComponentBuilder;
 };
 
 #endif// KYRNNES_COMPONENT_HPP

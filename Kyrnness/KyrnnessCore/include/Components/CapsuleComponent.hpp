@@ -7,7 +7,7 @@
 
 class FTransformComponent;
 
-class FCapsuleComponent : public FComponent
+class FCapsuleComponent : public UComponent
 {
 public:
 	FCapsuleComponent();

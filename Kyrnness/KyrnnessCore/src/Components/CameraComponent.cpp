@@ -93,7 +93,7 @@ FMatrix FCameraComponent::GetViewMatrix() const
 
 void FCameraComponent::Initialize()
 {
-	FComponent::Initialize();
+	UComponent::Initialize();
 }
 
 void FCameraComponent::Update(float deltaTime)

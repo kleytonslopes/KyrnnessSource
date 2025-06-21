@@ -16,7 +16,7 @@ UGraphicsApi_OpenGL::UGraphicsApi_OpenGL(UApplication* application)
 	: UGraphicsApi(application)
 	, m_EnttRegistry(application->GetEnttRegistry())
 {
-	LOG(Log, "Initializing OpenGL Graphics API...");
+	FLogger::Log("Initializing OpenGL Graphics API...");
 
 	if (application->GetGraphicsApiType() != EGraphicsApi::GA_OpenGL)
 	{
@@ -229,9 +229,9 @@ void UGraphicsApi_OpenGL::WaitIdle()
 
 void UGraphicsApi_OpenGL::StartFrame()
 {
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glDisableVertexAttribArray(0);
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 

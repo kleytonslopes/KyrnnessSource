@@ -21,7 +21,7 @@ struct FActiveFade
 	EFadeType Type = EFadeType::FadeIn;
 };
 
-class FAudioSourceComponent : public FComponent
+class FAudioSourceComponent : public UComponent
 {
 public:
 	FAudioSourceComponent() = default;

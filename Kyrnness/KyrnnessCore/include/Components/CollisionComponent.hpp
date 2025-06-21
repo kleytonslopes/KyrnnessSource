@@ -4,7 +4,7 @@
 
 #include "Components/Component.hpp"
 
-class FCollisionComponent : public FComponent
+class FCollisionComponent : public UComponent
 {
 public:
 	FCollisionComponent() = default;

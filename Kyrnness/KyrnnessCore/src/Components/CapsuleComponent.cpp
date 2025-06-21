@@ -15,22 +15,22 @@ FCapsuleComponent::FCapsuleComponent()
 
 void FCapsuleComponent::Initialize()
 {
-	FComponent::Initialize();
+	UComponent::Initialize();
 
 	if (m_Application)
 	{
 		FTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
 
 		
-		m_CollisionFilter.data.word0 = CollisionGroup::Player; // Grupo da cápsula
-		m_CollisionFilter.data.word1 = CollisionMask::Environment;    // Máscaras que o raycast pode atingir
+		m_CollisionFilter.data.word0 = CollisionGroup::Player; // Grupo da cï¿½psula
+		m_CollisionFilter.data.word1 = CollisionMask::Environment;    // Mï¿½scaras que o raycast pode atingir
 		//m_CollisionFilter.flags = physx::PxQueryFlag::eSTATIC | physx::PxQueryFlag::eDYNAMIC;
 
-		// Posição
+		// Posiï¿½ï¿½o
 		glm::vec3& location = transformComponent.Location;
 		physx::PxExtendedVec3 pxLocation = physx::PxExtendedVec3{ transformComponent.Location.x, transformComponent.Location.y, transformComponent.Location.z };
 
-		// Rotação
+		// Rotaï¿½ï¿½o
 		//glm::vec3& rotation = transformComponent.Rotation;
 		FQuaternion glmQuat = FQuaternion(glm::radians(transformComponent.Rotation)); // converte Euler -> quat
 		physx::PxQuat pxQuat(glmQuat.X, glmQuat.Y, glmQuat.Z, glmQuat.W);
@@ -55,7 +55,7 @@ void FCapsuleComponent::Initialize()
 
 void FCapsuleComponent::Update(float deltaTime)
 {
-	FComponent::Update(deltaTime);
+	UComponent::Update(deltaTime);
 
 	UpdateVerticalMovement(deltaTime);
 
@@ -95,11 +95,11 @@ void FCapsuleComponent::UpdateVerticalMovement(float deltaTime)
 	// Aplica gravidade
 	m_VerticalVelocity += m_Application->GetScene()->GetGravity() * deltaTime;
 
-	// Aplica pulo (já definido por Jump())
+	// Aplica pulo (jï¿½ definido por Jump())
 	glm::vec3 verticalMove(0.0f, m_VerticalVelocity * deltaTime, 0.0f);
 	Move(verticalMove, 1.0f);
 
-	// Verifica se tocou o chão
+	// Verifica se tocou o chï¿½o
 	if (IsOnGround())
 	{
 		if (m_VerticalVelocity < 0.0f)
@@ -157,7 +157,7 @@ bool FCapsuleComponent::IsOnGround() const
 
 bool FCapsuleComponent::CheckGround(float maxDistance, physx::PxRaycastHit& hitOut) const
 {
-	physx::PxExtendedVec3 origin = m_CapsuleController->getFootPosition(); // base da cápsula
+	physx::PxExtendedVec3 origin = m_CapsuleController->getFootPosition(); // base da cï¿½psula
 	physx::PxVec3 direction = physx::PxVec3(0, -1, 0); // para baixo
 	physx::PxReal distance = maxDistance;
 	physx::PxVec3 startLocation{ (float)origin.x, (float)origin.y, (float)origin.z };
@@ -168,7 +168,7 @@ bool FCapsuleComponent::CheckGround(float maxDistance, physx::PxRaycastHit& hitO
 
 	if (hasHit)
 	{
-		LOG(Log, TEXT("OnHit!"));
+		FLogger::Log("OnHit!");
 		hitOut = hit.block;
 	}
 
@@ -189,29 +189,29 @@ bool FCapsuleComponent::SweepGround(float maxDistance, physx::PxSweepHit& outHit
 
 	physx::PxScene* scene = m_Application->GetPhysicsSystem()->GetScene();
 
-	// Posição da base da cápsula (pé do personagem)
+	// Posiï¿½ï¿½o da base da cï¿½psula (pï¿½ do personagem)
 	physx::PxExtendedVec3 footPos = m_CapsuleController->getFootPosition();
 	
 	physx::PxVec3 origin = physx::PxVec3(footPos.x, footPos.y , footPos.z);
 
-	// Geometria da cápsula
-	physx::PxCapsuleGeometry capsuleGeom(m_Radius, m_Height * 0.5f); // Altura é metade aqui (half-height)
+	// Geometria da cï¿½psula
+	physx::PxCapsuleGeometry capsuleGeom(m_Radius, m_Height * 0.5f); // Altura ï¿½ metade aqui (half-height)
 
-	// Orientação vertical (X = 0, Y = 1, Z = 0)
+	// Orientaï¿½ï¿½o vertical (X = 0, Y = 1, Z = 0)
 	physx::PxQuat rotation = physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1));
 
-	// Direção do sweep (para baixo)
+	// Direï¿½ï¿½o do sweep (para baixo)
 	physx::PxVec3 direction = physx::PxVec3(0, -1, 0);
 
 	physx::PxSweepBuffer hitBuffer;
 	physx::PxQueryFilterData m_CollisionFilterNo;
-	m_CollisionFilterNo.data.word0 = CollisionGroup::Environment; // Grupo da cápsula
-	//m_CollisionFilterNo.data.word1 = CollisionMask::Environment;    // Máscaras que o raycast pode atingir
+	m_CollisionFilterNo.data.word0 = CollisionGroup::Environment; // Grupo da cï¿½psula
+	//m_CollisionFilterNo.data.word1 = CollisionMask::Environment;    // Mï¿½scaras que o raycast pode atingir
 	m_CollisionFilterNo.flags = physx::PxQueryFlag::eSTATIC | physx::PxQueryFlag::eDYNAMIC;
 
 	physx::PxShape* capsuleShape = nullptr;
 	physx::PxRigidDynamic* actor = m_CapsuleController->getActor();
-	actor->getShapes(&capsuleShape, 1); // Assume só 1 shape
+	actor->getShapes(&capsuleShape, 1); // Assume sï¿½ 1 shape
 	
 	physx::PxFilterData pxFOlterDate;
 	pxFOlterDate.word0 = CollisionGroup::Player;
@@ -230,7 +230,7 @@ bool FCapsuleComponent::SweepGround(float maxDistance, physx::PxSweepHit& outHit
 
 	if (hit)
 	{
-		LOG(Log, TEXT("OnHit Sweep!"));
+		FLogger::Log("OnHit Sweep!");
 		outHit = hitBuffer.block;
 	}
 

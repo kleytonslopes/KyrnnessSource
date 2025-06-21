@@ -2,7 +2,7 @@
 #include "Components/Component.hpp"
 #include "Runtime/Application.hpp"
 
-void FComponent::Initialize()
+void UComponent::Initialize()
 {
 	if (m_Application)
 	{
@@ -15,17 +15,17 @@ void FComponent::Initialize()
 	}
 }
 
-void FComponent::SetEntityOwner(entt::entity entity)
+void UComponent::SetEntityOwner(entt::entity entity)
 {
 	m_EntityOwner = entity;
 }
 
-void FComponent::SetApplication(UApplication* application)
+void UComponent::SetApplication(UApplication* application)
 {
 	m_Application = application;
 }
 
-void FComponent::SetCanUpdate(bool canUpdate)
+void UComponent::SetCanUpdate(bool canUpdate)
 {
 	bCanUpdate = canUpdate;
 }

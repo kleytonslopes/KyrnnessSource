@@ -33,11 +33,11 @@ void UScene::Initialize()
 {
 	SetupInputActions();
 
-	TComponentBuilder& comp = FComponentBuilder::GetComponentBuilderParameters();
+	TComponentBuilder& comp = UComponentBuilder::GetComponentBuilderParameters();
 
 	comp.defaultShader = UShaders::GetShader(SHADER_DEFAULT);
 
-	FComponentBuilder::RegisterEngineComponents(comp);
+	UComponentBuilder::RegisterEngineComponents(comp);
 
 	nlohmann::json sceneJson = UAssetManager::LoadJson(m_Application->GetGameConfig().m_MainMenuMap);
 
@@ -117,7 +117,7 @@ TSceneObject* UScene::GetSelectedObject(float mouseX, float mouseY, glm::mat4 pr
 	float screenHeight = m_Application->GetHeight();
 
 	glm::vec3 ray = ScreenPosToWorldRay(mouseX, mouseY, projection, view);
-	glm::vec3 rayOrigin = glm::vec3(glm::inverse(view)[3]); // Posição da câmera
+	glm::vec3 rayOrigin = glm::vec3(glm::inverse(view)[3]); // Posiï¿½ï¿½o da cï¿½mera
 
 	TSceneObject* closestObject = nullptr;
 	float closestDistance = FLT_MAX;
@@ -333,9 +333,9 @@ void UScene::SpawnEntityFromJson(const nlohmann::json& jsonObject)
 		if (obj.contains("Components")) {
 			for (const auto& compJson : obj["Components"]) {
 				std::string type = compJson["Type"];
-				if (FComponentBuilder::Contains(type))
+				if (UComponentBuilder::Contains(type))
 				{
-					FComponentBuilder::Build(type, registry, entity, compJson, sceneObject);
+					UComponentBuilder::Build(type, registry, entity, compJson, sceneObject);
 				}
 				else {
 					std::cerr << "Componente desconhecido: " << type << "\n";

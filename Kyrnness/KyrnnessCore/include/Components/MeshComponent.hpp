@@ -6,7 +6,7 @@
 #include "Components/Component.hpp"
 #include "Content/MeshAsset.hpp"
 
-class FMeshComponent : public FComponent
+class FMeshComponent : public UComponent
 {
 public:
 	FMeshComponent(const std::string& meshName, const std::string& meshFilePath);

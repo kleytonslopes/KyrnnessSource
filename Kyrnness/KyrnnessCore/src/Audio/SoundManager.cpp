@@ -51,6 +51,9 @@ bool USoundManager::Initialize()
 	m_MasterGroup->addGroup(m_VoiceGroup);
 	m_MasterGroup->addGroup(m_UIGroup);
 
+
+	bIsInitialzied = true;
+
 	return true;
 }
 
@@ -72,6 +75,9 @@ void USoundManager::Shutdown()
 
 bool USoundManager::LoadSound(const std::string& name, const std::string& filepath, bool is3D, bool loop, bool stream)
 {
+	if (!bIsInitialzied)
+		return false;
+
 	if (!m_System)
 		return false;
 
@@ -117,6 +123,9 @@ bool USoundManager::LoadSound(const std::string& name, const std::string& filepa
 
 void USoundManager::PlaySound(const std::string& name, ESoundCategory category, float volume, float posX, float posY, float posZ)
 {
+	if (!bIsInitialzied)
+		return;
+
 	if (!m_System)
 		return;
 
@@ -164,6 +173,9 @@ void USoundManager::PlaySound(const std::string& name, ESoundCategory category, 
 
 void USoundManager::PauseAll()
 {
+	if (!bIsInitialzied)
+		return;
+
 	for (auto channel : m_ActiveChannels)
 	{
 		bool isPlaying = false;
@@ -177,6 +189,9 @@ void USoundManager::PauseAll()
 
 void USoundManager::PauseSoundByName(const std::string& soundName, bool pause)
 {
+	if (!bIsInitialzied)
+		return;
+
 	if (!m_System)
 		return;
 
@@ -203,6 +218,9 @@ void USoundManager::PauseSoundByName(const std::string& soundName, bool pause)
 
 void USoundManager::ResumeAll()
 {
+	if (!bIsInitialzied)
+		return;
+
 	for (auto channel : m_ActiveChannels)
 	{
 		bool paused = false;
@@ -216,6 +234,9 @@ void USoundManager::ResumeAll()
 
 void USoundManager::StopAll()
 {
+	if (!bIsInitialzied)
+		return;
+
 	for (auto channel : m_ActiveChannels)
 	{
 		channel->stop();
@@ -225,6 +246,9 @@ void USoundManager::StopAll()
 
 void USoundManager::SetVolumeAll(float volume)
 {
+	if (!bIsInitialzied)
+		return;
+
 	for (auto channel : m_ActiveChannels)
 	{
 		channel->setVolume(volume);
@@ -233,6 +257,9 @@ void USoundManager::SetVolumeAll(float volume)
 
 void USoundManager::SetListenerPosition(float x, float y, float z, float forwardX, float forwardY, float forwardZ, float upX, float upY, float upZ)
 {
+	if (!bIsInitialzied)
+		return;
+
 	if (!m_System) return;
 
 	FMOD_VECTOR pos = { x, y, z };
@@ -246,6 +273,9 @@ void USoundManager::SetListenerPosition(float x, float y, float z, float forward
 
 void USoundManager::SetVolume(ESoundCategory soundGroup, float volume)
 {
+	if (!bIsInitialzied)
+
+		return;
 	switch (soundGroup)
 	{
 	case ESoundCategory::Music:
@@ -272,6 +302,9 @@ void USoundManager::SetVolume(ESoundCategory soundGroup, float volume)
 
 void USoundManager::Update()
 {
+	if (!bIsInitialzied)
+		return;
+
 	if (m_System)
 	{
 		m_System->update();

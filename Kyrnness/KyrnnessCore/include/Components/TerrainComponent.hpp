@@ -6,7 +6,7 @@
 #include "GameFramework/Terrain.hpp"
 #include "Content/MeshAsset.hpp"
 
-class FTerrainComponent : public FComponent
+class FTerrainComponent : public UComponent
 {
 public:
 	FTerrainComponent() = default;

@@ -10,7 +10,7 @@
 
 class FShaderOpenGLComponent;
 
-class FMeshRenderer_OpenGLComponent : public FComponent
+class FMeshRenderer_OpenGLComponent : public UComponent
 {
 public:
 	FMeshRenderer_OpenGLComponent(FMeshAsset& meshAsset,/*std::vector<Vertex> vertices, std::vector<uint32> indices,*/ FShaderOpenGLComponent* shaderComponent);

@@ -3,7 +3,7 @@
 #ifndef KYRNNES_CORE_RUNTIME_APPLICATION_HPP
 #define KYRNNES_CORE_RUNTIME_APPLICATION_HPP
 
-#include "Core/Core.hpp"
+#include "Class.hpp"
 #include "Runtime/Window.hpp"
 #include "Graphics/GraphicsApi.hpp"
 #include "Config/Configuration.hpp"
@@ -27,6 +27,8 @@ enum EWindowType
 
 class UApplication : public UClass
 {
+    using Super = UClass;
+
 public:
     static UApplication& Get();
 
@@ -41,10 +43,8 @@ public:
     UApplication(UApplication&&) = delete;
     UApplication& operator=(UApplication&&) = delete;
 
-    void Initialize() override;
-    void PostInitialize() override;
-    void Update(float DeltaTime) override;
-    void Destroy() override;
+
+
     void OnResolutionUpdated(int newWidth, int newHeght);
     void Run();
 
@@ -119,6 +119,11 @@ public:
 
 protected:
     void LoadConfiguration();
+
+    int OnInitialize() override;
+    int OnPostInitialize() override;
+    int OnUpdate(float DeltaTime) override;
+    int OnDestroy() override;
 
     void GameLoop();
 

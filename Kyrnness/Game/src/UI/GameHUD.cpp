@@ -202,7 +202,7 @@ void UGameHUD::Initialize()
 	auto allButtons = FMemoryManager::GetAll<UUIButton>();
 	for (UUIButton* btn : allButtons)
 	{
-		LOG(Log, TEXT("Button at: %p", btn));
+		FLogger::Log(TEXT("Button at: %p", btn));
 	}
 #endif // TEMP	
 

@@ -6,23 +6,23 @@
 
 
 using ComponentBuilder = std::function<void(entt::registry&, entt::entity, const nlohmann::json&, TSceneObject*)>;
-std::unordered_map<std::string, FComponentBuilder::ComponentBuilder> FComponentBuilder::g_ComponentBuilders;
-TComponentBuilder FComponentBuilder::g_ComponentBuilderParameters;
+std::unordered_map<std::string, UComponentBuilder::ComponentBuilder> UComponentBuilder::g_ComponentBuilders;
+TComponentBuilder UComponentBuilder::g_ComponentBuilderParameters;
 
-bool FComponentBuilder::Contains(const std::string& type)
+bool UComponentBuilder::Contains(const std::string& type)
 {
 	return g_ComponentBuilders.contains(type);
 }
 
-void FComponentBuilder::Build(const std::string& type, entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
+void UComponentBuilder::Build(const std::string& type, entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 {
 	if (Contains(type))
 		g_ComponentBuilders[type](registry, entity, data, sceneObject);
 	else
-		LOG_FATAL(TEXT("FComponentBuilder::Build: Componente desconhecido: %s", type));
+		FLogger::Fatal("UComponentBuilder::Build: Componente desconhecido: %s", type);
 }
 
-void FComponentBuilder::RegisterEngineComponents(const TComponentBuilder& componentBuilderParameters)
+void UComponentBuilder::RegisterEngineComponents(const TComponentBuilder& componentBuilderParameters)
 {
 	g_ComponentBuilders["FIdentityComponent"] = RegisterIdentityComponent(componentBuilderParameters);
 	g_ComponentBuilders["FTransformComponent"] = RegisterTransformComponent(componentBuilderParameters);
@@ -36,7 +36,7 @@ void FComponentBuilder::RegisterEngineComponents(const TComponentBuilder& compon
 	g_ComponentBuilders["FAudioSourceComponent"] = RegisterAudioSourceComponent(componentBuilderParameters);
 }
 
-ComponentBuilder FComponentBuilder::RegisterIdentityComponent(const TComponentBuilder& componentBuilderParameters)
+ComponentBuilder UComponentBuilder::RegisterIdentityComponent(const TComponentBuilder& componentBuilderParameters)
 {
 	return [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 		{
@@ -55,7 +55,7 @@ ComponentBuilder FComponentBuilder::RegisterIdentityComponent(const TComponentBu
 			}
 		};
 }
-ComponentBuilder FComponentBuilder::RegisterTransformComponent(const TComponentBuilder& componentBuilderParameters)
+ComponentBuilder UComponentBuilder::RegisterTransformComponent(const TComponentBuilder& componentBuilderParameters)
 {
 	return [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 		{
@@ -77,7 +77,7 @@ ComponentBuilder FComponentBuilder::RegisterTransformComponent(const TComponentB
 			}
 		};
 }
-ComponentBuilder FComponentBuilder::RegisterCameraComponent(const TComponentBuilder& componentBuilderParameters)
+ComponentBuilder UComponentBuilder::RegisterCameraComponent(const TComponentBuilder& componentBuilderParameters)
 {
 	return  [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 		{
@@ -100,7 +100,7 @@ ComponentBuilder FComponentBuilder::RegisterCameraComponent(const TComponentBuil
 			}
 		};
 }
-ComponentBuilder FComponentBuilder::RegisterMeshComponent(const TComponentBuilder& componentBuilderParameters)
+ComponentBuilder UComponentBuilder::RegisterMeshComponent(const TComponentBuilder& componentBuilderParameters)
 {
 	return [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 		{
@@ -123,7 +123,7 @@ ComponentBuilder FComponentBuilder::RegisterMeshComponent(const TComponentBuilde
 			}
 		};
 }
-ComponentBuilder FComponentBuilder::RegisterInputComponent(const TComponentBuilder& componentBuilderParameters)
+ComponentBuilder UComponentBuilder::RegisterInputComponent(const TComponentBuilder& componentBuilderParameters)
 {
 	return [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 		{
@@ -139,7 +139,7 @@ ComponentBuilder FComponentBuilder::RegisterInputComponent(const TComponentBuild
 			}
 		};
 }
-ComponentBuilder FComponentBuilder::RegisterCapsuleComponent(const TComponentBuilder& componentBuilderParameters)
+ComponentBuilder UComponentBuilder::RegisterCapsuleComponent(const TComponentBuilder& componentBuilderParameters)
 {
 	return [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 		{
@@ -155,7 +155,7 @@ ComponentBuilder FComponentBuilder::RegisterCapsuleComponent(const TComponentBui
 			}
 		};
 }
-ComponentBuilder FComponentBuilder::RegisterPlayerComponent(const TComponentBuilder& componentBuilderParameters)
+ComponentBuilder UComponentBuilder::RegisterPlayerComponent(const TComponentBuilder& componentBuilderParameters)
 {
 	return [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 		{
@@ -172,7 +172,7 @@ ComponentBuilder FComponentBuilder::RegisterPlayerComponent(const TComponentBuil
 		};
 }
 
-ComponentBuilder FComponentBuilder::RegisterBoxCollisionComponent(const TComponentBuilder& componentBuilderParameters)
+ComponentBuilder UComponentBuilder::RegisterBoxCollisionComponent(const TComponentBuilder& componentBuilderParameters)
 {
 	return [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 		{
@@ -189,7 +189,7 @@ ComponentBuilder FComponentBuilder::RegisterBoxCollisionComponent(const TCompone
 		};
 }
 
-ComponentBuilder FComponentBuilder::RegisterTerrainComponent(const TComponentBuilder& componentBuilderParameters)
+ComponentBuilder UComponentBuilder::RegisterTerrainComponent(const TComponentBuilder& componentBuilderParameters)
 {
 	return [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 		{
@@ -219,7 +219,7 @@ ComponentBuilder FComponentBuilder::RegisterTerrainComponent(const TComponentBui
 		};
 }
 
-ComponentBuilder FComponentBuilder::RegisterAudioSourceComponent(const TComponentBuilder& componentBuilderParameters)
+ComponentBuilder UComponentBuilder::RegisterAudioSourceComponent(const TComponentBuilder& componentBuilderParameters)
 {
 	return [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
 		{

@@ -29,18 +29,18 @@ UApplication::UApplication()
 
 UApplication::~UApplication()
 {
-	
+
 }
 
 void UApplication::Run()
 {
-	LOG(Log, "Initializing Application...");
+	FLogger::Log("Initializing Application...");
 
 	Initialize();
 	PostInitialize();
 }
 
-void UApplication::Initialize()
+int UApplication::OnInitialize()
 {
 	UInputManager::Get().SetupApplication(this);
 
@@ -53,15 +53,19 @@ void UApplication::Initialize()
 	InitializePhysicsSystem();
 	InitializeScene();
 	InitialzieHUD();
+
+	return UClass::OnPostInitialize();
 }
 
-void UApplication::PostInitialize()
+int UApplication::OnPostInitialize()
 {
 	//UApplication::Get().GetSoundManager()->PlaySound("music");
 	GameLoop();
+
+	return UClass::OnPostInitialize();
 }
 
-void UApplication::Update(float DeltaTime)
+int UApplication::OnUpdate(float DeltaTime)
 {
 	m_GraphicsApi->DrawFrame(m_DeltaTime);
 
@@ -86,22 +90,24 @@ void UApplication::Update(float DeltaTime)
 
 
 	m_Scene->ProcessEditMode();
-	
+
 	USoundManager::Get().SetListenerPosition(
 		0, 0, 0,
 		1, 0, 0,
-		0.0f, 1.0f, 0.0f  // Up vector padrão
+		0.0f, 1.0f, 0.0f  // Up vector padrï¿½o
 	);
 
-	
+
 	//USoundManager::Get().SetListenerPosition(
 	//	playerPos.x, playerPos.y, playerPos.z,
 	//	playerForward.x, playerForward.y, playerForward.z,
-	//	0.0f, 1.0f, 0.0f  // Up vector padrão
+	//	0.0f, 1.0f, 0.0f  // Up vector padrï¿½o
 	//);
+
+	return OnUpdate(DeltaTime);
 }
 
-void UApplication::Destroy()
+int UApplication::OnDestroy()
 {
 	m_SoundManager->Shutdown();
 
@@ -109,7 +115,9 @@ void UApplication::Destroy()
 
 	m_Window->Destroy();
 
-	LOG(Warning, "UApplication::Destroy");
+	FLogger::Warning("UApplication::Destroy");
+
+	return OnDestroy();
 }
 
 void UApplication::OnResolutionUpdated(int newWidth, int newHeght)
@@ -155,7 +163,7 @@ void UApplication::GameLoop()
 
 	FTime currentTime = FTime::Now();
 
-	// Controle de FPS para o título da janela
+	// Controle de FPS para o tï¿½tulo da janela
 	int frameCount = 0;
 	double fpsTimer = 0.0;
 	bool show_demo_window = true;
@@ -259,11 +267,11 @@ void UApplication::InitializeScene()
 
 void UApplication::InitializeShaders()
 {
-	UShaders::Register(FShaderAsset( SHADER_DEFAULT ,"Assets/Shaders/OpenGL/vert.glsl"            , "Assets/Shaders/OpenGL/frag.glsl" ));
-	UShaders::Register(FShaderAsset( SHADER_DEBUG   ,"Assets/Shaders/OpenGL/debug_vert.glsl"      , "Assets/Shaders/OpenGL/debug_frag.glsl" ));
-	UShaders::Register(FShaderAsset( SHADER_UI      ,"Assets/Shaders/OpenGL/ui_vert.glsl"         , "Assets/Shaders/OpenGL/ui_frag.glsl"  ));
-	UShaders::Register(FShaderAsset( SHADER_UI_TEXT ,"Assets/Shaders/OpenGL/ui_text_vert.glsl"    , "Assets/Shaders/OpenGL/ui_text_frag.glsl"  ));
-	UShaders::Register(FShaderAsset( SHADER_UI_DEBUG,"Assets/Shaders/OpenGL/debug_ui_vert.glsl"   , "Assets/Shaders/OpenGL/debug_ui_frag.glsl"  ));
+	UShaders::Register(FShaderAsset(SHADER_DEFAULT, "Assets/Shaders/OpenGL/vert.glsl", "Assets/Shaders/OpenGL/frag.glsl"));
+	UShaders::Register(FShaderAsset(SHADER_DEBUG, "Assets/Shaders/OpenGL/debug_vert.glsl", "Assets/Shaders/OpenGL/debug_frag.glsl"));
+	UShaders::Register(FShaderAsset(SHADER_UI, "Assets/Shaders/OpenGL/ui_vert.glsl", "Assets/Shaders/OpenGL/ui_frag.glsl"));
+	UShaders::Register(FShaderAsset(SHADER_UI_TEXT, "Assets/Shaders/OpenGL/ui_text_vert.glsl", "Assets/Shaders/OpenGL/ui_text_frag.glsl"));
+	UShaders::Register(FShaderAsset(SHADER_UI_DEBUG, "Assets/Shaders/OpenGL/debug_ui_vert.glsl", "Assets/Shaders/OpenGL/debug_ui_frag.glsl"));
 
 	UShaders::Initialize();
 }

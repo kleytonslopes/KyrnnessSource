@@ -5,7 +5,7 @@
 
 #include "Components/Component.hpp"
 
-class FIdentityComponent : public FComponent
+class FIdentityComponent : public UComponent
 {
 public:
 	FIdentityComponent(const std::string& objectName);

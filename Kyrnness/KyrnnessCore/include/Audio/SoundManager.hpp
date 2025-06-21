@@ -65,6 +65,8 @@ private:
     FMOD::ChannelGroup* m_SFXGroup = nullptr;
     FMOD::ChannelGroup* m_AmbientGroup = nullptr;
     FMOD::ChannelGroup* m_VoiceGroup = nullptr;
+
+    bool bIsInitialzied = false;
 };
 
 #endif // KYRNNESS_AUDIO_SOUNDMANAGER_HPP

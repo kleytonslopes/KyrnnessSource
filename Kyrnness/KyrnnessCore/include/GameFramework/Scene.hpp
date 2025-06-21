@@ -9,7 +9,7 @@
 class UApplication;
 class FShaderOpenGLComponent;
 class FCameraComponent;
-class FComponent;
+class UComponent;
 
 struct TSceneObject
 {
@@ -29,7 +29,7 @@ public:
 
 	bool bIsSelectable = true;
 
-	std::unordered_map<std::string, FComponent*> m_Components;
+	std::unordered_map<std::string, UComponent*> m_Components;
 
 	void SetPosition(const glm::vec3& position);
 	void SetRotation(const glm::vec3& rotation);

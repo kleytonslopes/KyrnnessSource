@@ -27,11 +27,6 @@ namespace krnformat
 		std::snprintf(buf.get(), size, format.c_str(), args ...);
 		return std::string(buf.get(), buf.get() + size - 1);
 	}
-
-#define TEXT(X, ...)                      \
-	{                                         \
-		krnformat::str_format(X, ##__VA_ARGS__).c_str() \
-	}
 }
 
 struct FText
@@ -39,7 +34,7 @@ struct FText
 	template<typename ... Args>
 	static std::string Format(const std::string& format, Args ... args)
 	{
-		return TEXT(format, args ...);
+		return krnformat::str_format(format, args ...);
 	}
 
 	static std::string Replace(const std::string& text, const std::string& repl, const std::string& remov)

@@ -4,7 +4,7 @@
 
 #include "Components/Component.hpp"
 
-class FPlayerComponent : public FComponent
+class FPlayerComponent : public UComponent
 {
 	using InputAction = std::function<void(int)>;
 

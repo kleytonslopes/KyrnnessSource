@@ -7,7 +7,7 @@
 
 struct FTransformComponent;
 
-class FCameraComponent : public FComponent
+class FCameraComponent : public UComponent
 {
 public:
 	float Fov = 45.0f;

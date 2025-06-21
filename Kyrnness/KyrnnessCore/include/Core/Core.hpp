@@ -66,9 +66,11 @@ using int64 = us::types::FCommonTypes::StInt64;
 //using Time = std::chrono::high_resolution_clock::time_point;
 //using Seconds = std::chrono::seconds;
 
-#define ThrowRuntimeError(A) krn::core::FException::RuntimeError(A)
-#define ThrowInvalidArgument(A) krn::core::FException::InvalidArgument(A)
+#define ThrowRuntimeError(A) FException::RuntimeError(A)
+#define ThrowInvalidArgument(A) FException::InvalidArgument(A)
 
+#define KYRN_FAIL                 0
+#define KYRN_SUCCESS              1
 
 class FTime
 {

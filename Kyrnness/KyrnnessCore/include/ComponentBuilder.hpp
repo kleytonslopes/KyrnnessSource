@@ -16,7 +16,7 @@ struct TComponentBuilder
 	UApplication* application = nullptr;
 };
 
-class FComponentBuilder
+class UComponentBuilder
 {
 	using ComponentBuilder = std::function<void(entt::registry&, entt::entity, const nlohmann::json&, TSceneObject*)>;
 	static std::unordered_map<std::string, ComponentBuilder> g_ComponentBuilders;

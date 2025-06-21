@@ -4,7 +4,7 @@
 
 #include "Components/Component.hpp"
 
-class FShaderOpenGLComponent : public FComponent
+class FShaderOpenGLComponent : public UComponent
 {
 public:
 	FShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile);

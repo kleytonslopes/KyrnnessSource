@@ -4,7 +4,7 @@
 
 #include "Components/Component.hpp"
 
-class FInputComponent : public FComponent
+class FInputComponent : public UComponent
 {
 public:
 	FInputComponent() = default;

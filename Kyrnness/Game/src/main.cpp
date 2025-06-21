@@ -29,7 +29,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 1;
 	}
 
-	TComponentBuilder& comp = FComponentBuilder::GetComponentBuilderParameters();
+	TComponentBuilder& comp = UComponentBuilder::GetComponentBuilderParameters();
 	comp.application = &UApplication::Get();
 
 	UApplication::Get().SetHUDClass<UGameHUD>();

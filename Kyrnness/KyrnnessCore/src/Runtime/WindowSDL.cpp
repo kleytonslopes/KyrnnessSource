@@ -21,7 +21,7 @@ void UWindowSDL::Destroy()
 	SDL_DestroyWindow(m_SdlWindow);
 	SDL_Quit();
 
-	LOG(Warning, "UWindowSDL::Destroy");
+	FLogger::Warning("UWindowSDL::Destroy");
 }
 
 void UWindowSDL::PollEvents()

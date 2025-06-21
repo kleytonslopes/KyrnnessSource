@@ -7,7 +7,7 @@
 //extern void DrawQuad(float x, float y, float w, float h, GLuint tex, const glm::vec4 color);
 
 //float vertices[] = {
-//	// Posições (x, y)   // UVs (u, v)
+//	// Posiï¿½ï¿½es (x, y)   // UVs (u, v)
 // -0.5f, -0.5f,        0.0f, 0.0f,
 //  0.5f, -0.5f,        1.0f, 0.0f,
 // -0.5f,  0.5f,        0.0f, 1.0f,
@@ -60,7 +60,7 @@ void UUIButton::OnMouseEnter(double mouseX, double mouseY)
 
 		if (hovered && m_MouseFocusState != EMouseFocusState::MFS_MouseEnter)
 		{
-			//LOG(Log, TEXT("Mouse Entered UIButton: x= %f , y= %f", mouseX, mouseY));
+			//FLogger::Log("Mouse Entered UIButton: x= %f , y= %f", mouseX, mouseY);
 
 			m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
 			if (OnHovered) OnHovered(true);
@@ -84,7 +84,7 @@ void UUIButton::OnMouseLeave(double mouseX, double mouseY)
 
 			if (!hovered && m_MouseFocusState != EMouseFocusState::MFS_None)
 			{
-				//LOG(Log, TEXT("Mouse Leave UIButton: x= %f , y= %f", mouseX, mouseY));
+				//FLogger::Log("Mouse Leave UIButton: x= %f , y= %f", mouseX, mouseY);
 
 				m_MouseFocusState = EMouseFocusState::MFS_None;
 				if (OnHovered) OnHovered(false);
@@ -106,7 +106,7 @@ void UUIButton::OnUpdateMouseFocus(double mouseX, double mouseY)
 		// Mouse acabou de entrar
 		hovered = true;
 		m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
-		LOG(Log, TEXT("Mouse Entered UIButton: x= %f , y= %f", mouseX, mouseY));
+		FLogger::Log("Mouse Entered UIButton: x= %f , y= %f", mouseX, mouseY);
 
 		if (OnHovered) OnHovered(true);
 	}
@@ -115,7 +115,7 @@ void UUIButton::OnUpdateMouseFocus(double mouseX, double mouseY)
 		// Mouse acabou de sair
 		hovered = false;
 		m_MouseFocusState = EMouseFocusState::MFS_None;
-		LOG(Log, TEXT("Mouse Leave UIButton: x= %f , y= %f", mouseX, mouseY));
+		FLogger::Log("Mouse Leave UIButton: x= %f , y= %f", mouseX, mouseY);
 
 		if (OnHovered) OnHovered(false);
 	}

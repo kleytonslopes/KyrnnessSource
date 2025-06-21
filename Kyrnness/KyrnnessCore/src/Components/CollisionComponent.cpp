@@ -6,7 +6,7 @@
 
 void FCollisionComponent::Initialize()
 {
-	FComponent::Initialize();
+	UComponent::Initialize();
 
 	FTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
 	FMeshComponent& meshComponent = m_Application->GetEnttRegistry().get<FMeshComponent>(m_EntityOwner);
