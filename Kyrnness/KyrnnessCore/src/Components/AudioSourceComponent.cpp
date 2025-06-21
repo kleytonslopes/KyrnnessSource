@@ -4,7 +4,7 @@
 #include "Audio/SoundManager.hpp"
 #include "Runtime/Application.hpp"
 
-void FAudioSourceComponent::Update(float deltaTime)
+void FAudioSourceComponent::OnUpdate(float DeltaTime)
 {
     FTransformComponent& transform = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
 
@@ -26,7 +26,7 @@ void FAudioSourceComponent::Update(float deltaTime)
     for (auto it = m_ActiveFades.begin(); it != m_ActiveFades.end(); )
     {
         FActiveFade& fade = *it;
-        fade.Elapsed += deltaTime;
+        fade.Elapsed += DeltaTime;
 
         float t = glm::clamp(fade.Elapsed / fade.Duration, 0.0f, 1.0f);
         float newVolume = glm::mix(fade.StartVolume, fade.TargetVolume, t);
@@ -49,6 +49,8 @@ void FAudioSourceComponent::Update(float deltaTime)
             ++it;
         }
     }
+
+    Super::OnUpdate(DeltaTime);
 }
 
 void FAudioSourceComponent::Play()

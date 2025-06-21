@@ -6,6 +6,8 @@
 
 class FCollisionComponent : public UComponent
 {
+	using Super = UComponent;
+
 public:
 	FCollisionComponent() = default;
 
@@ -14,8 +16,6 @@ public:
 	FCollisionComponent(FCollisionComponent&&) = delete;
 	FCollisionComponent& operator=(FCollisionComponent&&) = delete;
 
-	virtual void Initialize() override;
-	virtual void Update(float deltaTime) override;
 	virtual nlohmann::json GetJsonData() override;
 
 	void SetMass(float mass);
@@ -29,6 +29,8 @@ protected:
 
 	physx::PxRigidStatic* m_BodyStatic = nullptr;
 	physx::PxRigidDynamic* m_BodyDynamic = nullptr;
+
+	void OnInitialize() override;
 };
 
 #endif // KYRNNESS_COLLISION_COMPONENT_HPP

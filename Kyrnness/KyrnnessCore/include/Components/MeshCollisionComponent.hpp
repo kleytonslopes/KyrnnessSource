@@ -8,6 +8,7 @@
 
 class FMeshCollisionComponent : public FCollisionComponent
 {
+	using Super = UComponent;
 public:
 	FMeshCollisionComponent() = default;
 	virtual ~FMeshCollisionComponent() = default;
@@ -17,7 +18,6 @@ public:
 	FMeshCollisionComponent(FMeshCollisionComponent&&) = delete;
 	FMeshCollisionComponent& operator=(FMeshCollisionComponent&&) = delete;
 
-	void Initialize() override;
 
 	void SetMeshAsset(const FMeshAsset& meshAsset);
 

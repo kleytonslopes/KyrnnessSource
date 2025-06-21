@@ -37,14 +37,20 @@ void UApplication::Run()
 	FLogger::Log("Initializing Application...");
 
 	Initialize();
-	PostInitialize();
+
+	GameLoop();
 }
 
-int UApplication::OnInitialize()
+void UApplication::PreInitialize()
 {
+	Super::PreInitialize();
+	
 	UInputManager::Get().SetupApplication(this);
-
 	LoadConfiguration();
+}
+
+void UApplication::OnInitialize()
+{
 	InitializeAudio();
 	InitializeWindow();
 	InitializeGraphicsApi();
@@ -54,19 +60,21 @@ int UApplication::OnInitialize()
 	InitializeScene();
 	InitialzieHUD();
 
-	return UClass::OnPostInitialize();
+	Super::OnInitialize();
 }
 
-int UApplication::OnPostInitialize()
+void UApplication::OnPostInitialize()
 {
 	//UApplication::Get().GetSoundManager()->PlaySound("music");
-	GameLoop();
+	//GameLoop();
 
-	return UClass::OnPostInitialize();
+	UClass::OnPostInitialize();
 }
 
-int UApplication::OnUpdate(float DeltaTime)
+void UApplication::OnUpdate(float DeltaTime)
 {
+	Super::OnUpdate(DeltaTime);
+
 	m_GraphicsApi->DrawFrame(m_DeltaTime);
 
 	OnUpdateEvent.Broadcast(m_DeltaTime);
@@ -104,10 +112,10 @@ int UApplication::OnUpdate(float DeltaTime)
 	//	0.0f, 1.0f, 0.0f  // Up vector padr�o
 	//);
 
-	return OnUpdate(DeltaTime);
+	
 }
 
-int UApplication::OnDestroy()
+void UApplication::OnDestroy()
 {
 	m_SoundManager->Shutdown();
 
@@ -117,7 +125,7 @@ int UApplication::OnDestroy()
 
 	FLogger::Warning("UApplication::Destroy");
 
-	return OnDestroy();
+	Super::OnDestroy();
 }
 
 void UApplication::OnResolutionUpdated(int newWidth, int newHeght)

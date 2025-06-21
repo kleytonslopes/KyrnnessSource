@@ -13,24 +13,22 @@ FCapsuleComponent::FCapsuleComponent()
 
 }
 
-void FCapsuleComponent::Initialize()
+void FCapsuleComponent::OnInitialize()
 {
-	UComponent::Initialize();
-
 	if (m_Application)
 	{
 		FTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
 
 		
-		m_CollisionFilter.data.word0 = CollisionGroup::Player; // Grupo da c�psula
-		m_CollisionFilter.data.word1 = CollisionMask::Environment;    // M�scaras que o raycast pode atingir
+		m_CollisionFilter.data.word0 = CollisionGroup::Player; // Grupo da capsula
+		m_CollisionFilter.data.word1 = CollisionMask::Environment;    // Mascaras que o raycast pode atingir
 		//m_CollisionFilter.flags = physx::PxQueryFlag::eSTATIC | physx::PxQueryFlag::eDYNAMIC;
 
-		// Posi��o
+		// Posicao
 		glm::vec3& location = transformComponent.Location;
 		physx::PxExtendedVec3 pxLocation = physx::PxExtendedVec3{ transformComponent.Location.x, transformComponent.Location.y, transformComponent.Location.z };
 
-		// Rota��o
+		// Rotacao
 		//glm::vec3& rotation = transformComponent.Rotation;
 		FQuaternion glmQuat = FQuaternion(glm::radians(transformComponent.Rotation)); // converte Euler -> quat
 		physx::PxQuat pxQuat(glmQuat.X, glmQuat.Y, glmQuat.Z, glmQuat.W);
@@ -51,18 +49,20 @@ void FCapsuleComponent::Initialize()
 
 		m_TransformComponent = &transformComponent;
 	}
+
+	Super::OnInitialize();
 }
 
-void FCapsuleComponent::Update(float deltaTime)
+void FCapsuleComponent::OnUpdate(float DeltaTime)
 {
-	UComponent::Update(deltaTime);
-
-	UpdateVerticalMovement(deltaTime);
+	UpdateVerticalMovement(DeltaTime);
 
 	// Atualiza transform
 	physx::PxExtendedVec3 pos = m_CapsuleController->getPosition();
 	//glm::vec3 newPos(static_cast<float>(pos.x), static_cast<float>(pos.y), static_cast<float>(pos.z));
 	m_TransformComponent->Location = ToVec3(pos);
+
+	Super::OnUpdate(DeltaTime);
 }
 
 nlohmann::json FCapsuleComponent::GetJsonData()

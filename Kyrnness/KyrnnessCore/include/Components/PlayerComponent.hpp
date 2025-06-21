@@ -6,8 +6,8 @@
 
 class FPlayerComponent : public UComponent
 {
+	using Super = UComponent;
 	using InputAction = std::function<void(int)>;
-
 public:
 	FPlayerComponent() = default;
 	virtual ~FPlayerComponent() = default;
@@ -17,9 +17,11 @@ public:
 	FPlayerComponent(FPlayerComponent&&) = delete;
 	FPlayerComponent& operator=(FPlayerComponent&&) = delete;
 
-	virtual void Initialize();
 	virtual void SetupPlayerInput();
-	virtual void Update(float deltaTime);
+	
+	void Update(float deltaTime) override { Super::Update(deltaTime); }
+	void OnUpdate(float deltaTime) override;
+
 	void UpdateVerticalMovement(float deltaTime);
 
 	void OnKeyPressed(int keyCode, int status);
@@ -41,6 +43,8 @@ protected:
 	bool bWantMoveDown = false;
 	bool bWantMoveUp = false;
 	bool bWantJump = false;
+
+	void OnInitialize() override;
 
 	void MoveForward(float deltaTime);
 	void MoveBackward(float deltaTime);

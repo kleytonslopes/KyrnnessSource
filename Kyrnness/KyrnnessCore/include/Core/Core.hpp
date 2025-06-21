@@ -69,8 +69,14 @@ using int64 = us::types::FCommonTypes::StInt64;
 #define ThrowRuntimeError(A) FException::RuntimeError(A)
 #define ThrowInvalidArgument(A) FException::InvalidArgument(A)
 
-#define KYRN_FAIL                 0
-#define KYRN_SUCCESS              1
+#define	KYRNNES_FAIL    0,
+#define	KYRNNES_SUCCESS 1
+
+struct FKyrnnessResult
+{
+	bool bSuccess = true;
+	std::string Message;
+};
 
 class FTime
 {

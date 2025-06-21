@@ -6,6 +6,8 @@
 
 class FBoxCollisionComponent : public FCollisionComponent
 {
+	using Super = FCollisionComponent;
+
 public:
 	FBoxCollisionComponent() = default;
 
@@ -13,9 +15,6 @@ public:
 	FBoxCollisionComponent& operator=(const FBoxCollisionComponent&) = delete;
 	FBoxCollisionComponent(FBoxCollisionComponent&&) = delete;
 	FBoxCollisionComponent& operator=(FBoxCollisionComponent&&) = delete;
-
-	virtual void Initialize() override;
-	virtual void Update(float deltaTime) override;
 
 	virtual nlohmann::json GetJsonData() override;
 };

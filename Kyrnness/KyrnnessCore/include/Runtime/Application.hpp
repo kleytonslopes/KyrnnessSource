@@ -120,10 +120,11 @@ public:
 protected:
     void LoadConfiguration();
 
-    int OnInitialize() override;
-    int OnPostInitialize() override;
-    int OnUpdate(float DeltaTime) override;
-    int OnDestroy() override;
+    void PreInitialize() override;
+    void OnInitialize() override;
+    void OnPostInitialize() override;
+    void OnUpdate(float DeltaTime) override;
+    void OnDestroy() override;
 
     void GameLoop();
 

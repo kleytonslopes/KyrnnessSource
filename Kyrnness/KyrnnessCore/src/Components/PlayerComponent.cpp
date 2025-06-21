@@ -10,9 +10,11 @@
 
 using InputAction = std::function<void(int)>;
 
-void FPlayerComponent::Initialize()
+void FPlayerComponent::OnInitialize()
 {
 	SetupPlayerInput();
+
+	Super::OnInitialize();
 }
 
 void FPlayerComponent::SetupPlayerInput()
@@ -29,8 +31,10 @@ void FPlayerComponent::SetupPlayerInput()
 	}
 }
 
-void FPlayerComponent::Update(float deltaTime)
+void FPlayerComponent::OnUpdate(float deltaTime)
 {
+	Super::OnUpdate(deltaTime);
+
 	if (UInputManager::Get().GetInputMode() == EInputMode::EIM_UI)
 		return;
 
@@ -41,6 +45,8 @@ void FPlayerComponent::Update(float deltaTime)
 	if (bWantMoveDown) MoveDown(deltaTime);
 	if (bWantMoveUp) MoveUp(deltaTime);
 	if (bWantJump) Jump(deltaTime);
+
+	
 }
 
 void FPlayerComponent::UpdateVerticalMovement(float deltaTime)

@@ -2,7 +2,7 @@
 #include "Components/Component.hpp"
 #include "Runtime/Application.hpp"
 
-void UComponent::Initialize()
+void UComponent::OnInitialize()
 {
 	if (m_Application)
 	{
@@ -13,6 +13,8 @@ void UComponent::Initialize()
 			}
 			});
 	}
+
+	Super::OnInitialize();
 }
 
 void UComponent::SetEntityOwner(entt::entity entity)

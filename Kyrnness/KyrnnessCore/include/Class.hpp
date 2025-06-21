@@ -5,30 +5,39 @@
 
 #include "Core/Core.hpp"
 
-enum class EClassState //: uint8
+enum EClassState //: uint8
 {
-	CS_None         = 0,
-	CS_Initializing = 1,
-	CS_Initialized  = 2,
+	CS_None,
+	CS_Initializing,
+	CS_Initialized,
+	CS_Destroying,
+	CS_Destroyed,
 };
-
-
 
 class UClass
 {
 public:
-	virtual int Initialize();
-	virtual int PostInitialize();
-	virtual int Update(float DeltaTime);
-	virtual int Destroy();
+	UClass() = default;
+
+	bool operator==(const UClass& other) const = default;
+
+	virtual void Initialize();
+	virtual void Update(float DeltaTime);
+	virtual void Destroy();
 
 protected:
+	bool bCanUpdate = true;
 	EClassState m_State = EClassState::CS_None;
+	
+	virtual void PreInitialize();
 
-	virtual int OnInitialize();
-	virtual int OnPostInitialize();
-	virtual int OnUpdate(float DeltaTime);
-	virtual int OnDestroy();
+	virtual void OnInitialize();
+	virtual void OnPostInitialize();
+	virtual void OnUpdate(float DeltaTime);
+	virtual void OnDestroy();
+	
+	virtual void PostInitialize();
+
 };
 
 #endif // KYRNNESS_CLASS_HPP;

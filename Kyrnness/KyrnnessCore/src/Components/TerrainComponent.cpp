@@ -3,7 +3,7 @@
 #include "Components/TransformComponent.hpp"
 #include "Runtime/Application.hpp"
 
-void FTerrainComponent::Initialize()
+void FTerrainComponent::OnInitialize()
 {
 	UTerrain::GenerateTerrain(m_Noise, m_Amplitude, m_Width, m_Height, m_TileSize, m_MeshAsset.vertices, m_MeshAsset.indices);
 
@@ -18,6 +18,8 @@ void FTerrainComponent::Initialize()
 	}
 
 	auto* mesh = m_Application->GetPhysicsSystem()->CreateTriangleMeshCollision(positions, m_MeshAsset.indices, glm::vec3{ 0.f }, glm::vec3{ 0.f }, glm::vec3{ 1.f });
+
+	Super::OnInitialize();
 }
 
 std::vector<Vertex> FTerrainComponent::GetVertices() const

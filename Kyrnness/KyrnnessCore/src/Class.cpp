@@ -1,51 +1,98 @@
 #include "pch.hpp"
 #include "Class.hpp"
 
-int UClass::Initialize()
+void UClass::Initialize()
 {
-	m_State = EClassState::CS_Initializing;
+	using enum EClassState;
 
-	return KYRN_SUCCESS;
-}
-
-int UClass::PostInitialize()
-{
-	if (m_State != EClassState::CS_Initializing)
+	if (m_State == EClassState::CS_Initializing || m_State == EClassState::CS_Initialized)
 	{
-		return KYRN_FAIL;
+		FLogger::Error("The Object is already being Initialized or has already been initialized");
+		return;
 	}
 
+	if (m_State == EClassState::CS_Destroying || m_State == EClassState::CS_Destroyed)
+	{
+		FLogger::Error("Attempt to Initialize an Object that is or has been destroyed!");
+		return;
+	}
+
+	m_State = EClassState::CS_Initializing;
+
+	PreInitialize();
+
+	OnInitialize();
+
+	PostInitialize();
+
 	m_State = EClassState::CS_Initialized;
-
-	return KYRN_SUCCESS;
 }
 
-int UClass::Update(float DeltaTime)
+void UClass::PreInitialize()
 {
-	return KYRN_SUCCESS;
+
 }
 
-int UClass::Destroy()
+void UClass::PostInitialize()
 {
-	return KYRN_SUCCESS;
+	using enum EClassState;
+
+	if (m_State == EClassState::CS_Destroying || m_State == EClassState::CS_Destroyed)
+	{
+		FLogger::Error("Attempt to process Initialization of an Object that is or has been destroyed!");
+	}
+
+	if (m_State != EClassState::CS_Initializing)
+	{
+		FLogger::Error("Attempting to process Initialization of an Object that is not being Initialized!");
+	}
+
+	OnPostInitialize();
 }
 
-int UClass::OnInitialize()
+void UClass::Update(float DeltaTime)
 {
-	return KYRN_SUCCESS;
+	if (m_State == EClassState::CS_Destroying || m_State == EClassState::CS_Destroyed)
+		return;
+
+	if (!bCanUpdate)
+		return;
+
+	if (m_State != EClassState::CS_Initialized)
+		return;
+
+	OnUpdate(DeltaTime);
 }
 
-int UClass::OnPostInitialize()
+void UClass::Destroy()
 {
-	return KYRN_SUCCESS;
+	if (m_State == EClassState::CS_Destroying || m_State == EClassState::CS_Destroyed)
+	{
+		FLogger::Error("Attempt to destroy an object that is already being destroyed!");
+		return;
+	}
+
+	FLogger::Warning("Destroying Object...");
+
+	m_State = EClassState::CS_Destroying;
+
+	OnDestroy();
+
+	m_State = EClassState::CS_Destroyed;
 }
 
-int UClass::OnUpdate(float DeltaTime)
+void UClass::OnInitialize()
 {
-	return KYRN_SUCCESS;
 }
 
-int UClass::OnDestroy()
+void UClass::OnPostInitialize()
 {
-	return KYRN_SUCCESS;
+}
+
+void UClass::OnUpdate(float DeltaTime)
+{
+}
+
+void UClass::OnDestroy()
+{
 }

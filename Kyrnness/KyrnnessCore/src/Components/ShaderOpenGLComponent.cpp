@@ -7,13 +7,15 @@ FShaderOpenGLComponent::FShaderOpenGLComponent(const std::string& shaderName, co
 {
 }
 
-void FShaderOpenGLComponent::Initialize()
+void FShaderOpenGLComponent::OnInitialize()
 {
 	LoadShaderFiles();
 	CreateProgram();
+
+	Super::OnInitialize();
 }
 
-void FShaderOpenGLComponent::Destroy()
+void FShaderOpenGLComponent::OnDestroy()
 {
 	if (m_ShaderProgramId != 0)
 	{
@@ -32,6 +34,8 @@ void FShaderOpenGLComponent::Destroy()
 		glDeleteShader(m_FragmentShaderId);
 		m_FragmentShaderId = 0;
 	}
+
+	Super::OnDestroy();
 }
 
 void FShaderOpenGLComponent::Bind()

@@ -6,6 +6,7 @@
 
 class FShaderOpenGLComponent : public UComponent
 {
+	using Super = UComponent;
 public:
 	FShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile);
 	virtual ~FShaderOpenGLComponent() = default;
@@ -15,8 +16,7 @@ public:
 	FShaderOpenGLComponent(FShaderOpenGLComponent&&) = delete;
 	FShaderOpenGLComponent& operator=(FShaderOpenGLComponent&&) = delete;
 
-	virtual void Initialize();
-	virtual void Destroy();
+	
 	virtual void Bind();
 	virtual void Unbind();
 
@@ -48,6 +48,9 @@ private:
 	uint32 m_ShaderProgramId = 0;
 	uint32 m_VertexShaderId = 0;
 	uint32 m_FragmentShaderId = 0;
+
+	void OnInitialize() override;
+	void OnDestroy() override;
 
 	void LoadShaderFiles();
 	void CreateProgram();

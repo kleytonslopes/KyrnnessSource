@@ -11,7 +11,7 @@ FMeshRenderer_OpenGLComponent::FMeshRenderer_OpenGLComponent(FMeshAsset& meshAss
 	Initialize();
 }
 
-void FMeshRenderer_OpenGLComponent::Initialize()
+void FMeshRenderer_OpenGLComponent::OnInitialize()
 {
 	CreateVAO();
 	CreateVBO();
@@ -34,6 +34,8 @@ void FMeshRenderer_OpenGLComponent::Initialize()
 
 
 	glBindVertexArray(0);
+
+	Super::OnInitialize();
 
 }
 

@@ -12,6 +12,7 @@ class FShaderOpenGLComponent;
 
 class FMeshRenderer_OpenGLComponent : public UComponent
 {
+	using Super = UComponent;
 public:
 	FMeshRenderer_OpenGLComponent(FMeshAsset& meshAsset,/*std::vector<Vertex> vertices, std::vector<uint32> indices,*/ FShaderOpenGLComponent* shaderComponent);
 	virtual ~FMeshRenderer_OpenGLComponent() = default;
@@ -21,12 +22,13 @@ public:
 	FMeshRenderer_OpenGLComponent(FMeshRenderer_OpenGLComponent&&) = delete;
 	FMeshRenderer_OpenGLComponent& operator=(FMeshRenderer_OpenGLComponent&&) = delete;
 
-	void Initialize();
 	void Render(const TRenderParameters& renderParameters);
-	void Destroy();
 	void Bind();
 
 	virtual nlohmann::json GetJsonData() override;
+
+protected:
+	void OnInitialize() override;
 
 private:
 	FMeshAsset& m_MeshAsset;

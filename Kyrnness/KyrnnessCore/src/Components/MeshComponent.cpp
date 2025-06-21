@@ -9,14 +9,19 @@ FMeshComponent::FMeshComponent(const std::string& meshName, const std::string& m
 {
 	FLogger::Log("MeshComponent created with name: " + meshName + " and file path: " + meshFilePath);
 }
-void FMeshComponent::Initialize()
+
+void FMeshComponent::OnInitialize()
 {
 	LoadMeshFile();
+
+	Super::OnInitialize();
 }
 
-void FMeshComponent::Destroy()
+void FMeshComponent::OnDestroy()
 {
 	FLogger::Warning("MeshComponent destroyed: " + m_MeshName);
+
+	Super::OnDestroy();
 }
 
 std::vector<Vertex> FMeshComponent::GetVertices() const

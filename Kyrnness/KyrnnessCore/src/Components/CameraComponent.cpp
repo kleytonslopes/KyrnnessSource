@@ -56,23 +56,6 @@ FMatrix FCameraComponent::GetProjectionMatrix() const
 	return FMatrix::Perspective(FMath::Radians(Fov), AspectRatio, Near, Far);
 }
 
-
-//glm::mat4 FCameraComponent::GetViewMatrix() const
-//{
-//	if (m_Application)
-//	{
-//		FTransformComponent& transform = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
-//
-//		return glm::lookAt(
-//			transform.Location,
-//			transform.Location + transform.ForwardVector,
-//			transform.UpVector
-//		);
-//	}
-//
-//	return glm::mat4(1.0f); // Return identity matrix if application is not set
-//}
-
 FMatrix FCameraComponent::GetViewMatrix() const
 {
 	if (m_Application)
@@ -89,14 +72,4 @@ FMatrix FCameraComponent::GetViewMatrix() const
 	}
 
 	return glm::mat4(1.0f); // Return identity matrix if application is not set
-}
-
-void FCameraComponent::Initialize()
-{
-	UComponent::Initialize();
-}
-
-void FCameraComponent::Update(float deltaTime)
-{
-
 }
