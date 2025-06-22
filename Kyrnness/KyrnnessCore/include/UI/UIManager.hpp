@@ -15,13 +15,14 @@ class UUIManager
 public:
 	UUIManager(UApplication* application);
 	~UUIManager();
-	
+
 
 
 	void Initialize();
 
 	void AddElement(UUIElement* element);
 	void RemoveElement(UUIElement* element);
+	void RemoveElementByName(const std::string& name);
 	void UpdateElements();
 	void RenderAll();
 	void ProcessInput(float mx, float my, bool isMouseDown, bool isMouseUp);
@@ -31,9 +32,15 @@ public:
 	void OnResolutionUpdated(int width, int eight);
 	void UpdateLayoutAll();
 	void SetElementVisibility(const std::string& elementName, bool visible);
+	void RegisterElementName(const std::string& name, UUIElement* element);
+	void UnregisterElementName(const std::string& name);
 	UUIElement* CreateElementFromJson(const nlohmann::json& node);
 	UUIElement* FindElementByName(const std::string& elementName);
 	UUIElement* FindElementRecursive(UUIElement* element, const std::string& elementName);
+
+	template<typename T>
+	void FindElementsOfType(std::vector<T*>& outElements);
+
 
 
 private:
@@ -48,3 +55,5 @@ private:
 };
 
 #endif// KYRNESS_UI_UIMANAGER_HPP
+
+

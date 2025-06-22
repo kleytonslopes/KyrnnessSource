@@ -73,6 +73,13 @@ void UUIManager::RemoveElement(UUIElement* element)
 	element->Destroy();
 }
 
+void UUIManager::RemoveElementByName(const std::string& name)
+{
+	UUIElement* element = FindElementByName(name);
+	if (element)
+		RemoveElement(element);
+}
+
 void UUIManager::UpdateElements()
 {
 	for (UUIElement* element : m_Elements)
@@ -148,6 +155,16 @@ void UUIManager::SetElementVisibility(const std::string& elementName, bool visib
 	{
 		Element->SetVisible(visible);
 	}
+}
+
+void UUIManager::RegisterElementName(const std::string& name, UUIElement* element)
+{
+	m_ElementsCached[name] = element;
+}
+
+void UUIManager::UnregisterElementName(const std::string& name)
+{
+	m_ElementsCached.erase(name);
 }
 
 UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
@@ -259,6 +276,26 @@ UUIElement* UUIManager::FindElementRecursive(UUIElement* element, const std::str
 	}
 
 	return nullptr;
+}
+
+template<typename T>
+inline void UUIManager::FindElementsOfType(std::vector<T*>& outElements)
+{
+	auto SearchRecursive = [&](UUIElement* e, auto&& selfRef) -> void
+		{
+			if (T* casted = dynamic_cast<T*>(e))
+				outElements.push_back(casted);
+
+			for (UUIElement* child : e->Children)
+			{
+				selfRef(child, selfRef);
+			}
+		};
+
+	for (UUIElement* root : m_Elements)
+	{
+		SearchRecursive(root, SearchRecursive);
+	}
 }
 
 EAnchor UUIManager::ParseAnchor(const std::string& anchorStr)

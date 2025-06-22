@@ -33,6 +33,39 @@ UUIElement::UUIElement()
 #endif
 }
 
+void UUIElement::SetName(const std::string& newName)
+{
+	if (Parent)
+	{
+		if (UUIManager* uiManager = UApplication::Get().GetUIManager())
+		{
+			// Remove o nome antigo
+			if (!m_Name.empty())
+				uiManager->UnregisterElementName(m_Name);
+
+			m_Name = newName;
+
+			// Reindexa o novo nome
+			if (!m_Name.empty())
+				uiManager->RegisterElementName(m_Name, this);
+		}
+	}
+	else
+	{
+		// Se for root, mesma lógica
+		if (UUIManager* uiManager = UApplication::Get().GetUIManager())
+		{
+			if (!m_Name.empty())
+				uiManager->UnregisterElementName(m_Name);
+
+			m_Name = newName;
+
+			if (!m_Name.empty())
+				uiManager->RegisterElementName(m_Name, this);
+		}
+	}
+}
+
 void UUIElement::AddChild(UUIElement* child)
 {
 	if (child)
@@ -62,6 +95,27 @@ void UUIElement::Initialize()
 
 	glGenVertexArrays(1, &m_VAO);
 	glGenBuffers(1, &m_VBO);
+}
+
+void UUIElement::OnDestroy()
+{
+	Super::OnDestroy();
+
+	for (UUIElement* child : Children)
+	{
+		if (child)
+			child->Destroy();
+	}
+
+	Children.clear();
+
+	// Remover do cache
+	if (!m_Name.empty())
+	{
+		UUIManager* uiManager = UApplication::Get().GetUIManager();
+		if (uiManager)
+			uiManager->UnregisterElementName(m_Name);
+	}
 }
 
 void UUIElement::Draw()

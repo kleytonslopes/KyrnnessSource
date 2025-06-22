@@ -134,10 +134,12 @@ public:
 	UUIElement();
     virtual ~UUIElement() = default;
 
+	void SetName(const std::string& newName);
 	void AddChild(UUIElement* child);
 	void RemoveChild(UUIElement* child);
 
 	void Initialize() override;
+	void OnDestroy() override;
 
     virtual void Draw();
 	virtual void UpdateLayout(); 
