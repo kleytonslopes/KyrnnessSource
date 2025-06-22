@@ -5,7 +5,7 @@
 
 #include "Class.hpp"
 #include "Runtime/Window.hpp"
-#include "Runtime/LuaManager.hpp"
+
 #include "Graphics/GraphicsApi.hpp"
 #include "Config/Configuration.hpp"
 #include "GameFramework/Scene.hpp"
@@ -14,6 +14,8 @@
 #include "Audio/SoundManager.hpp"
 #include "UI/HUD.hpp"
 #include "UI/UIManager.hpp"
+
+#include "Scripting/LuaManager.hpp"
 
 enum EGraphicsApi
 {
@@ -120,8 +122,10 @@ public:
 
 	FGameConfig& GetGameConfig() { return m_GameConfig; }
 
-	FSolState& GetLuaState() { return m_LuaManager.GetLuaState(); }
-	ULuaManager& GetLuaManager() { return m_LuaManager; }
+	FSolState& GetLuaState() { return m_LuaManager->GetLuaState(); }
+	ULuaManager& GetLuaManager() { return *m_LuaManager; }
+
+	void CallLuaFunction(const std::string& functionName);
 
 	void QuitGame();
 protected:
@@ -144,8 +148,7 @@ private:
 	std::unique_ptr<UHUD> m_HUD;
 	std::unique_ptr<USoundManager> m_SoundManager;
 	std::unique_ptr<UUIManager> m_UIManager;
-
-	ULuaManager m_LuaManager;
+	std::unique_ptr<ULuaManager> m_LuaManager;
 
 	TFunction<std::unique_ptr<UHUD>(UApplication*)> m_HUDFactory;
 

@@ -1,3 +1,17 @@
+Application = Application or {}
+
+function main()
+	 RegisterEvent("Application.OnUpdate", Application.OnUpdate)
+end
+
+function Application.OnPostInitialized()
+    print("[Lua] App inicializado - Este é um callback de um script!")
+end
+
+function Application.OnUpdate()
+    print("[Lua] OnUpdate!")
+end
+
 function OnQuitGameButtonClicked()
 	print("[Lua] Quiting Game.");
 	Game.QuitGame();

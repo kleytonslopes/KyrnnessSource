@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef KYRNNES_SCRIPTING_HPP
-#define KYRNNES_SCRIPTING_HPP
+#ifndef KYRNNES_SCRIPTING_LUA_API_HPP
+#define KYRNNES_SCRIPTING_LUA_API_HPP
 
 #include "Core/TypesDefinition.hpp"
 
@@ -26,4 +26,4 @@ namespace LuaAPI
 	}
 }
 
-#endif // KYRNNES_SCRIPTING_HPP
+#endif // KYRNNES_SCRIPTING_LUA_API_HPP

@@ -9,6 +9,11 @@ namespace LuaAPI
 {
 	void RestiterAll(FSolState& lua)
 	{
+		lua.set_function("RegisterEvent", [](const std::string& eventName, sol::function func)
+			{
+				UApplication::Get().GetLuaManager().GetLuaEventManager().RegisterEventFunction(eventName, func);
+			});
+
 		//Game Global Functions
 		FSolNamespace gameNamespace = lua.create_named_table("Game");
 		gameNamespace.set_function("QuitGame", Game::QuitGame);

@@ -49,7 +49,7 @@ void UApplication::PreInitialize()
 	LoadConfiguration();
 
 	//Initialize Lua Integration
-	m_LuaManager.Initialize();
+	m_LuaManager = std::make_unique<ULuaManager>();
 	
 	//Create Window
 	switch (m_GameConfig.m_WindowType)
@@ -110,6 +110,9 @@ void UApplication::PreInitialize()
 
 void UApplication::OnInitialize()
 {
+	//m_LuaScriptLoader->LoadAndRunScript("Scripts/MainMenu.lua");
+	m_LuaManager->Initialize();
+
 	InitializeAudio();
 	InitializeGraphicsApi();
 	InitializeShaders();
@@ -134,6 +137,8 @@ void UApplication::OnUpdate(float DeltaTime)
 	Super::OnUpdate(DeltaTime);
 
 	FMemoryManager::ProcessPendingDestroy();
+
+	CallLuaFunction("Application.OnUpdate");
 
 	m_GraphicsApi->DrawFrame(m_DeltaTime);
 
@@ -217,6 +222,11 @@ uint32 UApplication::GetWidth() const
 uint32 UApplication::GetHeight() const
 {
 	return  m_GameConfig.m_Height;
+}
+
+void UApplication::CallLuaFunction(const std::string& functionName)
+{
+	m_LuaManager->GetLuaEventManager().CallEvent(functionName);
 }
 
 void UApplication::QuitGame()
