@@ -42,8 +42,19 @@ void UUIElement::AddChild(UUIElement* child)
 	}
 }
 
+void UUIElement::RemoveChild(UUIElement* child)
+{
+	auto it = std::find(Children.begin(), Children.end(), child);
+	if (it != Children.end())
+	{
+		Children.erase(it);
+	}
+}
+
 void UUIElement::Initialize()
 {
+	Super::Initialize();
+
 	BaseX = x;
 	BaseY = y;
 	BaseWidth = width;
@@ -55,6 +66,9 @@ void UUIElement::Initialize()
 
 void UUIElement::Draw()
 {
+	if (!IsValid())
+		return;
+
 	if (!bVisible)
 		return;
 
@@ -119,6 +133,9 @@ void UUIElement::Draw()
 
 void UUIElement::UpdateLayout()
 {
+	if (!IsValid())
+		return;
+
 	bool isRoot = (Parent == nullptr);
 
 	float parentX = 0.0f;
@@ -215,9 +232,17 @@ void UUIElement::UpdateLayout()
 	// Recursivo pros filhos
 	for (UUIElement* child : Children)
 	{
-		if (child)
+		try
 		{
-			child->UpdateLayout();
+			if (child)
+			{
+				child->UpdateLayout();
+			}
+
+		}
+		catch (const std::exception&)
+		{
+			FLogger::Fatal("Failed to UpdateLayout: %s", m_Name.c_str());
 		}
 	}
 }

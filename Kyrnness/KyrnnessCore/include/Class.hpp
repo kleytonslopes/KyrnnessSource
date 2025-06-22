@@ -38,6 +38,8 @@ protected:
 	
 	virtual void PostInitialize();
 
+	bool IsValid() const;
+
 };
 
 #endif // KYRNNESS_CLASS_HPP;

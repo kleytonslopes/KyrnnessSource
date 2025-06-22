@@ -21,7 +21,8 @@ namespace LuaAPI
 	}
 	namespace UI
 	{
-		void SetVisible(const std::string&, bool visible);
+		void SetVisible(const std::string& elementName, bool visible);
+		void RemoveElement(const std::string& elementName);
 	}
 }
 

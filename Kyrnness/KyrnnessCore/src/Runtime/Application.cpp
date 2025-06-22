@@ -133,6 +133,8 @@ void UApplication::OnUpdate(float DeltaTime)
 {
 	Super::OnUpdate(DeltaTime);
 
+	FMemoryManager::ProcessPendingDestroy();
+
 	m_GraphicsApi->DrawFrame(m_DeltaTime);
 
 	OnUpdateEvent.Broadcast(m_DeltaTime);

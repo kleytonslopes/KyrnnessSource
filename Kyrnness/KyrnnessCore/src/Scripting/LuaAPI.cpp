@@ -3,6 +3,7 @@
 #include "Core/Core.hpp"
 #include "Runtime/Application.hpp"
 #include "UI/UIManager.hpp"
+#include "UI/Elements/UIElement.hpp"
 
 namespace LuaAPI
 {
@@ -20,6 +21,7 @@ namespace LuaAPI
 		//UI Global Functions
 		FSolNamespace uiNamespace = lua.create_named_table("UI");
 		uiNamespace.set_function("SetVisible", UI::SetVisible);
+		uiNamespace.set_function("RemoveElement", UI::RemoveElement);
 	}
 
 	namespace Game
@@ -48,6 +50,16 @@ namespace LuaAPI
 		void SetVisible(const std::string& elementName, bool visible)
 		{
 			UApplication::Get().GetUIManager()->SetElementVisibility(elementName, visible);
+		}
+
+		void RemoveElement(const std::string& elementName)
+		{
+			if (UUIElement* element = UApplication::Get().GetUIManager()->FindElementByName(elementName))
+			{
+				UApplication::Get().GetUIManager()->RemoveElement(element);
+			}
+			else
+				FLogger::Warning("[LuaAPI] UI.RemoveElement: Element '%s' not found!\n", elementName.c_str());
 		}
 	}
 }

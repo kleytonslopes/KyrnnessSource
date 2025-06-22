@@ -23,6 +23,56 @@ void UUIManager::Initialize()
 	UInputManager::Get().OnMouseMoveEvent.AddListener(this, &UUIManager::OnUpdateMouseFocus);
 }
 
+void UUIManager::AddElement(UUIElement* element)
+{
+	m_Elements.push_back(element);
+
+	// Recriar o cache sempre que adicionar root elements
+	ClearNameCache();
+	for (UUIElement* root : m_Elements)
+	{
+		BuildNameCacheRecursive(root);
+	}
+}
+
+void UUIManager::RemoveElement(UUIElement* element)
+{
+	if(!element)
+		return;
+
+	auto it = std::find(m_Elements.begin(), m_Elements.end(), element);
+	if (it != m_Elements.end())
+	{
+		m_Elements.erase(it);
+	}
+
+	auto RemoveFromCacheRecursive = [this](UUIElement* e, auto&& selfRef) -> void
+		{
+			if (!e)
+				return;
+
+			auto itCache = m_ElementsCached.find(e->m_Name);
+			if (itCache != m_ElementsCached.end() && itCache->second == e)
+			{
+				m_ElementsCached.erase(itCache);
+			}
+
+			for (UUIElement* child : e->Children)
+			{
+				selfRef(child, selfRef);
+			}
+		};
+
+	RemoveFromCacheRecursive(element, RemoveFromCacheRecursive);
+
+	if (UUIElement* ParentElement = element->Parent)
+	{
+		ParentElement->RemoveChild(element);
+	}
+
+	element->Destroy();
+}
+
 void UUIManager::UpdateElements()
 {
 	for (UUIElement* element : m_Elements)
@@ -186,11 +236,10 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 
 UUIElement* UUIManager::FindElementByName(const std::string& elementName)
 {
-	for (UUIElement* root : m_Elements)
-	{
-		if (UUIElement* found = FindElementRecursive(root, elementName))
-			return found;
-	}
+	auto it = m_ElementsCached.find(elementName);
+
+	if (it != m_ElementsCached.end())
+		return it->second;
 
 	return nullptr;
 }
@@ -226,6 +275,24 @@ EAnchor UUIManager::ParseAnchor(const std::string& anchorStr)
 	if (anchorStr == "Stretch") return EAnchor::Stretch;
 
 	return EAnchor::TopLeft; // Default
+}
+
+void UUIManager::BuildNameCacheRecursive(UUIElement* element)
+{
+	if (!element || element->m_Name.empty())
+		return;
+
+	m_ElementsCached[element->m_Name] = element;
+
+	for (UUIElement* child : element->Children)
+	{
+		BuildNameCacheRecursive(child);
+	}
+}
+
+void UUIManager::ClearNameCache()
+{
+	m_ElementsCached.clear();
 }
 
 // Texture loader

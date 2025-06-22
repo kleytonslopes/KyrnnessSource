@@ -11,10 +11,10 @@ end
 
 function OnJoinGameButtonClicked()
 	print("[Lua] Join Game.");
-    UI.SetVisible("QuitGameButton", false);
+    -- UI.SetVisible("QuitGameButton", false);
 end
 
 function OnHostGameButtonClicked()
 	print("[Lua] Host Game.");
-    UI.SetVisible("QuitGameButton", true);
+    UI.RemoveElement("QuitGameButton");
 end

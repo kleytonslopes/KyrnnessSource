@@ -2,7 +2,7 @@
 #ifndef KYRNESS_UI_UIELEMENT_HPP
 #define KYRNESS_UI_UIELEMENT_HPP
 
-#include "Core/Core.hpp"
+#include "Class.hpp"
 
 struct UShaderOpenGLComponent;
 
@@ -96,8 +96,9 @@ enum class EScaleMode
 	ScaleToFitBoth
 };
 
-class UUIElement 
+class UUIElement : public UClass
 {
+	using Super = UClass;
 public:
 	std::string m_Name;
 	UUIElement* Parent = nullptr;
@@ -134,8 +135,10 @@ public:
     virtual ~UUIElement() = default;
 
 	void AddChild(UUIElement* child);
+	void RemoveChild(UUIElement* child);
 
-	virtual void Initialize();
+	void Initialize() override;
+
     virtual void Draw();
 	virtual void UpdateLayout(); 
 	

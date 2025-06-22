@@ -19,7 +19,7 @@ public:
 		return instance;
 	}
 
-	// Aloca��o global
+	// Alocação global
 	template<typename T, typename... Args>
 	static T* Allocate(Args&&... args)
 	{
@@ -29,6 +29,11 @@ public:
 
 		Get().Track(ptr, [](void* p) { delete static_cast<T*>(p); }, typeid(T));
 		return ptr;
+	}
+
+	static void SetPendingDestroy(void* ptr)
+	{
+		Get().AddPendingDestroy(ptr);
 	}
 
 	template<typename T>
@@ -49,12 +54,19 @@ public:
 		Get().FreeAll();
 	}
 
+	static void ProcessPendingDestroy()
+	{
+		Get().ProcessPendingDestroyInternal();
+	}
+
 private:
 	using Deleter = TFunction<void(void*)>;
 
 	TMap<void*, Deleter> m_Allocations;
+
 	std::unordered_multimap<std::type_index, void*> m_TypeMap;
 	std::mutex mtx;;
+	std::vector<void*> m_PendingDestroy;
 
 	FMemoryManager() = default;
 	~FMemoryManager() { FreeAll(); }
@@ -134,7 +146,6 @@ private:
 			catch (const std::exception& e)
 			{
 				FLogger::Fatal("Exception while deleting pointer: %p - %s", ptr, e.what());
-				//LOG(Fatal, "Exception while deleting pointer: %p - %s");
 			}
 			catch (...)
 			{
@@ -144,6 +155,40 @@ private:
 
 		m_Allocations.clear();
 		m_TypeMap.clear();
+		m_PendingDestroy.clear();
+	}
+
+	void AddPendingDestroy(void* ptr)
+	{
+		std::lock_guard<std::mutex> lock(mtx);
+
+		// Não adicionar duplicados
+		if (std::find(m_PendingDestroy.begin(), m_PendingDestroy.end(), ptr) == m_PendingDestroy.end())
+		{
+			m_PendingDestroy.push_back(ptr);
+			FLogger::Log("Marked for pending destroy: %p", ptr);
+		}
+	}
+
+	void ProcessPendingDestroyInternal()
+	{
+		std::vector<void*> toDelete;
+
+		{
+			std::lock_guard<std::mutex> lock(mtx);
+			if (m_PendingDestroy.empty())
+				return;
+
+			toDelete.swap(m_PendingDestroy);
+		}
+
+		for (void* ptr : toDelete)
+		{
+			if (!Deallocate(ptr))
+			{
+				FLogger::Warning("Tried to destroy untracked pointer: %p", ptr);
+			}
+		}
 	}
 };
 

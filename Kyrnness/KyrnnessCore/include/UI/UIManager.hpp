@@ -4,6 +4,7 @@
 
 #include <vector>
 #include "UI/Elements/UIElement.hpp"
+#include "Core/TypesDefinition.hpp"
 #include "nlohmann/json.hpp"
 
 
@@ -19,7 +20,8 @@ public:
 
 	void Initialize();
 
-	void AddElement(UUIElement* element) { m_Elements.push_back(element); }
+	void AddElement(UUIElement* element);
+	void RemoveElement(UUIElement* element);
 	void UpdateElements();
 	void RenderAll();
 	void ProcessInput(float mx, float my, bool isMouseDown, bool isMouseUp);
@@ -37,7 +39,12 @@ public:
 private:
 	UApplication* m_Application = nullptr;
 	std::vector<UUIElement*> m_Elements;
+
+	TMap<std::string, UUIElement*> m_ElementsCached;
 	EAnchor ParseAnchor(const std::string& anchorStr);
+
+	void BuildNameCacheRecursive(UUIElement* element);
+	void ClearNameCache();
 };
 
 #endif// KYRNESS_UI_UIMANAGER_HPP

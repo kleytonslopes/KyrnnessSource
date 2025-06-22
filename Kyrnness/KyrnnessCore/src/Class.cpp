@@ -50,6 +50,14 @@ void UClass::PostInitialize()
 	OnPostInitialize();
 }
 
+bool UClass::IsValid() const
+{
+	if (m_State == EClassState::CS_Initialized)
+		return true;
+
+	return false;
+}
+
 void UClass::Update(float DeltaTime)
 {
 	if (m_State == EClassState::CS_Destroying || m_State == EClassState::CS_Destroyed)
@@ -77,8 +85,10 @@ void UClass::Destroy()
 	m_State = EClassState::CS_Destroying;
 
 	OnDestroy();
-
+	
 	m_State = EClassState::CS_Destroyed;
+
+	FMemoryManager::SetPendingDestroy(this);
 }
 
 void UClass::OnInitialize()
@@ -95,4 +105,5 @@ void UClass::OnUpdate(float DeltaTime)
 
 void UClass::OnDestroy()
 {
+
 }
