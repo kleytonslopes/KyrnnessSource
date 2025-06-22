@@ -9,7 +9,7 @@ function Application.OnPostInitialized()
 end
 
 function Application.OnUpdate()
-    print("[Lua] OnUpdate!")
+    -- print("[Lua] OnUpdate!")
 end
 
 function OnQuitGameButtonClicked()

@@ -125,7 +125,7 @@ public:
 	FSolState& GetLuaState() { return m_LuaManager->GetLuaState(); }
 	ULuaManager& GetLuaManager() { return *m_LuaManager; }
 
-	void CallLuaFunction(const std::string& functionName);
+	//void CallLuaFunction(const std::string& functionName);
 
 	void QuitGame();
 protected:
