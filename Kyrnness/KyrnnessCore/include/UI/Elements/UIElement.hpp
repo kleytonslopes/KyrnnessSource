@@ -2,7 +2,7 @@
 #ifndef KYRNESS_UI_UIELEMENT_HPP
 #define KYRNESS_UI_UIELEMENT_HPP
 
-#include "Core/Core.hpp"
+#include "Class.hpp"
 
 struct UShaderOpenGLComponent;
 
@@ -96,9 +96,11 @@ enum class EScaleMode
 	ScaleToFitBoth
 };
 
-class UUIElement 
+class UUIElement : public UClass
 {
+	using Super = UClass;
 public:
+	std::string m_Name;
 	UUIElement* Parent = nullptr;
 	std::vector<UUIElement*> Children;
 
@@ -132,22 +134,27 @@ public:
 	UUIElement();
     virtual ~UUIElement() = default;
 
+	void SetName(const std::string& newName);
 	void AddChild(UUIElement* child);
+	void RemoveChild(UUIElement* child);
 
-	virtual void Initialize();
+	void Initialize() override;
+	void OnDestroy() override;
+
     virtual void Draw();
 	virtual void UpdateLayout(); 
-	virtual void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp) {}
-	virtual void OnMouseEnter(double mouseX, double mouseY) { }
-	virtual void OnMouseLeave(double mouseX, double mouseY) { }
-	virtual void OnUpdateMouseFocus(double mouseX, double mouseY);
+	
+	virtual void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp);
+	virtual void MouseEnter(double mouseX, double mouseY);
+	virtual void MouseLeave(double mouseX, double mouseY);
+	virtual void UpdateMouseFocus(double mouseX, double mouseY);
 
 	void PropagateInput(float mx, float my, bool isMouseDown, bool isMouseUp);
 	void PropagateMouseEnter(double mouseX, double mouseY);
 	void PropagateMouseLeave(double mouseX, double mouseY);
 	void PropagateUpdateMouseFocus(double mouseX, double mouseY);
 
-	
+	void SetVisible(bool visible) { bVisible = visible; };
 	void SetTextureId(unsigned int value) { m_TextureID = value; }
 	void SetVAO(unsigned int value) { m_VAO = value; }
 
@@ -167,6 +174,7 @@ protected:
 
 	bool bHovered = false;
 	bool bPressed = false;
+	bool bVisible = true;
 
 	std::vector<float> m_Vertices = {
 		// Posi��es (x, y)   // UVs (u, v)
@@ -192,6 +200,11 @@ protected:
 	glm::mat4 GetModel();
 
 	virtual void DrawSelf();
+
+	virtual void OnHandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp);
+	virtual void OnMouseEnter(double mouseX, double mouseY);
+	virtual void OnMouseLeave(double mouseX, double mouseY);
+	virtual void OnUpdateMouseFocus(double mouseX, double mouseY);
 };
 
 #endif// KYRNESS_UI_UIELEMENT_HPP

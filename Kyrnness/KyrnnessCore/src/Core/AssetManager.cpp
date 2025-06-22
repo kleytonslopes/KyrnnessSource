@@ -390,8 +390,8 @@ GLuint UAssetManager::LoadTextureOpenGL(const std::string& filePath, bool isUI)
 	if (isUI)
 	{
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
 
 	stbi_image_free(data);
@@ -527,12 +527,43 @@ void UAssetManager::LoadAssetMap(const std::string& path)
 	}
 }
 
-std::vector<uint8_t> UAssetManager::LoadAssetRaw_NoEncryption(const std::string& assetPath)
+std::string UAssetManager::LoadText(const std::string& FilePath)
+{
+	try
+	{
+		// Primeiro tenta carregar do .kpak
+		std::vector<uint8_t> rawData = LoadAssetRaw(FilePath, false);
+
+		if (!rawData.empty())
+		{
+			rawData.push_back(0); // Garante null-terminado
+			return std::string(reinterpret_cast<const char*>(rawData.data()));
+		}
+
+	}
+	catch (const std::exception&)
+	{
+		//File From Disk
+		std::ifstream file(FilePath, std::ios::binary);
+		if (file)
+		{
+			std::ostringstream buffer;
+			buffer << file.rdbuf();
+			printf("[AssetManager] Lendo script direto do disco: %s\n", FilePath.c_str());
+			return buffer.str();
+		}
+
+		printf("[AssetManager] Erro: Asset não encontrado no .kpak nem no disco: %s\n", FilePath.c_str());
+		return "";
+	}
+}
+
+std::vector<uint8_t> UAssetManager::LoadAssetRaw_NoEncryption(const std::string& assetPath, bool bIsBinary)
 {
 	auto it = s_AssetMap.find(assetPath);
 	if (it == s_AssetMap.end())
 	{
-		ThrowRuntimeError("Asset n�o encontrado: " + assetPath);
+		ThrowRuntimeError("Asset não encontrado: " + assetPath);
 	}
 
 	const FAssetEntry& entry = it->second;
@@ -558,18 +589,18 @@ std::vector<uint8_t> UAssetManager::LoadAssetRaw_NoEncryption(const std::string&
 
 	if (calcCrc != entry.CRC32)
 	{
-		ThrowRuntimeError("CRC inv�lido para asset: " + assetPath);
+		ThrowRuntimeError("CRC inválido para asset: " + assetPath);
 	}
 
 	return uncompressedData;
 }
 
-std::vector<uint8_t> UAssetManager::LoadAssetRaw_With_XOR(const std::string& assetPath)
+std::vector<uint8_t> UAssetManager::LoadAssetRaw_With_XOR(const std::string& assetPath, bool bIsBinary)
 {
 	auto it = s_AssetMap.find(assetPath);
 	if (it == s_AssetMap.end())
 	{
-		ThrowRuntimeError("Asset n�o encontrado: " + assetPath);
+		ThrowRuntimeError("Asset não encontrado: " + assetPath);
 	}
 
 	const FAssetEntry& entry = it->second;

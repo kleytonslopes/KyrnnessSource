@@ -29,8 +29,8 @@ void UGameHUD::Initialize()
 
 	nlohmann::json uiJson = UAssetManager::LoadJson("Content/UI/UI_MainMenu.json");
 
-	UUIElement* rootElement = m_UIManager->CreateElementFromJson(uiJson);
-	m_UIManager->AddElement(rootElement);
+	UUIElement* rootElement = UApplication::Get().GetUIManager()->CreateElementFromJson(uiJson);
+	UApplication::Get().GetUIManager()->AddElement(rootElement);
 
 #else
 

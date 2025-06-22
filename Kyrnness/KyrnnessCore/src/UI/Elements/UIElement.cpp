@@ -33,6 +33,39 @@ UUIElement::UUIElement()
 #endif
 }
 
+void UUIElement::SetName(const std::string& newName)
+{
+	if (Parent)
+	{
+		if (UUIManager* uiManager = UApplication::Get().GetUIManager())
+		{
+			// Remove o nome antigo
+			if (!m_Name.empty())
+				uiManager->UnregisterElementName(m_Name);
+
+			m_Name = newName;
+
+			// Reindexa o novo nome
+			if (!m_Name.empty())
+				uiManager->RegisterElementName(m_Name, this);
+		}
+	}
+	else
+	{
+		// Se for root, mesma lógica
+		if (UUIManager* uiManager = UApplication::Get().GetUIManager())
+		{
+			if (!m_Name.empty())
+				uiManager->UnregisterElementName(m_Name);
+
+			m_Name = newName;
+
+			if (!m_Name.empty())
+				uiManager->RegisterElementName(m_Name, this);
+		}
+	}
+}
+
 void UUIElement::AddChild(UUIElement* child)
 {
 	if (child)
@@ -42,8 +75,19 @@ void UUIElement::AddChild(UUIElement* child)
 	}
 }
 
+void UUIElement::RemoveChild(UUIElement* child)
+{
+	auto it = std::find(Children.begin(), Children.end(), child);
+	if (it != Children.end())
+	{
+		Children.erase(it);
+	}
+}
+
 void UUIElement::Initialize()
 {
+	Super::Initialize();
+
 	BaseX = x;
 	BaseY = y;
 	BaseWidth = width;
@@ -53,8 +97,35 @@ void UUIElement::Initialize()
 	glGenBuffers(1, &m_VBO);
 }
 
+void UUIElement::OnDestroy()
+{
+	Super::OnDestroy();
+
+	for (UUIElement* child : Children)
+	{
+		if (child)
+			child->Destroy();
+	}
+
+	Children.clear();
+
+	// Remover do cache
+	if (!m_Name.empty())
+	{
+		UUIManager* uiManager = UApplication::Get().GetUIManager();
+		if (uiManager)
+			uiManager->UnregisterElementName(m_Name);
+	}
+}
+
 void UUIElement::Draw()
 {
+	if (!IsValid())
+		return;
+
+	if (!bVisible)
+		return;
+
 #if(DEBUG)
 	if (UGraphicsApi_OpenGL* api = UApplication::Get().GetGraphicsApi<UGraphicsApi_OpenGL>())
 	{
@@ -116,6 +187,9 @@ void UUIElement::Draw()
 
 void UUIElement::UpdateLayout()
 {
+	if (!IsValid())
+		return;
+
 	bool isRoot = (Parent == nullptr);
 
 	float parentX = 0.0f;
@@ -212,16 +286,62 @@ void UUIElement::UpdateLayout()
 	// Recursivo pros filhos
 	for (UUIElement* child : Children)
 	{
-		if (child)
+		try
 		{
-			child->UpdateLayout();
+			if (child)
+			{
+				child->UpdateLayout();
+			}
+
+		}
+		catch (const std::exception&)
+		{
+			FLogger::Fatal("Failed to UpdateLayout: %s", m_Name.c_str());
 		}
 	}
 }
 
+void UUIElement::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp)
+{
+	if (!bVisible || !bEnabled)
+		return;
+
+	OnHandleInput(mouseX, mouseY, isMouseDown, isMouseUp);
+}
+
+void UUIElement::MouseEnter(double mouseX, double mouseY)
+{
+	if (!bVisible || !bEnabled)
+		return;
+
+	OnMouseEnter(mouseX, mouseY);
+}
+
+void UUIElement::MouseLeave(double mouseX, double mouseY)
+{
+	if (!bVisible || !bEnabled)
+		return;
+
+	OnMouseLeave(mouseX, mouseY);
+}
+
+void UUIElement::UpdateMouseFocus(double mouseX, double mouseY)
+{
+	if (!bVisible || !bEnabled)
+		return;
+
+	OnUpdateMouseFocus(mouseX, mouseY);
+}
+
+void UUIElement::OnMouseLeave(double mouseX, double mouseY)
+{
+	if (!bVisible || !bEnabled)
+		return;
+}
+
 void UUIElement::OnUpdateMouseFocus(double mouseX, double mouseY)
 {
-	if (!bEnabled)
+	if (!bVisible || !bEnabled)
 		return;
 
 	bool insideX = mouseX >= x && mouseX <= (x + width);
@@ -230,7 +350,7 @@ void UUIElement::OnUpdateMouseFocus(double mouseX, double mouseY)
 
 	if (isInside && !bHovered)
 	{
-		OnMouseEnter(mouseX, mouseY);
+		MouseEnter(mouseX, mouseY);
 		bHovered = true;
 		m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
 
@@ -238,6 +358,7 @@ void UUIElement::OnUpdateMouseFocus(double mouseX, double mouseY)
 	}
 	else if (!isInside && bHovered)
 	{
+		MouseLeave(mouseX, mouseY);
 		bHovered = false;
 		m_MouseFocusState = EMouseFocusState::MFS_None;
 
@@ -329,6 +450,36 @@ glm::vec2 UUIElement::GetAccumulatedScale()
 	return totalScale;
 }
 
+void UUIElement::OnHandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp)
+{
+	int windowHeight = UApplication::Get().GetHeight();
+	mouseY = windowHeight - mouseY;
+
+	glm::vec2 totalScale = GetAccumulatedScale();
+
+	float scaledMouseX = static_cast<float>(mouseX) / totalScale.x;
+	float scaledMouseY = static_cast<float>(mouseY) / totalScale.y;
+
+	bool insideX = scaledMouseX >= x && scaledMouseX <= (x + width);
+	bool insideY = scaledMouseY >= y && scaledMouseY <= (y + height);
+
+	if (insideX && insideY)
+	{
+		if (bHovered && m_MouseFocusState == EMouseFocusState::MFS_MouseEnter)
+		{
+			m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
+
+			if (OnClick && isMouseDown) OnClick();
+		}
+	}
+}
+
+void UUIElement::OnMouseEnter(double mouseX, double mouseY)
+{
+	if (!bVisible || !bEnabled)
+		return;
+}
+
 glm::mat4 UUIElement::GetProjetion()
 {
 	return glm::ortho(0.0f
@@ -349,6 +500,9 @@ glm::mat4 UUIElement::GetModel()
 
 void UUIElement::DrawSelf()
 {
+	if (!bVisible)
+		return;
+
 	if (m_TextureID != 0 && m_VAO != 0)
 	{
 		glm::mat4 model = GetWorldModel();

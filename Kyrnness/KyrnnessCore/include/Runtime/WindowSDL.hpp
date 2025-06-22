@@ -26,6 +26,7 @@ public:
     virtual void OnMouseButton(int button, int action, int mods) override { }
     virtual void GetMousePosition(float& x, float& y) const override {}
     virtual bool GetMouseButtonState(int button) const { return false; }
+    virtual void SetShouldClose(bool value) override {}
 
 private:
     SDL_Event m_SdlEvent;

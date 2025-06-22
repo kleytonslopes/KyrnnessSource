@@ -20,8 +20,64 @@ void UUIManager::Initialize()
 {
 	UApplication().Get().OnResolutionUpdatedEvent.AddListener(this, &UUIManager::OnResolutionUpdated);
 	UInputManager::Get().OnMouseButtonEvent.AddListener(this, &UUIManager::ProcessInput);
-	//UInputManager::Get().OnMouseMoveEvent.AddListener(this, &UUIManager::OnMouseEnter);
 	UInputManager::Get().OnMouseMoveEvent.AddListener(this, &UUIManager::OnUpdateMouseFocus);
+}
+
+void UUIManager::AddElement(UUIElement* element)
+{
+	m_Elements.push_back(element);
+
+	// Recriar o cache sempre que adicionar root elements
+	ClearNameCache();
+	for (UUIElement* root : m_Elements)
+	{
+		BuildNameCacheRecursive(root);
+	}
+}
+
+void UUIManager::RemoveElement(UUIElement* element)
+{
+	if(!element)
+		return;
+
+	auto it = std::find(m_Elements.begin(), m_Elements.end(), element);
+	if (it != m_Elements.end())
+	{
+		m_Elements.erase(it);
+	}
+
+	auto RemoveFromCacheRecursive = [this](UUIElement* e, auto&& selfRef) -> void
+		{
+			if (!e)
+				return;
+
+			auto itCache = m_ElementsCached.find(e->m_Name);
+			if (itCache != m_ElementsCached.end() && itCache->second == e)
+			{
+				m_ElementsCached.erase(itCache);
+			}
+
+			for (UUIElement* child : e->Children)
+			{
+				selfRef(child, selfRef);
+			}
+		};
+
+	RemoveFromCacheRecursive(element, RemoveFromCacheRecursive);
+
+	if (UUIElement* ParentElement = element->Parent)
+	{
+		ParentElement->RemoveChild(element);
+	}
+
+	element->Destroy();
+}
+
+void UUIManager::RemoveElementByName(const std::string& name)
+{
+	UUIElement* element = FindElementByName(name);
+	if (element)
+		RemoveElement(element);
 }
 
 void UUIManager::UpdateElements()
@@ -93,6 +149,24 @@ void UUIManager::UpdateLayoutAll()
 	}
 }
 
+void UUIManager::SetElementVisibility(const std::string& elementName, bool visible)
+{
+	if (UUIElement* Element = FindElementByName(elementName))
+	{
+		Element->SetVisible(visible);
+	}
+}
+
+void UUIManager::RegisterElementName(const std::string& name, UUIElement* element)
+{
+	m_ElementsCached[name] = element;
+}
+
+void UUIManager::UnregisterElementName(const std::string& name)
+{
+	m_ElementsCached.erase(name);
+}
+
 UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 {
 	std::string type = node.value("Type", "");
@@ -107,7 +181,6 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 		element = FMemoryManager::Allocate<UUIText>();
 	else if (type == "UIScaleBox")
 		element = FMemoryManager::Allocate<UUIScaleBox>();
-	// Adicione outros tipos conforme for criando
 
 	if (element)
 	{
@@ -120,6 +193,8 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 		element->LocalX = node.value("LocalX", 0.0f);
 		element->LocalY = node.value("LocalY", 0.0f);
 		element->bEnabled = node.value("Enabled", true);
+		element->SetVisible(node.value("Visible", true));
+		element->m_Name = node.value("Name", "");
 
 		// Texture
 		if (node.contains("Texture"))
@@ -142,17 +217,13 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 				button->SetTextureHovered(texHovered);
 				button->SetTextureDisabled(texDisabled);
 
-				
-
-				
-				std::string clickFuncName = node.value("OnClick", "");
-				if (!clickFuncName.empty())
+				std::string luaFunction = node.value("OnClick", "");
+				if (!luaFunction.empty())
 				{
-					button->UserData_StringEvent = clickFuncName; //???
-						button->OnClick = [clickFuncName]()
-							{
-								FLogger::Success("[C++] Botão '%s' clicado (fake callback antes do Lua)\n", clickFuncName.c_str());
-							};
+					button->OnClick = [luaFunction]()
+						{
+							UApplication::Get().GetLuaManager().CallFunction(luaFunction);
+						};
 				}
 
 				button->Initialize();
@@ -180,6 +251,53 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 	return element;
 }
 
+UUIElement* UUIManager::FindElementByName(const std::string& elementName)
+{
+	auto it = m_ElementsCached.find(elementName);
+
+	if (it != m_ElementsCached.end())
+		return it->second;
+
+	return nullptr;
+}
+
+UUIElement* UUIManager::FindElementRecursive(UUIElement* element, const std::string& elementName)
+{
+	if (!element)
+		return nullptr;
+
+	if (element->m_Name == elementName)
+		return element;
+
+	for (UUIElement* child : element->Children)
+	{
+		if (UUIElement* found = FindElementRecursive(child, elementName))
+			return found;
+	}
+
+	return nullptr;
+}
+
+template<typename T>
+inline void UUIManager::FindElementsOfType(std::vector<T*>& outElements)
+{
+	auto SearchRecursive = [&](UUIElement* e, auto&& selfRef) -> void
+		{
+			if (T* casted = dynamic_cast<T*>(e))
+				outElements.push_back(casted);
+
+			for (UUIElement* child : e->Children)
+			{
+				selfRef(child, selfRef);
+			}
+		};
+
+	for (UUIElement* root : m_Elements)
+	{
+		SearchRecursive(root, SearchRecursive);
+	}
+}
+
 EAnchor UUIManager::ParseAnchor(const std::string& anchorStr)
 {
 	if (anchorStr == "Center") return EAnchor::Center;
@@ -194,6 +312,24 @@ EAnchor UUIManager::ParseAnchor(const std::string& anchorStr)
 	if (anchorStr == "Stretch") return EAnchor::Stretch;
 
 	return EAnchor::TopLeft; // Default
+}
+
+void UUIManager::BuildNameCacheRecursive(UUIElement* element)
+{
+	if (!element || element->m_Name.empty())
+		return;
+
+	m_ElementsCached[element->m_Name] = element;
+
+	for (UUIElement* child : element->Children)
+	{
+		BuildNameCacheRecursive(child);
+	}
+}
+
+void UUIManager::ClearNameCache()
+{
+	m_ElementsCached.clear();
 }
 
 // Texture loader
