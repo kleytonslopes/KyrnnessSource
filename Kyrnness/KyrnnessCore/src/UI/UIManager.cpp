@@ -93,6 +93,14 @@ void UUIManager::UpdateLayoutAll()
 	}
 }
 
+void UUIManager::SetElementVisibility(const std::string& elementName, bool visible)
+{
+	if (UUIElement* Element = FindElementByName(elementName))
+	{
+		Element->SetVisible(visible);
+	}
+}
+
 UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 {
 	std::string type = node.value("Type", "");
@@ -119,6 +127,8 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 		element->LocalX = node.value("LocalX", 0.0f);
 		element->LocalY = node.value("LocalY", 0.0f);
 		element->bEnabled = node.value("Enabled", true);
+		element->SetVisible(node.value("Visible", true));
+		element->m_Name = node.value("Name", "");
 
 		// Texture
 		if (node.contains("Texture"))
@@ -141,16 +151,13 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 				button->SetTextureHovered(texHovered);
 				button->SetTextureDisabled(texDisabled);
 
-				
-
-				
 				std::string luaFunction = node.value("OnClick", "");
 				if (!luaFunction.empty())
 				{
-						button->OnClick = [luaFunction]()
-							{
-								UApplication::Get().GetLuaManager().CallFunction(luaFunction);
-							};
+					button->OnClick = [luaFunction]()
+						{
+							UApplication::Get().GetLuaManager().CallFunction(luaFunction);
+						};
 				}
 
 				button->Initialize();
@@ -176,6 +183,34 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 
 
 	return element;
+}
+
+UUIElement* UUIManager::FindElementByName(const std::string& elementName)
+{
+	for (UUIElement* root : m_Elements)
+	{
+		if (UUIElement* found = FindElementRecursive(root, elementName))
+			return found;
+	}
+
+	return nullptr;
+}
+
+UUIElement* UUIManager::FindElementRecursive(UUIElement* element, const std::string& elementName)
+{
+	if (!element)
+		return nullptr;
+
+	if (element->m_Name == elementName)
+		return element;
+
+	for (UUIElement* child : element->Children)
+	{
+		if (UUIElement* found = FindElementRecursive(child, elementName))
+			return found;
+	}
+
+	return nullptr;
 }
 
 EAnchor UUIManager::ParseAnchor(const std::string& anchorStr)

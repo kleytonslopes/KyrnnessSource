@@ -28,7 +28,10 @@ public:
 	void OnUpdateMouseFocus(float mx, float my);
 	void OnResolutionUpdated(int width, int eight);
 	void UpdateLayoutAll();
+	void SetElementVisibility(const std::string& elementName, bool visible);
 	UUIElement* CreateElementFromJson(const nlohmann::json& node);
+	UUIElement* FindElementByName(const std::string& elementName);
+	UUIElement* FindElementRecursive(UUIElement* element, const std::string& elementName);
 
 
 private:

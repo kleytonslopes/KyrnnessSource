@@ -55,6 +55,8 @@ void UUIElement::Initialize()
 
 void UUIElement::Draw()
 {
+	if (!bVisible)
+		return;
 #if(DEBUG)
 	if (UGraphicsApi_OpenGL* api = UApplication::Get().GetGraphicsApi<UGraphicsApi_OpenGL>())
 	{

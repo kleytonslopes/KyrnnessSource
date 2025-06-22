@@ -2,6 +2,7 @@
 #include "Scripting/LuaAPI.hpp"
 #include "Core/Core.hpp"
 #include "Runtime/Application.hpp"
+#include "UI/UIManager.hpp"
 
 namespace LuaAPI
 {
@@ -15,6 +16,10 @@ namespace LuaAPI
 		//Engine Global Functions
 		FSolNamespace engineNamespace = lua.create_named_table("Engine");
 		engineNamespace.set_function("Log", Engine::Log);
+
+		//UI Global Functions
+		FSolNamespace uiNamespace = lua.create_named_table("UI");
+		uiNamespace.set_function("SetVisible", UI::SetVisible);
 	}
 
 	namespace Game
@@ -37,5 +42,14 @@ namespace LuaAPI
 			FLogger::Log(message);
 		}
 	}
+
+	namespace UI
+	{
+		void SetVisible(const std::string& elementName, bool visible)
+		{
+			UApplication::Get().GetUIManager()->SetElementVisibility(elementName, visible);
+		}
+	}
 }
+
 

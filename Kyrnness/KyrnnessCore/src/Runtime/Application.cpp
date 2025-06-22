@@ -98,6 +98,9 @@ void UApplication::PreInitialize()
 	//Create Scene
 	m_Scene = std::make_unique<UScene>(this);
 
+	//Create UI Manager
+	m_UIManager = std::make_unique<UUIManager>(this);
+
 	//Create HUD
 	if (m_HUDFactory)
 		m_HUD = m_HUDFactory(this);
@@ -113,6 +116,7 @@ void UApplication::OnInitialize()
 	InitializeController();
 	InitializePhysicsSystem();
 	InitializeScene();
+	m_UIManager->Initialize();
 	InitialzieHUD();
 
 	Super::OnInitialize();
@@ -140,6 +144,7 @@ void UApplication::OnUpdate(float DeltaTime)
 	//ImGui_ImplGlfw_NewFrame();
 	//ImGui::NewFrame();
 
+	m_UIManager->RenderAll();
 	m_HUD->Draw(m_DeltaTime);
 
 	m_Window->PollEvents();

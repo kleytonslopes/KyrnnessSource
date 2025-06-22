@@ -19,6 +19,10 @@ namespace LuaAPI
 	{
 		void Log(const std::string& message);
 	}
+	namespace UI
+	{
+		void SetVisible(const std::string&, bool visible);
+	}
 }
 
 #endif // KYRNNES_SCRIPTING_HPP

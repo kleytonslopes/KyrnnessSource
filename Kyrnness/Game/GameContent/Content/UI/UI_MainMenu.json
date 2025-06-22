@@ -1,21 +1,26 @@
 {
   "Type": "UUIBorder",
+  "Name": "Background",
   "Anchor": "Center",
   "Width": 2560,
   "Height": 1080,
   "Texture": "Assets/Textures/UI/tex_bg_mainmenu.png",
   "Enabled": true,
+  "Visible": true,
   "Children": [
     {
       "Type": "UUIBorder",
+      "Name": "BackgroundPanel",
       "Anchor": "Center",
       "Width": 1602,
       "Height": 802,
       "Texture": "Assets/Textures/UI/tex_ui_menu_panel_bg.png",
       "Enabled": true,
+      "Visible": true,
       "Children": [
         {
           "Type": "UUIButton",
+          "Name": "NewGameButton",
           "Anchor": "Center",
           "Width": 330,
           "Height": 52,
@@ -26,10 +31,12 @@
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
           "OnClick": "OnNewGameButtonClicked",
-          "Enabled": true
+          "Enabled": true,
+          "Visible": true
         },
         {
           "Type": "UUIButton",
+          "Name": "HostGameButton",
           "Anchor": "Center",
           "Width": 330,
           "Height": 52,
@@ -40,10 +47,12 @@
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
           "OnClick": "OnHostGameButtonClicked",
-          "Enabled": true
+          "Enabled": true,
+          "Visible": true
         },
         {
           "Type": "UUIButton",
+          "Name": "JoinGameButton",
           "Anchor": "Center",
           "Width": 330,
           "Height": 52,
@@ -54,10 +63,12 @@
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
           "OnClick": "OnJoinGameButtonClicked",
-          "Enabled": true
+          "Enabled": true,
+          "Visible": true
         },
         {
           "Type": "UUIButton",
+          "Name": "SettingsButton",
           "Anchor": "Center",
           "Width": 330,
           "Height": 52,
@@ -68,10 +79,12 @@
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
           "OnClick": "OnSettingsButtonClicked",
-          "Enabled": false
+          "Enabled": false,
+          "Visible": true
         },
         {
           "Type": "UUIButton",
+          "Name": "ModsGameButton",
           "Anchor": "Center",
           "Width": 330,
           "Height": 52,
@@ -82,10 +95,12 @@
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
           "OnClick": "OnModsButtonClicked",
-          "Enabled": false
+          "Enabled": false,
+          "Visible": true
         },
         {
           "Type": "UUIButton",
+          "Name": "QuitGameButton",
           "Anchor": "Center",
           "Width": 330,
           "Height": 52,
@@ -96,7 +111,8 @@
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
           "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
           "OnClick": "OnQuitGameButtonClicked",
-          "Enabled": true
+          "Enabled": true,
+          "Visible": true
         }
       ]
     }

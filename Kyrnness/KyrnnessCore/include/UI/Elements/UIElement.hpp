@@ -99,6 +99,7 @@ enum class EScaleMode
 class UUIElement 
 {
 public:
+	std::string m_Name;
 	UUIElement* Parent = nullptr;
 	std::vector<UUIElement*> Children;
 
@@ -147,7 +148,7 @@ public:
 	void PropagateMouseLeave(double mouseX, double mouseY);
 	void PropagateUpdateMouseFocus(double mouseX, double mouseY);
 
-	
+	void SetVisible(bool visible) { bVisible = visible; };
 	void SetTextureId(unsigned int value) { m_TextureID = value; }
 	void SetVAO(unsigned int value) { m_VAO = value; }
 
@@ -167,6 +168,7 @@ protected:
 
 	bool bHovered = false;
 	bool bPressed = false;
+	bool bVisible = true;
 
 	std::vector<float> m_Vertices = {
 		// Posi��es (x, y)   // UVs (u, v)
