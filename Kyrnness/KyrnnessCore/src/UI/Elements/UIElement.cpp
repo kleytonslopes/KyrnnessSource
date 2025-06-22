@@ -57,6 +57,7 @@ void UUIElement::Draw()
 {
 	if (!bVisible)
 		return;
+
 #if(DEBUG)
 	if (UGraphicsApi_OpenGL* api = UApplication::Get().GetGraphicsApi<UGraphicsApi_OpenGL>())
 	{
@@ -221,9 +222,47 @@ void UUIElement::UpdateLayout()
 	}
 }
 
+void UUIElement::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp)
+{
+	if (!bVisible || !bEnabled)
+		return;
+
+	OnHandleInput(mouseX, mouseY, isMouseDown, isMouseUp);
+}
+
+void UUIElement::MouseEnter(double mouseX, double mouseY)
+{
+	if (!bVisible || !bEnabled)
+		return;
+
+	OnMouseEnter(mouseX, mouseY);
+}
+
+void UUIElement::MouseLeave(double mouseX, double mouseY)
+{
+	if (!bVisible || !bEnabled)
+		return;
+
+	OnMouseLeave(mouseX, mouseY);
+}
+
+void UUIElement::UpdateMouseFocus(double mouseX, double mouseY)
+{
+	if (!bVisible || !bEnabled)
+		return;
+
+	OnUpdateMouseFocus(mouseX, mouseY);
+}
+
+void UUIElement::OnMouseLeave(double mouseX, double mouseY)
+{
+	if (!bVisible || !bEnabled)
+		return;
+}
+
 void UUIElement::OnUpdateMouseFocus(double mouseX, double mouseY)
 {
-	if (!bEnabled)
+	if (!bVisible || !bEnabled)
 		return;
 
 	bool insideX = mouseX >= x && mouseX <= (x + width);
@@ -232,7 +271,7 @@ void UUIElement::OnUpdateMouseFocus(double mouseX, double mouseY)
 
 	if (isInside && !bHovered)
 	{
-		OnMouseEnter(mouseX, mouseY);
+		MouseEnter(mouseX, mouseY);
 		bHovered = true;
 		m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
 
@@ -240,6 +279,7 @@ void UUIElement::OnUpdateMouseFocus(double mouseX, double mouseY)
 	}
 	else if (!isInside && bHovered)
 	{
+		MouseLeave(mouseX, mouseY);
 		bHovered = false;
 		m_MouseFocusState = EMouseFocusState::MFS_None;
 
@@ -331,6 +371,36 @@ glm::vec2 UUIElement::GetAccumulatedScale()
 	return totalScale;
 }
 
+void UUIElement::OnHandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp)
+{
+	int windowHeight = UApplication::Get().GetHeight();
+	mouseY = windowHeight - mouseY;
+
+	glm::vec2 totalScale = GetAccumulatedScale();
+
+	float scaledMouseX = static_cast<float>(mouseX) / totalScale.x;
+	float scaledMouseY = static_cast<float>(mouseY) / totalScale.y;
+
+	bool insideX = scaledMouseX >= x && scaledMouseX <= (x + width);
+	bool insideY = scaledMouseY >= y && scaledMouseY <= (y + height);
+
+	if (insideX && insideY)
+	{
+		if (bHovered && m_MouseFocusState == EMouseFocusState::MFS_MouseEnter)
+		{
+			m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
+
+			if (OnClick && isMouseDown) OnClick();
+		}
+	}
+}
+
+void UUIElement::OnMouseEnter(double mouseX, double mouseY)
+{
+	if (!bVisible || !bEnabled)
+		return;
+}
+
 glm::mat4 UUIElement::GetProjetion()
 {
 	return glm::ortho(0.0f
@@ -351,6 +421,9 @@ glm::mat4 UUIElement::GetModel()
 
 void UUIElement::DrawSelf()
 {
+	if (!bVisible)
+		return;
+
 	if (m_TextureID != 0 && m_VAO != 0)
 	{
 		glm::mat4 model = GetWorldModel();

@@ -138,10 +138,11 @@ public:
 	virtual void Initialize();
     virtual void Draw();
 	virtual void UpdateLayout(); 
-	virtual void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp) {}
-	virtual void OnMouseEnter(double mouseX, double mouseY) { }
-	virtual void OnMouseLeave(double mouseX, double mouseY) { }
-	virtual void OnUpdateMouseFocus(double mouseX, double mouseY);
+	
+	virtual void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp);
+	virtual void MouseEnter(double mouseX, double mouseY);
+	virtual void MouseLeave(double mouseX, double mouseY);
+	virtual void UpdateMouseFocus(double mouseX, double mouseY);
 
 	void PropagateInput(float mx, float my, bool isMouseDown, bool isMouseUp);
 	void PropagateMouseEnter(double mouseX, double mouseY);
@@ -194,6 +195,11 @@ protected:
 	glm::mat4 GetModel();
 
 	virtual void DrawSelf();
+
+	virtual void OnHandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp);
+	virtual void OnMouseEnter(double mouseX, double mouseY);
+	virtual void OnMouseLeave(double mouseX, double mouseY);
+	virtual void OnUpdateMouseFocus(double mouseX, double mouseY);
 };
 
 #endif// KYRNESS_UI_UIELEMENT_HPP

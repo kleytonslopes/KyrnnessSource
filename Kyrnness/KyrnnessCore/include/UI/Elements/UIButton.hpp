@@ -16,11 +16,9 @@ public:
 
 	FVector4 NormalColor = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
 
-    void Initialize();
+    void Initialize() override;
 
-    void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp) override;
 	void OnMouseEnter(double mouseX, double mouseY) override;
-	void OnMouseLeave(double mouseX, double mouseY) override;
     void OnUpdateMouseFocus(double mouseX, double mouseY) override;
 
 	void SetFont(UUIFont* newFont);

@@ -20,7 +20,6 @@ void UUIManager::Initialize()
 {
 	UApplication().Get().OnResolutionUpdatedEvent.AddListener(this, &UUIManager::OnResolutionUpdated);
 	UInputManager::Get().OnMouseButtonEvent.AddListener(this, &UUIManager::ProcessInput);
-	//UInputManager::Get().OnMouseMoveEvent.AddListener(this, &UUIManager::OnMouseEnter);
 	UInputManager::Get().OnMouseMoveEvent.AddListener(this, &UUIManager::OnUpdateMouseFocus);
 }
 

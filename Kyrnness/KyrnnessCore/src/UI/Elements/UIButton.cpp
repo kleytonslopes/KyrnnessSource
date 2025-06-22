@@ -6,7 +6,7 @@
 
 void UUIButton::Initialize()
 {
-	UUIElement::Initialize();
+	Super::Initialize();
 
 	if(bEnabled)
 		SetTextureId(m_TextureIdle);
@@ -14,54 +14,26 @@ void UUIButton::Initialize()
 		SetTextureId(m_TextureDisabled);
 }
 
-void UUIButton::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp)
-{
-	int windowHeight = UApplication::Get().GetHeight();
-	mouseY = windowHeight - mouseY;
-
-	glm::vec2 totalScale = GetAccumulatedScale();
-
-	float scaledMouseX = static_cast<float>(mouseX) / totalScale.x;
-	float scaledMouseY = static_cast<float>(mouseY) / totalScale.y;
-
-	bool insideX = scaledMouseX >= x && scaledMouseX <= (x + width);
-	bool insideY = scaledMouseY >= y && scaledMouseY <= (y + height);
-
-	if (insideX && insideY)
-	{
-		if (bHovered && m_MouseFocusState == EMouseFocusState::MFS_MouseEnter)
-		{
-			m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
-			
-			if (OnClick && isMouseDown) OnClick();
-		}
-	}
-}
-
 void UUIButton::OnMouseEnter(double mouseX, double mouseY)
 {
-	if (!bEnabled)
-		return;
+	Super::OnMouseEnter(mouseX, mouseY);
 
 	UApplication::Get().GetSoundManager()->PlayUISound("button_hovered", 1.0f);
 }
 
-void UUIButton::OnMouseLeave(double mouseX, double mouseY)
-{
-	
-}
-
 void UUIButton::OnUpdateMouseFocus(double mouseX, double mouseY)
 {
-	if (!bEnabled)
-		return;
-
 	Super::OnUpdateMouseFocus(mouseX, mouseY);
 
 	if (bHovered)
 		SetTextureId(m_TextureHovered);
 	else
-		SetTextureId(m_TextureIdle);
+	{
+		if (bEnabled)
+			SetTextureId(m_TextureIdle);
+		else
+			SetTextureId(m_TextureDisabled);
+	}
 }
 
 void UUIButton::SetFont(UUIFont* newFont)
