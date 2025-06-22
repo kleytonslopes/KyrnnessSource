@@ -28,6 +28,7 @@ public:
     virtual void OnMouseButton(int button, int action, int mods) override;
     virtual void GetMousePosition(float& x, float& y) const override;
     virtual bool GetMouseButtonState(int button) const override;
+    virtual void SetShouldClose(bool value) override;
 
 	GLFWwindow* GetGLFWWindow() noexcept
 	{

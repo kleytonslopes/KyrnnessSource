@@ -230,6 +230,11 @@ bool UWindowGLFW::GetMouseButtonState(int button) const
 	return glfwGetMouseButton(m_glfwWindow, button);
 }
 
+void UWindowGLFW::SetShouldClose(bool value)
+{
+	glfwSetWindowShouldClose(m_glfwWindow, value);
+}
+
 void UWindowGLFW::InitializeForOpenGL()
 {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);

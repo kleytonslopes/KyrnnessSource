@@ -47,6 +47,9 @@ void UApplication::PreInitialize()
 
 	UInputManager::Get().SetupApplication(this);
 	LoadConfiguration();
+
+	//Initialize Lua Integration
+	m_LuaManager.Initialize();
 	
 	//Create Window
 	switch (m_GameConfig.m_WindowType)

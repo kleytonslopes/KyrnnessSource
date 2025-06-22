@@ -8,6 +8,8 @@
 #include <thread>
 #include <atomic>
 
+#include "sol/sol.hpp"
+
 namespace us::types
 {
 	struct FCommonTypes
@@ -60,6 +62,10 @@ template<typename K, typename T>
 using TMap = std::unordered_map<K, T>;
 
 using FThread = std::jthread;
+
+using FSolState = sol::state;
+using FSolFunction = sol::function;
+using FSolNamespace = sol::table;
 
 
 #endif // KYRNESS_FREQUENCY_THREAD_HPP

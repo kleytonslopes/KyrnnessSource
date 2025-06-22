@@ -5,6 +5,7 @@
 
 #include "Class.hpp"
 #include "Runtime/Window.hpp"
+#include "Runtime/LuaManager.hpp"
 #include "Graphics/GraphicsApi.hpp"
 #include "Config/Configuration.hpp"
 #include "GameFramework/Scene.hpp"
@@ -117,6 +118,9 @@ public:
 
     FGameConfig& GetGameConfig() { return m_GameConfig; }
 
+    FSolState& GetLuaState() { return m_LuaManager.GetLuaState(); }
+    ULuaManager& GetLuaManager() { return m_LuaManager; }
+
     void QuitGame();
 protected:
     void LoadConfiguration();
@@ -137,6 +141,8 @@ private:
 	std::unique_ptr<UPhysicsSystem> m_PhysicsSystem;
     std::unique_ptr<UHUD> m_HUD;
     std::unique_ptr<USoundManager> m_SoundManager;
+
+    ULuaManager m_LuaManager;
 
     TFunction<std::unique_ptr<UHUD>(UApplication*)> m_HUDFactory;
 

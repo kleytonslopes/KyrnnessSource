@@ -42,7 +42,7 @@ public:
     virtual void SetShowMouseCursor(bool show) { bShowMouseCursor = show; };
     bool GetShowMouseCursor() const { return bShowMouseCursor; }
 
-    void SetShouldClose(bool value) { bShouldClose = true; }
+    virtual void SetShouldClose(bool value) = 0;
 
 protected:
     UApplication* m_Application = nullptr;

@@ -48,19 +48,19 @@ public:
 	static void InitializeGData(const std::string& gdataFilePath);
 
 #if defined(ENCRYPTION_XOR)
-	static std::vector<uint8_t> LoadAssetRaw(const std::string& assetPath)
+	static std::vector<uint8_t> LoadAssetRaw(const std::string& assetPath, bool bIsBinary = true)
 	{
-		return LoadAssetRaw_With_XOR(assetPath);
+		return LoadAssetRaw_With_XOR(assetPath, bIsBinary);
 	}
 #else
-	static std::vector<uint8_t> LoadAssetRaw(const std::string& assetPath)
+	static std::vector<uint8_t> LoadAssetRaw(const std::string& assetPath, bool bIsBinary = true)
 	{
-		return LoadAssetRaw_NoEncryption(assetPath);
+		return LoadAssetRaw_NoEncryption(assetPath, bIsBinary);
 	}
 #endif
 	static void LoadAssetMap(const std::string& path);
 	
-
+	static std::string LoadText(const std::string& FilePath);
 private:
 	//inline static TMap<std::string, FAssetEntry> s_AssetMap;
 	inline static std::vector<uint8_t> s_GDataFile;
@@ -70,8 +70,8 @@ private:
 	static std::ifstream s_AssetFile;
 	static TMap<std::string, FAssetTexture> m_TextureLoaded;
 
-	static std::vector<uint8_t> LoadAssetRaw_NoEncryption(const std::string& assetPath);
-	static std::vector<uint8_t> LoadAssetRaw_With_XOR(const std::string& assetPath);
+	static std::vector<uint8_t> LoadAssetRaw_NoEncryption(const std::string& assetPath, bool bIsBinary);
+	static std::vector<uint8_t> LoadAssetRaw_With_XOR(const std::string& assetPath, bool bIsBinary);
 
 	static void XORDecrypt(std::vector<uint8_t>& data, uint8_t key);
 };

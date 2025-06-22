@@ -107,7 +107,6 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 		element = FMemoryManager::Allocate<UUIText>();
 	else if (type == "UIScaleBox")
 		element = FMemoryManager::Allocate<UUIScaleBox>();
-	// Adicione outros tipos conforme for criando
 
 	if (element)
 	{
@@ -145,13 +144,12 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 				
 
 				
-				std::string clickFuncName = node.value("OnClick", "");
-				if (!clickFuncName.empty())
+				std::string luaFunction = node.value("OnClick", "");
+				if (!luaFunction.empty())
 				{
-					button->UserData_StringEvent = clickFuncName; //???
-						button->OnClick = [clickFuncName]()
+						button->OnClick = [luaFunction]()
 							{
-								FLogger::Success("[C++] Botão '%s' clicado (fake callback antes do Lua)\n", clickFuncName.c_str());
+								UApplication::Get().GetLuaManager().CallFunction(luaFunction);
 							};
 				}
 
