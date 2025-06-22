@@ -4,6 +4,11 @@
 #include "Runtime/Application.hpp"
 #include "Core/AssetManager.hpp"
 
+ULuaManager& ULuaManager::Get()
+{
+    return UApplication::Get().GetLuaManager();
+}
+
 ULuaManager::ULuaManager()
 {
 
@@ -17,10 +22,12 @@ ULuaManager::~ULuaManager()
 void ULuaManager::Initialize()
 {
     m_LuaState.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math, sol::lib::string);
+    
+    Super::Initialize();
+
+    LoadAllMods();
 
     FLogger::Information("[Lua] Lua State inicializado!\n");
-
-    Super::Initialize();
 }
 
 void ULuaManager::LoadScript(const std::string& filePath)
@@ -79,6 +86,55 @@ void ULuaManager::LoadScript(const std::string& filePath)
     {
         FLogger::Error("[Lua] Erro ao carregar script %s: %s\n", filePath.c_str(), e.what());
     }*/
+}
+
+void ULuaManager::LoadAllMods()
+{
+    const std::string modsBasePath = "Mods";
+
+    for (const auto& modEntry : std::filesystem::directory_iterator(modsBasePath))
+    {
+        if (!modEntry.is_directory())
+            continue;
+
+        std::string modPath = modEntry.path().string();
+        std::string myModLuaPath = modPath + "/MyMod.lua";
+
+        if (!std::filesystem::exists(myModLuaPath))
+        {
+            FLogger::Warning("[Lua] Ignorando Mod: %s (MyMod.lua não encontrado)\n", modPath.c_str());
+            continue;
+        }
+
+        FLogger::Log("[Lua] Carregando Mod: %s\n", modPath.c_str());
+
+        // 1 - Primeiro, carrega todos os .lua dentro de Client/ e subpastas
+        const std::string clientPath = modPath + "/Client";
+
+        if (std::filesystem::exists(clientPath))
+        {
+            for (const auto& file : std::filesystem::recursive_directory_iterator(clientPath))
+            {
+                if (!file.is_regular_file())
+                    continue;
+
+                if (file.path().extension() == ".lua")
+                {
+                    LoadScript(file.path().string());
+                }
+            }
+        }
+
+        // 2 - Depois, carrega o MyMod.lua (entry point)
+        LoadScript(myModLuaPath);
+
+        FLogger::Log("[Lua] Mod carregado com sucesso: %s\n", modPath.c_str());
+    }
+}
+
+void ULuaManager::RegisterEventFunction(const std::string& eventName, sol::function func)
+{
+    m_RegisteredEvents[eventName].push_back(func);
 }
 
 bool ULuaManager::CallFunction(const std::string& functionName)

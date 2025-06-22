@@ -11,13 +11,17 @@ namespace LuaAPI
 	{
 		lua.set_function("RegisterEvent", [](const std::string& eventName, sol::function func)
 			{
-				UApplication::Get().GetLuaManager().GetLuaEventManager().RegisterEventFunction(eventName, func);
+				ULuaManager::Get().RegisterEventFunction(eventName, func);
 			});
+
+		//Game Global Functions
+		FSolNamespace audioNamespace = lua.create_named_table("Audio");
+		audioNamespace.set_function("PlaySound", Audio::PlaySound);
 
 		//Game Global Functions
 		FSolNamespace gameNamespace = lua.create_named_table("Game");
 		gameNamespace.set_function("QuitGame", Game::QuitGame);
-		gameNamespace.set_function("PlaySound", Game::PlaySound);
+
 
 		//Engine Global Functions
 		FSolNamespace engineNamespace = lua.create_named_table("Engine");
@@ -29,16 +33,19 @@ namespace LuaAPI
 		uiNamespace.set_function("RemoveElement", UI::RemoveElement);
 	}
 
+	namespace Audio
+	{
+		void PlaySound(const std::string& soundName)
+		{
+			UApplication::Get().GetSoundManager()->PlaySound(soundName, ESoundCategory::SFX);
+		}
+	}
+
 	namespace Game
 	{
 		void QuitGame()
 		{
 			UApplication::Get().QuitGame();
-		}
-
-		void PlaySound(const std::string& soundName)
-		{
-			UApplication::Get().GetSoundManager()->PlaySound(soundName, ESoundCategory::SFX);
 		}
 	}
 

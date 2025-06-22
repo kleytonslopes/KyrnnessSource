@@ -138,7 +138,7 @@ void UApplication::OnUpdate(float DeltaTime)
 
 	FMemoryManager::ProcessPendingDestroy();
 
-	CallLuaFunction("Application.OnUpdate");
+	m_LuaManager->TriggerEvent("Application.OnUpdate", DeltaTime);
 
 	m_GraphicsApi->DrawFrame(m_DeltaTime);
 
@@ -224,10 +224,10 @@ uint32 UApplication::GetHeight() const
 	return  m_GameConfig.m_Height;
 }
 
-void UApplication::CallLuaFunction(const std::string& functionName)
-{
-	m_LuaManager->GetLuaEventManager().CallEvent(functionName);
-}
+//void UApplication::CallLuaFunction(const std::string& functionName)
+//{
+//	m_LuaManager->GetLuaEventManager().CallEvent(functionName);
+//}
 
 void UApplication::QuitGame()
 {
