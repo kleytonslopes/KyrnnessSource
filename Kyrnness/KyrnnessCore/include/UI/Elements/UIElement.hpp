@@ -125,6 +125,8 @@ public:
 	float OffsetY = 0.0f;
 	FMargin Margin;
 
+	bool bEnabled = true;
+
 	UUIElement();
     virtual ~UUIElement() = default;
 

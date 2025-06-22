@@ -29,6 +29,7 @@ void UUIButton::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool
 		if (bHovered && m_MouseFocusState == EMouseFocusState::MFS_MouseEnter)
 		{
 			m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
+			
 			if (OnClick && isMouseDown) OnClick();
 		}
 	}
@@ -36,51 +37,12 @@ void UUIButton::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool
 
 void UUIButton::OnMouseEnter(double mouseX, double mouseY)
 {
-	int windowHeight = UApplication::Get().GetHeight();
-
-	bool insideX = mouseX >= x && mouseX <= (x + width);
-	bool insideY = mouseY >= y && mouseY <= (y + height);
-
-	if (insideX && insideY)
-	{
-		bHovered = true;
-
-		if (bHovered && m_MouseFocusState != EMouseFocusState::MFS_MouseEnter)
-		{
-			//FLogger::Log("Mouse Entered UIButton: x= %f , y= %f", mouseX, mouseY);
-			SetTextureId(m_TextureHovered);
-			m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
-			if (OnHovered)
-			{
-				OnHovered(true);
-			}
-		}
-	}
+	UApplication::Get().GetSoundManager()->PlayUISound("button_hovered", 0.2f);
 }
 
 void UUIButton::OnMouseLeave(double mouseX, double mouseY)
 {
-	int windowHeight = UApplication::Get().GetHeight();
-
-	bool insideX = mouseX >= x && mouseX <= (x + width);
-	bool insideY = mouseY >= y && mouseY <= (y + height);
-
-	if (!insideX || !insideY)
-	{
-		if (bHovered)
-		{
-
-			bHovered = false;
-			SetTextureId(m_TextureIdle);
-			if (!bHovered && m_MouseFocusState != EMouseFocusState::MFS_None)
-			{
-				//FLogger::Log("Mouse Leave UIButton: x= %f , y= %f", mouseX, mouseY);
-
-				m_MouseFocusState = EMouseFocusState::MFS_None;
-				if (OnHovered) OnHovered(false);
-			}
-		}
-	}
+	
 }
 
 void UUIButton::OnUpdateMouseFocus(double mouseX, double mouseY)
@@ -91,32 +53,6 @@ void UUIButton::OnUpdateMouseFocus(double mouseX, double mouseY)
 		SetTextureId(m_TextureHovered);
 	else
 		SetTextureId(m_TextureIdle);
-
-	//bool insideX = mouseX >= x && mouseX <= (x + width);
-	//bool insideY = mouseY >= y && mouseY <= (y + height);
-	//bool isInside = insideX && insideY;
-
-
-
-	//if (isInside && !hovered)
-	//{
-	//	// Mouse acabou de entrar
-	//	hovered = true;
-	//	m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
-	//	FLogger::Log("Mouse Entered UIButton: x= %f , y= %f", mouseX, mouseY);
-
-	//	if (OnHovered) OnHovered(true);
-	//}
-	//else if (!isInside && hovered)
-	//{
-	//	// Mouse acabou de sair
-	//	hovered = false;
-	//	m_MouseFocusState = EMouseFocusState::MFS_None;
-	//	FLogger::Log("Mouse Leave UIButton: x= %f , y= %f", mouseX, mouseY);
-
-	//	if (OnHovered) OnHovered(false);
-	//}
-
 }
 
 void UUIButton::SetFont(UUIFont* newFont)

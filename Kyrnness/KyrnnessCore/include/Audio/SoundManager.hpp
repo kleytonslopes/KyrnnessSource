@@ -39,6 +39,7 @@ public:
 
     bool LoadSound(const std::string& name, const std::string& filepath, bool is3D = false, bool loop = false, bool stream = false);
     void PlaySound(const std::string& name, ESoundCategory category, float volume = 1.0f, float posX = 0.0f, float posY = 0.0f, float posZ = 0.0f);
+    void PlayUISound(const std::string& name, float volume);
     void PauseAll();
     void PauseSoundByName(const std::string& soundName, bool pause);
     void ResumeAll();
@@ -58,6 +59,8 @@ private:
     FMOD::System* m_System = nullptr;
     std::vector<FMOD::Channel*> m_ActiveChannels;
     TMap<std::string, SoundData> m_SoundData;
+
+    FMOD::Channel* m_ChannelUI = nullptr;
 
     FMOD::ChannelGroup* m_MasterGroup = nullptr;
     FMOD::ChannelGroup* m_UIGroup = nullptr;

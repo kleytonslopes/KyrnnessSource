@@ -225,10 +225,9 @@ void UUIElement::OnUpdateMouseFocus(double mouseX, double mouseY)
 	bool insideY = mouseY >= y && mouseY <= (y + height);
 	bool isInside = insideX && insideY;
 
-
-
 	if (isInside && !bHovered)
 	{
+		OnMouseEnter(mouseX, mouseY);
 		bHovered = true;
 		m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
 		FLogger::Log("Mouse Entered UIButton: x= %f , y= %f", mouseX, mouseY);

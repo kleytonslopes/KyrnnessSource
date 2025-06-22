@@ -271,7 +271,8 @@ void UApplication::InitializeAudio()
 
 	m_SoundManager->SetVolume(ESoundCategory::UI, 0.5);
 
-	m_SoundManager->LoadSound("click", "Assets/Sounds/sfx_lobby_player_done.wav", true, false, false);
+	m_SoundManager->LoadSound("button_hovered", "Assets/Sounds/sfx_button_hovered.wav", false, false, false);
+	m_SoundManager->LoadSound("click", "Assets/Sounds/sfx_lobby_player_done.wav", false, false, false);
 	m_SoundManager->LoadSound("music", "Assets/Sounds/music.wav", false, true, true);
 	m_SoundManager->LoadSound("music2", "Assets/Sounds/music2.wav", false, true, true);
 }

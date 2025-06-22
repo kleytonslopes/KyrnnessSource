@@ -138,8 +138,8 @@ void USoundManager::PlaySound(const std::string& name, ESoundCategory category, 
 		return;
 
 	FMOD::Channel* channel = nullptr;
-	//m_System->playSound(it->second, nullptr, false, &channel);
-	m_System->playSound(m_SoundData[name].Sound, nullptr, false, nullptr);
+
+	m_System->playSound(m_SoundData[name].Sound, nullptr, false, &channel);
 
 	if (channel)
 	{
@@ -168,6 +168,32 @@ void USoundManager::PlaySound(const std::string& name, ESoundCategory category, 
 			channel->setChannelGroup(m_UIGroup);
 			break;
 		}
+	}
+}
+
+void USoundManager::PlayUISound(const std::string& name, float volume)
+{
+	// Para o som de hover atual, se estiver tocando
+	if (m_ChannelUI)
+	{
+		bool isPlaying = false;
+		m_ChannelUI->isPlaying(&isPlaying);
+		if (isPlaying)
+		{
+			m_ChannelUI->stop();
+		}
+	}
+
+	FMOD::Sound* sound = GetSound(name);
+	if (!sound)
+		return;
+
+	m_System->playSound(sound, nullptr, false, &m_ChannelUI);
+
+	if (m_ChannelUI)
+	{
+		m_ChannelUI->setVolume(volume);
+		m_ChannelUI->setChannelGroup(m_UIGroup); // Se estiver usando channel group para UI
 	}
 }
 
@@ -297,7 +323,7 @@ void USoundManager::SetVolume(ESoundCategory soundGroup, float volume)
 		m_MasterGroup->setVolume(volume);
 		break;
 	}
-	
+
 }
 
 void USoundManager::Update()
