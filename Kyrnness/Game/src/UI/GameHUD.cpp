@@ -74,9 +74,9 @@ void UGameHUD::Initialize()
 		NewGameButton->SetTextureId(textureId);
 
 		NewGameButton->OnClick = [NewGameButton]() {
-			auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
+			auto objectsScene = UApplication::Get().GetRegistry().view<UTransformComponent, UAudioSourceComponent>();
 
-			objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
+			objectsScene.each([&](const auto entity, auto& transform, UAudioSourceComponent& audioComp)
 				{
 					audioComp.PlaySoundByName("music");
 				});
@@ -98,9 +98,9 @@ void UGameHUD::Initialize()
 		HostGameButton->SetTextureId(textureId);
 
 		HostGameButton->OnClick = [HostGameButton]() {
-			auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
+			auto objectsScene = UApplication::Get().GetRegistry().view<UTransformComponent, UAudioSourceComponent>();
 
-			objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
+			objectsScene.each([&](const auto entity, auto& transform, UAudioSourceComponent& audioComp)
 				{
 					audioComp.PlaySoundByName("music");
 				});
@@ -122,9 +122,9 @@ void UGameHUD::Initialize()
 		JoinGameButton->SetTextureId(textureId);
 
 		JoinGameButton->OnClick = [JoinGameButton]() {
-			auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
+			auto objectsScene = UApplication::Get().GetRegistry().view<UTransformComponent, UAudioSourceComponent>();
 
-			objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
+			objectsScene.each([&](const auto entity, auto& transform, UAudioSourceComponent& audioComp)
 				{
 					audioComp.PlaySoundByName("music");
 				});
@@ -146,9 +146,9 @@ void UGameHUD::Initialize()
 		Button2->SetTextureId(textureId);
 
 		Button2->OnClick = [Button2]() {
-			auto objectsScene = UApplication::Get().GetRegistry().view<FTransformComponent, FAudioSourceComponent>();
+			auto objectsScene = UApplication::Get().GetRegistry().view<UTransformComponent, UAudioSourceComponent>();
 
-			objectsScene.each([&](const auto entity, auto& transform, FAudioSourceComponent& audioComp)
+			objectsScene.each([&](const auto entity, auto& transform, UAudioSourceComponent& audioComp)
 				{
 					audioComp.FadeOutSoundByName("music", 3);
 				});
@@ -202,7 +202,7 @@ void UGameHUD::Initialize()
 	auto allButtons = FMemoryManager::GetAll<UUIButton>();
 	for (UUIButton* btn : allButtons)
 	{
-		LOG(Log, TEXT("Button at: %p", btn));
+		FLogger::Log(TEXT("Button at: %p", btn));
 	}
 #endif // TEMP	
 

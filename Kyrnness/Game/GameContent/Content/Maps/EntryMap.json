@@ -5,7 +5,7 @@
                 {
                     "Id": "12345678-1234-1234-1234-123456789012",
                     "ObjectName": "Terrain",
-                    "Type": "FIdentityComponent",
+                    "Type": "UIdentityComponent",
                     "Update": false
                 },
                 {
@@ -34,7 +34,7 @@
                         1.0,
                         1.0
                     ],
-                    "Type": "FTransformComponent",
+                    "Type": "UTransformComponent",
                     "UpVector": [
                         0.0,
                         1.0,
@@ -50,7 +50,7 @@
                         10
                     ],
                     "TileSize": 2.0,
-                    "Type": "FTerrainComponent",
+                    "Type": "UTerrainComponent",
                     "Update": true
                 }
             ],
@@ -63,7 +63,7 @@
                 {
                     "Id": "c1b2f3a4-5d6e-7f8g-9h0i-j1k2l3m4n5o6",
                     "ObjectName": "MainCamera",
-                    "Type": "FIdentityComponent",
+                    "Type": "UIdentityComponent",
                     "Update": false
                 },
                 {
@@ -92,7 +92,7 @@
                         1.0,
                         1.0
                     ],
-                    "Type": "FTransformComponent",
+                    "Type": "UTransformComponent",
                     "UpVector": [
                         -0.1870114952325821,
                         0.9822872281074524,
@@ -101,7 +101,7 @@
                     "Update": false
                 },
                 {
-                    "Type": "FInputComponent",
+                    "Type": "UInputComponent",
                     "Update": false
                 },
                 {
@@ -113,14 +113,14 @@
                         0.0
                     ],
                     "Near": 0.10000000149011612,
-                    "Type": "FCameraComponent",
+                    "Type": "UCameraComponent",
                     "Update": true
                 },
                 {
                     "Height": 1.2000000476837158,
                     "JumpForce": 8.0,
                     "Radius": 0.30000001192092896,
-                    "Type": "FCapsuleComponent",
+                    "Type": "UCapsuleComponent",
                     "Update": true
                 },
                 {
@@ -136,7 +136,7 @@
                 {
                     "Id": "11b3b235-57e4-4e0d-b17f-b6552e05fa1d",
                     "ObjectName": "PlaneFloor_1",
-                    "Type": "FIdentityComponent",
+                    "Type": "UIdentityComponent",
                     "Update": false
                 },
                 {
@@ -165,7 +165,7 @@
                         1.0,
                         10.0
                     ],
-                    "Type": "FTransformComponent",
+                    "Type": "UTransformComponent",
                     "UpVector": [
                         0.0,
                         1.0,
@@ -176,11 +176,11 @@
                 {
                     "MeshName": "PlaneFloor",
                     "MeshPath": "Assets/Models/SM_Floor.glb",
-                    "Type": "FMeshComponent",
+                    "Type": "UMeshComponent",
                     "Update": false
                 },
                 {
-                    "Type": "FBoxCollisionComponent",
+                    "Type": "UBoxCollisionComponent",
                     "Update": false
                 }
             ],
@@ -193,7 +193,7 @@
                 {
                     "Id": "11b3b235-57e4-4e0d-b17f-b6552e05fa11",
                     "ObjectName": "PlaneWall_1",
-                    "Type": "FIdentityComponent",
+                    "Type": "UIdentityComponent",
                     "Update": false
                 },
                 {
@@ -222,7 +222,7 @@
                         1.0,
                         1.0
                     ],
-                    "Type": "FTransformComponent",
+                    "Type": "UTransformComponent",
                     "UpVector": [
                         0.0,
                         1.0,
@@ -233,11 +233,11 @@
                 {
                     "MeshName": "PlaneFloor",
                     "MeshPath": "Assets/Models/SM_Wall.glb",
-                    "Type": "FMeshComponent",
+                    "Type": "UMeshComponent",
                     "Update": false
                 },
                 {
-                    "Type": "FBoxCollisionComponent",
+                    "Type": "UBoxCollisionComponent",
                     "Update": false
                 }
             ],
@@ -250,7 +250,7 @@
                 {
                     "Id": "11b3b235-57e4-4e0d-b11f-b6552e05fa11",
                     "ObjectName": "PlaneWall_2",
-                    "Type": "FIdentityComponent",
+                    "Type": "UIdentityComponent",
                     "Update": false
                 },
                 {
@@ -279,7 +279,7 @@
                         1.0,
                         1.0
                     ],
-                    "Type": "FTransformComponent",
+                    "Type": "UTransformComponent",
                     "UpVector": [
                         0.0,
                         1.0,
@@ -290,11 +290,11 @@
                 {
                     "MeshName": "PlaneFloor",
                     "MeshPath": "Assets/Models/SM_Wall.glb",
-                    "Type": "FMeshComponent",
+                    "Type": "UMeshComponent",
                     "Update": false
                 },
                 {
-                    "Type": "FBoxCollisionComponent",
+                    "Type": "UBoxCollisionComponent",
                     "Update": false
                 }
             ],
@@ -330,7 +330,7 @@
                         1.0,
                         1.0
                     ],
-                    "Type": "FTransformComponent",
+                    "Type": "UTransformComponent",
                     "UpVector": [
                         0.0,
                         1.0,
@@ -341,17 +341,17 @@
                 {
                     "Id": "11b3b235-57e4-4e0d-b17f-b6552e05fa11",
                     "ObjectName": "PlaneWall_1",
-                    "Type": "FIdentityComponent",
+                    "Type": "UIdentityComponent",
                     "Update": false
                 },
                 {
                     "MeshName": "PlaneFloor",
                     "MeshPath": "Assets/Models/SM_Wall.glb",
-                    "Type": "FMeshComponent",
+                    "Type": "UMeshComponent",
                     "Update": false
                 },
                 {
-                    "Type": "FBoxCollisionComponent",
+                    "Type": "UBoxCollisionComponent",
                     "Update": false
                 }
             ],

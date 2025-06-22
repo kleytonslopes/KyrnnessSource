@@ -3,7 +3,7 @@
 #include "Components/ShaderOpenGLComponent.hpp"
 #include "MemoryManager.hpp"
 
-std::unordered_map<std::string, FShaderAsset> UShaders::m_Shaders;
+TMap<std::string, FShaderAsset> UShaders::m_Shaders;
 
 void UShaders::Initialize()
 {
@@ -26,7 +26,7 @@ void UShaders::CompileShaders()
         FShaderAsset& shaderAsset = shaderPair.second;
 
         // Create an OpenGL shader component for compilation
-        FShaderOpenGLComponent* shaderComponent = FMemoryManager::Allocate<FShaderOpenGLComponent>(
+        UShaderOpenGLComponent* shaderComponent = FMemoryManager::Allocate<UShaderOpenGLComponent>(
             shaderName,
             shaderAsset.VertexShaderPath.c_str(),
             shaderAsset.FragmentShaderPath.c_str()
@@ -46,7 +46,7 @@ void UShaders::CompileShaders()
     }
 }
 
-FShaderOpenGLComponent* UShaders::GetShader(const std::string& shaderName)
+UShaderOpenGLComponent* UShaders::GetShader(const std::string& shaderName)
 {
     for (const auto& shaderPair : m_Shaders)
     {

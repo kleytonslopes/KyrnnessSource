@@ -8,30 +8,32 @@
 #include "Content/MeshAsset.hpp"
 #include "Graphics/RenderParameters.hpp"
 
-class FShaderOpenGLComponent;
+class UShaderOpenGLComponent;
 
-class FMeshRenderer_OpenGLComponent : public FComponent
+class UMeshRenderer_OpenGLComponent : public UComponent
 {
+	using Super = UComponent;
 public:
-	FMeshRenderer_OpenGLComponent(FMeshAsset& meshAsset,/*std::vector<Vertex> vertices, std::vector<uint32> indices,*/ FShaderOpenGLComponent* shaderComponent);
-	virtual ~FMeshRenderer_OpenGLComponent() = default;
+	UMeshRenderer_OpenGLComponent(FMeshAsset& meshAsset,/*std::vector<Vertex> vertices, std::vector<uint32> indices,*/ UShaderOpenGLComponent* shaderComponent);
+	virtual ~UMeshRenderer_OpenGLComponent() = default;
 
-	FMeshRenderer_OpenGLComponent(const FMeshRenderer_OpenGLComponent&) = delete;
-	FMeshRenderer_OpenGLComponent& operator=(const FMeshRenderer_OpenGLComponent&) = delete;
-	FMeshRenderer_OpenGLComponent(FMeshRenderer_OpenGLComponent&&) = delete;
-	FMeshRenderer_OpenGLComponent& operator=(FMeshRenderer_OpenGLComponent&&) = delete;
+	UMeshRenderer_OpenGLComponent(const UMeshRenderer_OpenGLComponent&) = delete;
+	UMeshRenderer_OpenGLComponent& operator=(const UMeshRenderer_OpenGLComponent&) = delete;
+	UMeshRenderer_OpenGLComponent(UMeshRenderer_OpenGLComponent&&) = delete;
+	UMeshRenderer_OpenGLComponent& operator=(UMeshRenderer_OpenGLComponent&&) = delete;
 
-	void Initialize();
 	void Render(const TRenderParameters& renderParameters);
-	void Destroy();
 	void Bind();
 
 	virtual nlohmann::json GetJsonData() override;
 
+protected:
+	void OnInitialize() override;
+
 private:
 	FMeshAsset& m_MeshAsset;
 
-	FShaderOpenGLComponent* m_Shader = nullptr;
+	UShaderOpenGLComponent* m_Shader = nullptr;
 
 	uint32 m_VAO;
 	uint32 m_VBO;

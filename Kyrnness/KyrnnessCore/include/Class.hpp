@@ -3,13 +3,41 @@
 #ifndef KYRNNESS_CLASS_HPP
 #define KYRNNESS_CLASS_HPP
 
+#include "Core/Core.hpp"
+
+enum EClassState //: uint8
+{
+	CS_None,
+	CS_Initializing,
+	CS_Initialized,
+	CS_Destroying,
+	CS_Destroyed,
+};
+
 class UClass
 {
 public:
-	virtual void Initialize() = 0;
-	virtual void PostInitialize() = 0;
-	virtual void Update(float DeltaTime) = 0;
-	virtual void Destroy() = 0;
+	UClass() = default;
+
+	bool operator==(const UClass& other) const = default;
+
+	virtual void Initialize();
+	virtual void Update(float DeltaTime);
+	virtual void Destroy();
+
+protected:
+	bool bCanUpdate = true;
+	EClassState m_State = EClassState::CS_None;
+	
+	virtual void PreInitialize();
+
+	virtual void OnInitialize();
+	virtual void OnPostInitialize();
+	virtual void OnUpdate(float DeltaTime);
+	virtual void OnDestroy();
+	
+	virtual void PostInitialize();
+
 };
 
 #endif // KYRNNESS_CLASS_HPP;

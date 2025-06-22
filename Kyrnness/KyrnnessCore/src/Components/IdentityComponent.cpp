@@ -5,16 +5,16 @@
 #include <iomanip>
 #include "Core/Guid.hpp"
 
-FIdentityComponent::FIdentityComponent(const std::string& objectName) : Name(objectName)
+UIdentityComponent::UIdentityComponent(const std::string& objectName) : Name(objectName)
 {
 	GenerateId();
 }
 
-nlohmann::json FIdentityComponent::GetJsonData()
+nlohmann::json UIdentityComponent::GetJsonData()
 {
 	nlohmann::json jsonData;
 
-	jsonData["Type"] = "FIdentityComponent";
+	jsonData["Type"] = "UIdentityComponent";
 	jsonData["Update"] = bCanUpdate;
 	jsonData["Id"] = Id;
 	jsonData["ObjectName"] = Name;
@@ -22,7 +22,7 @@ nlohmann::json FIdentityComponent::GetJsonData()
 	return jsonData;
 }
 
-void FIdentityComponent::GenerateId()
+void UIdentityComponent::GenerateId()
 {
 	Id = FGuid::NewGuid().ToString();
 }

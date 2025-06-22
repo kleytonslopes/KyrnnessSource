@@ -12,14 +12,14 @@ class TSceneObject;
 
 struct TComponentBuilder
 {
-	FShaderOpenGLComponent* defaultShader = nullptr;
+	UShaderOpenGLComponent* defaultShader = nullptr;
 	UApplication* application = nullptr;
 };
 
-class FComponentBuilder
+class UComponentBuilder
 {
-	using ComponentBuilder = std::function<void(entt::registry&, entt::entity, const nlohmann::json&, TSceneObject*)>;
-	static std::unordered_map<std::string, ComponentBuilder> g_ComponentBuilders;
+	using ComponentBuilder = TFunction<void(entt::registry&, entt::entity, const nlohmann::json&, TSceneObject*)>;
+	static TMap<std::string, ComponentBuilder> g_ComponentBuilders;
 	static TComponentBuilder g_ComponentBuilderParameters;
 
 public:
@@ -28,7 +28,7 @@ public:
 		return g_ComponentBuilderParameters;
 	}
 
-	static std::unordered_map<std::string, ComponentBuilder>& GetComponentBuilders()
+	static TMap<std::string, ComponentBuilder>& GetComponentBuilders()
 	{
 		return g_ComponentBuilders;
 	}

@@ -42,11 +42,11 @@ public:
         return oss.str();
     }
 
-    // Comparações
+    // Comparaï¿½ï¿½es
     auto operator<=>(const FGuid&) const = default;
     bool operator==(const FGuid&) const = default;
 
-    // Para std::unordered_map
+    // Para TMap
     struct Hash
     {
         size_t operator()(const FGuid& guid) const noexcept

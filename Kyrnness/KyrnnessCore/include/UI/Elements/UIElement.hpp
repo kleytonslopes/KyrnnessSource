@@ -4,7 +4,7 @@
 
 #include "Core/Core.hpp"
 
-struct FShaderOpenGLComponent;
+struct UShaderOpenGLComponent;
 
 struct FMargin
 {
@@ -98,19 +98,14 @@ enum class EScaleMode
 
 class UUIElement 
 {
-protected:
-	enum class EMouseFocusState
-	{
-		MFS_None,
-		MFS_MouseEnter,
-		MFS_MouseLeave
-	};
-
-	EMouseFocusState m_MouseFocusState = EMouseFocusState::MFS_None;
 public:
 	UUIElement* Parent = nullptr;
 	std::vector<UUIElement*> Children;
 
+	std::string UserData_StringEvent;
+
+	TFunction<void()> OnClick;
+	TFunction<void(bool)> OnHovered;
     //float scale;
 
 	float x = 0.0f;
@@ -118,7 +113,7 @@ public:
 	float width = 100.0f;
 	float height = 100.0f;
 
-	// Salva o tamanho/layout original (pré-scale)
+	// Salva o tamanho/layout original (prï¿½-scale)
 	float BaseX = 0.0f;
 	float BaseY = 0.0f;
 	float BaseWidth = 100.0f;
@@ -132,6 +127,8 @@ public:
 	float OffsetY = 0.0f;
 	FMargin Margin;
 
+	bool bEnabled = true;
+
 	UUIElement();
     virtual ~UUIElement() = default;
 
@@ -143,7 +140,7 @@ public:
 	virtual void HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp) {}
 	virtual void OnMouseEnter(double mouseX, double mouseY) { }
 	virtual void OnMouseLeave(double mouseX, double mouseY) { }
-	virtual void OnUpdateMouseFocus(double mouseX, double mouseY) { }
+	virtual void OnUpdateMouseFocus(double mouseX, double mouseY);
 
 	void PropagateInput(float mx, float my, bool isMouseDown, bool isMouseUp);
 	void PropagateMouseEnter(double mouseX, double mouseY);
@@ -159,22 +156,25 @@ public:
 	glm::vec2 GetAccumulatedScale();
 
 protected:
+	enum class EMouseFocusState
+	{
+		MFS_None,
+		MFS_MouseEnter,
+		MFS_MouseLeave
+	};
+
+	EMouseFocusState m_MouseFocusState = EMouseFocusState::MFS_None;
+
+	bool bHovered = false;
+	bool bPressed = false;
 
 	std::vector<float> m_Vertices = {
-		// Posições (x, y)   // UVs (u, v)
+		// Posiï¿½ï¿½es (x, y)   // UVs (u, v)
 	 -0.5f, -0.5f,        0.0f, 0.0f,
 	  0.5f, -0.5f,        1.0f, 0.0f,
 	 -0.5f,  0.5f,        0.0f, 1.0f,
 	  0.5f,  0.5f,        1.0f, 1.0f
 	};
-
-//	float vertices[] = {
-//	// Posições (x, y)   // UVs (u, v)
-// -0.5f, -0.5f,        0.0f, 0.0f,
-//  0.5f, -0.5f,        1.0f, 0.0f,
-// -0.5f,  0.5f,        0.0f, 1.0f,
-//  0.5f,  0.5f,        1.0f, 1.0f
-//};
 
 	unsigned int m_TextureID;
 	unsigned int m_VAO;
@@ -183,17 +183,15 @@ protected:
 	unsigned int m_VAO_Debug;
 	unsigned int m_VBO_Debug;
 
-	FShaderOpenGLComponent* m_Shader = nullptr;
+	UShaderOpenGLComponent* m_Shader = nullptr;
 #if(DEBUG)
-	FShaderOpenGLComponent* m_ShaderDebug = nullptr;
+	UShaderOpenGLComponent* m_ShaderDebug = nullptr;
 #endif
 
 	glm::mat4 GetProjetion();
 	glm::mat4 GetModel();
 
 	virtual void DrawSelf();
-
-	//void DrawDebugLine(float xPosA, float xPosB, float yPosA, float yPosB);
 };
 
 #endif// KYRNESS_UI_UIELEMENT_HPP

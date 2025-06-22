@@ -4,15 +4,10 @@
 #include "Components/MeshComponent.hpp"
 #include "Runtime/Application.hpp"
 
-void FCollisionComponent::Initialize()
+void UCollisionComponent::OnInitialize()
 {
-	FComponent::Initialize();
-
-	FTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
-	FMeshComponent& meshComponent = m_Application->GetEnttRegistry().get<FMeshComponent>(m_EntityOwner);
-
-	//m_BodyStatic = m_Application->GetPhysicsSystem()->CreateStaticBody(meshComponent.GetBoundingBoxCenter() + transformComponent.Location, meshComponent.GetBoundingBox(), transformComponent.Rotation);
-
+	UTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
+	UMeshComponent& meshComponent = m_Application->GetEnttRegistry().get<UMeshComponent>(m_EntityOwner);
 
 	std::vector<glm::vec3> positions;
 	positions.reserve(meshComponent.GetVertices().size());
@@ -24,17 +19,14 @@ void FCollisionComponent::Initialize()
 
 	auto* mesh = m_Application->GetPhysicsSystem()->CreateTriangleMeshCollision(positions, meshComponent.GetIndices(), transformComponent.Location, transformComponent.Rotation, transformComponent.Scale);
 
+	Super::OnInitialize();
 }
 
-void FCollisionComponent::Update(float deltaTime)
-{
-}
-
-nlohmann::json FCollisionComponent::GetJsonData()
+nlohmann::json UCollisionComponent::GetJsonData()
 {
 	nlohmann::json jsonData;
 
-	jsonData["Type"] = "FCollisionComponent";
+	jsonData["Type"] = "UCollisionComponent";
 	jsonData["Update"] = bCanUpdate;
 	jsonData["Mass"] = m_Mass;
 	jsonData["BoundBox"] = { m_BoundBox.x, m_BoundBox.y, m_BoundBox.z };
@@ -43,10 +35,10 @@ nlohmann::json FCollisionComponent::GetJsonData()
 	return jsonData;
 }
 
-void FCollisionComponent::SetMass(float mass)
+void UCollisionComponent::SetMass(float mass)
 {
 }
 
-void FCollisionComponent::SetBoundBox(const glm::vec3& boundBox)
+void UCollisionComponent::SetBoundBox(const glm::vec3& boundBox)
 {
 }

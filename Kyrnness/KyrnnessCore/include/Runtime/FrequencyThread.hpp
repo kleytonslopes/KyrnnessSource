@@ -2,21 +2,19 @@
 #ifndef KYRNESS_FREQUENCY_THREAD_HPP
 #define KYRNESS_FREQUENCY_THREAD_HPP
 
-#include <thread>
-#include <atomic>
-#include <functional>
 #include <chrono>
 #include <iostream>
+#include "Core/TypesDefinition.hpp"
 
-class TFrequencyThread
+class FFrequencyThread
 {
 public:
-    TFrequencyThread(double hz, std::function<void()> callback)
+    FFrequencyThread(double hz, TFunction<void()> callback)
         : m_Hz(hz), m_Callback(callback), m_Running(false)
     {
     }
 
-    ~TFrequencyThread()
+    ~FFrequencyThread()
     {
         Stop();
     }
@@ -27,7 +25,7 @@ public:
             return;
 
         m_Running = true;
-        m_Thread = std::thread([this]()
+        m_Thread = FThread([this]()
             {
                 using namespace std::chrono;
 
@@ -52,7 +50,7 @@ public:
                     }
                     else
                     {
-                        // Está atrasado, ajusta o próximo tick
+                        // Estï¿½ atrasado, ajusta o prï¿½ximo tick
                         nextTick = high_resolution_clock::now();
                     }
                 }
@@ -73,9 +71,9 @@ public:
 
 private:
     double m_Hz;
-    std::function<void()> m_Callback;
+    TFunction<void()> m_Callback;
     std::atomic<bool> m_Running;
-    std::thread m_Thread;
+    FThread m_Thread;
 };
 
 #endif // KYRNESS_FREQUENCY_THREAD_HPP

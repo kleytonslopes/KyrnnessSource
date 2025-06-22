@@ -66,11 +66,11 @@ void UUIManager::OnMouseLeave(float mx, float my)
 
 void UUIManager::OnUpdateMouseFocus(float mx, float my)
 {
-	// Garantindo que estamos usando o espaço da janela
+	// Garantindo que estamos usando o espaï¿½o da janela
 	int windowWidth = UApplication::Get().GetWidth();
 	int windowHeight = UApplication::Get().GetHeight();
 
-	// Opcional, só se você quiser garantir clamping
+	// Opcional, sï¿½ se vocï¿½ quiser garantir clamping
 	mx = glm::clamp(mx, 0.0f, (float)windowWidth);
 	my = glm::clamp(my, 0.0f, (float)windowHeight);
 
@@ -112,15 +112,16 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 	if (element)
 	{
 		// Propriedades comuns
-		element->Anchor = EAnchor::Center; //ParseAnchor(node.value("Anchor", "TopLeft"));
+		element->Anchor = ParseAnchor(node.value("Anchor", "TopLeft"));
 		element->width = node.value("Width", 100.0f);
 		element->height = node.value("Height", 30.0f);
 		element->OffsetX = node.value("OffsetX", 0.0f);
 		element->OffsetY = node.value("OffsetY", 0.0f);
 		element->LocalX = node.value("LocalX", 0.0f);
 		element->LocalY = node.value("LocalY", 0.0f);
+		element->bEnabled = node.value("Enabled", true);
 
-		// Textura (se existir)
+		// Texture
 		if (node.contains("Texture"))
 		{
 			GLuint tex = UAssetManager::LoadTextureOpenGL(node["Texture"].get<std::string>(), true);
@@ -128,15 +129,37 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 			element->Initialize();
 		}
 
-		// Específico para botão
-		if (UUIButton* button = dynamic_cast<UUIButton*>(element))
+		// Button
+		if (type == "UUIButton")
 		{
-			//button->SetText(node.value("Text", ""));
-
-			std::string onClickFunc = node.value("OnClick", "");
-			if (!onClickFunc.empty())
+			if (UUIButton* button = static_cast<UUIButton*>(element))
 			{
-				//button->OnClickLuaFunction = onClickFunc;  // Você vai chamar via Lua mais tarde
+				GLuint texIdle = UAssetManager::LoadTextureOpenGL(node["TextureIdle"].get<std::string>(), true);
+				GLuint texHovered = UAssetManager::LoadTextureOpenGL(node["TextureHovered"].get<std::string>(), true);
+				GLuint texDisabled = UAssetManager::LoadTextureOpenGL(node["TextureDisabled"].get<std::string>(), true);
+
+				button->SetTextureIdle(texIdle);
+				button->SetTextureHovered(texHovered);
+				button->SetTextureDisabled(texDisabled);
+
+				
+
+				
+				std::string clickFuncName = node.value("OnClick", "");
+				if (!clickFuncName.empty())
+				{
+					button->UserData_StringEvent = clickFuncName; //???
+						button->OnClick = [clickFuncName]()
+							{
+								FLogger::Success("[C++] BotÃ£o '%s' clicado (fake callback antes do Lua)\n", clickFuncName.c_str());
+							};
+				}
+
+				button->Initialize();
+			}
+			else
+			{
+				FLogger::Error("Invalid Button type!");
 			}
 		}
 
@@ -155,6 +178,22 @@ UUIElement* UUIManager::CreateElementFromJson(const nlohmann::json& node)
 
 
 	return element;
+}
+
+EAnchor UUIManager::ParseAnchor(const std::string& anchorStr)
+{
+	if (anchorStr == "Center") return EAnchor::Center;
+	if (anchorStr == "TopLeft") return EAnchor::TopLeft;
+	if (anchorStr == "TopCenter") return EAnchor::TopCenter;
+	if (anchorStr == "TopRight") return EAnchor::TopRight;
+	if (anchorStr == "BottomLeft") return EAnchor::BottomLeft;
+	if (anchorStr == "BottomCenter") return EAnchor::BottomCenter;
+	if (anchorStr == "BottomRight") return EAnchor::BottomRight;
+	if (anchorStr == "CenterLeft") return EAnchor::CenterLeft;
+	if (anchorStr == "CenterRight") return EAnchor::CenterRight;
+	if (anchorStr == "Stretch") return EAnchor::Stretch;
+
+	return EAnchor::TopLeft; // Default
 }
 
 // Texture loader
@@ -207,7 +246,7 @@ void DrawQuad(float x, float y, float w, float h, GLuint texture, const glm::vec
 	glm::vec4 color2 = color;
 
 
-	if (FShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI))
+	if (UShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI))
 	{
 		shader->Bind();
 		shader->SetMatrix4("projection", glm::ortho(0.0f, UApplication::Get().GetWidth<float>(), UApplication::Get().GetHeight<float>(), 0.0f));

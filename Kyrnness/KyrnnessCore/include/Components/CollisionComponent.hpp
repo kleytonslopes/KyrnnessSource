@@ -4,18 +4,18 @@
 
 #include "Components/Component.hpp"
 
-class FCollisionComponent : public FComponent
+class UCollisionComponent : public UComponent
 {
+	using Super = UComponent;
+
 public:
-	FCollisionComponent() = default;
+	UCollisionComponent() = default;
 
-	FCollisionComponent(const FCollisionComponent&) = delete;
-	FCollisionComponent& operator=(const FCollisionComponent&) = delete;
-	FCollisionComponent(FCollisionComponent&&) = delete;
-	FCollisionComponent& operator=(FCollisionComponent&&) = delete;
+	UCollisionComponent(const UCollisionComponent&) = delete;
+	UCollisionComponent& operator=(const UCollisionComponent&) = delete;
+	UCollisionComponent(UCollisionComponent&&) = delete;
+	UCollisionComponent& operator=(UCollisionComponent&&) = delete;
 
-	virtual void Initialize() override;
-	virtual void Update(float deltaTime) override;
 	virtual nlohmann::json GetJsonData() override;
 
 	void SetMass(float mass);
@@ -29,6 +29,8 @@ protected:
 
 	physx::PxRigidStatic* m_BodyStatic = nullptr;
 	physx::PxRigidDynamic* m_BodyDynamic = nullptr;
+
+	void OnInitialize() override;
 };
 
 #endif // KYRNNESS_COLLISION_COMPONENT_HPP

@@ -5,7 +5,7 @@
 #include "UI/HUD.hpp"
 
 class UApplication;
-class FShaderOpenGLComponent;
+class UShaderOpenGLComponent;
 
 class UGameHUD : public UHUD
 {

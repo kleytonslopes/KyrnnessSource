@@ -6,11 +6,11 @@
 #include "Input/InputManager.hpp"
 
 
-using InputAction = std::function<void(int)>;
+using InputAction = TFunction<void(int)>;
 
 void FMyPlayerComponent::Initialize()
 {
-	FPlayerComponent::Initialize();
+	UPlayerComponent::Initialize();
 
 	UInputManager::Get().SetInputMode(EInputMode::EIM_UI);
 	UInputManager::Get().SetShowMouseCursor(true);
@@ -18,7 +18,7 @@ void FMyPlayerComponent::Initialize()
 
 void FMyPlayerComponent::SetupPlayerInput()
 {
-	FPlayerComponent::SetupPlayerInput();
+	UPlayerComponent::SetupPlayerInput();
 
 	if (m_Application)
 	{
@@ -49,13 +49,13 @@ void FMyPlayerComponent::SetupPlayerInput()
 
 void FMyPlayerComponent::Update(float deltaTime)
 {
-	FPlayerComponent::Update(deltaTime);
+	UPlayerComponent::Update(deltaTime);
 
 }
 
 nlohmann::json FMyPlayerComponent::GetJsonData()
 {
-	nlohmann::json jsonData = FPlayerComponent::GetJsonData();
+	nlohmann::json jsonData = UPlayerComponent::GetJsonData();
 
 	jsonData["Type"] = "FMyPlayerComponent";
 

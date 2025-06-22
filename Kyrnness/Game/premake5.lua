@@ -35,6 +35,8 @@ project "Game"
         "%{include_dir.FMOD}",
         "%{include_dir.ZLIB}",
         "%{include_dir.FreeType}",
+        "%{include_dir.SOL}",
+        "%{include_dir.LUA}",
     }
 
     libdirs

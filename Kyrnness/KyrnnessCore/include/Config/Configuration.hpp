@@ -8,7 +8,7 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
-struct  GameConfig
+struct  FGameConfig
 {
 	uint32 m_Width;
 	uint32 m_Height;
@@ -22,9 +22,9 @@ struct  GameConfig
 class FConfig
 {
 public:
-	static inline GameConfig LoadGameConfig()
+	static inline FGameConfig LoadGameConfig()
 	{
-		GameConfig config{};
+		FGameConfig config{};
 
 		try
 		{
@@ -49,7 +49,7 @@ public:
 		return config;
 	}
 
-	static inline void SaveGameConfig(const GameConfig& config)
+	static inline void SaveGameConfig(const FGameConfig& config)
 	{
 		nlohmann::json j;
 		j["Resolution"]["Width"] = config.m_Width;

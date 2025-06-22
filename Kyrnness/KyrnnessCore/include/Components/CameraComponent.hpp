@@ -5,9 +5,9 @@
 
 #include "Components/Component.hpp"
 
-struct FTransformComponent;
+struct UTransformComponent;
 
-class FCameraComponent : public FComponent
+class UCameraComponent : public UComponent
 {
 public:
 	float Fov = 45.0f;
@@ -23,9 +23,6 @@ public:
 
 	FMatrix GetProjectionMatrix() const;
 	FMatrix GetViewMatrix() const;
-	
-	virtual void Initialize() override;
-	virtual void Update(float deltaTime) override;
 
 	void UpdateAspectRatio(float width, float height);
 	void UpdateDirectionFromYawPitch(float yaw, float pitch);

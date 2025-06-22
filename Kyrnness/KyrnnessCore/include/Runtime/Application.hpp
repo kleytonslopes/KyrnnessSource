@@ -3,7 +3,7 @@
 #ifndef KYRNNES_CORE_RUNTIME_APPLICATION_HPP
 #define KYRNNES_CORE_RUNTIME_APPLICATION_HPP
 
-#include "Core/Core.hpp"
+#include "Class.hpp"
 #include "Runtime/Window.hpp"
 #include "Graphics/GraphicsApi.hpp"
 #include "Config/Configuration.hpp"
@@ -27,6 +27,8 @@ enum EWindowType
 
 class UApplication : public UClass
 {
+    using Super = UClass;
+
 public:
     static UApplication& Get();
 
@@ -41,10 +43,8 @@ public:
     UApplication(UApplication&&) = delete;
     UApplication& operator=(UApplication&&) = delete;
 
-    void Initialize() override;
-    void PostInitialize() override;
-    void Update(float DeltaTime) override;
-    void Destroy() override;
+
+
     void OnResolutionUpdated(int newWidth, int newHeght);
     void Run();
 
@@ -76,7 +76,7 @@ public:
         return m_HUD.get();
     }
 
-    void SetupHUDFactory(std::function<std::unique_ptr<UHUD>(UApplication*)> Factory);
+    void SetupHUDFactory(TFunction<std::unique_ptr<UHUD>(UApplication*)> Factory);
    
     template<typename THUD>
     void SetHUDClass()
@@ -115,10 +115,17 @@ public:
     entt::registry& GetEnttRegistry() { return m_EnttRegistry; }
     entt::registry& GetRegistry() { return m_EnttRegistry; }
 
-    GameConfig& GetGameConfig() { return m_GameConfig; }
+    FGameConfig& GetGameConfig() { return m_GameConfig; }
 
+    void QuitGame();
 protected:
     void LoadConfiguration();
+
+    void PreInitialize() override;
+    void OnInitialize() override;
+    void OnPostInitialize() override;
+    void OnUpdate(float DeltaTime) override;
+    void OnDestroy() override;
 
     void GameLoop();
 
@@ -131,13 +138,13 @@ private:
     std::unique_ptr<UHUD> m_HUD;
     std::unique_ptr<USoundManager> m_SoundManager;
 
-    std::function<std::unique_ptr<UHUD>(UApplication*)> m_HUDFactory;
+    TFunction<std::unique_ptr<UHUD>(UApplication*)> m_HUDFactory;
 
 	float m_DeltaTime = 0.0f;
 
     entt::registry m_EnttRegistry;
 
-    GameConfig m_GameConfig{};
+    FGameConfig m_GameConfig{};
 
     void CalculeDeltaTime(FTime& currentTime);
 

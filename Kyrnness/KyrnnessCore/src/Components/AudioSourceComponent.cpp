@@ -4,13 +4,13 @@
 #include "Audio/SoundManager.hpp"
 #include "Runtime/Application.hpp"
 
-void FAudioSourceComponent::Update(float deltaTime)
+void UAudioSourceComponent::OnUpdate(float DeltaTime)
 {
-    FTransformComponent& transform = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+    UTransformComponent& transform = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 
     SetPosition(transform.Location);
 
-    // Limpar canais que já terminaram
+    // Limpar canais que jï¿½ terminaram
     m_ActiveChannels.erase(
         std::remove_if(m_ActiveChannels.begin(), m_ActiveChannels.end(),
             [](FMOD::Channel* channel)
@@ -26,7 +26,7 @@ void FAudioSourceComponent::Update(float deltaTime)
     for (auto it = m_ActiveFades.begin(); it != m_ActiveFades.end(); )
     {
         FActiveFade& fade = *it;
-        fade.Elapsed += deltaTime;
+        fade.Elapsed += DeltaTime;
 
         float t = glm::clamp(fade.Elapsed / fade.Duration, 0.0f, 1.0f);
         float newVolume = glm::mix(fade.StartVolume, fade.TargetVolume, t);
@@ -49,9 +49,11 @@ void FAudioSourceComponent::Update(float deltaTime)
             ++it;
         }
     }
+
+    Super::OnUpdate(DeltaTime);
 }
 
-void FAudioSourceComponent::Play()
+void UAudioSourceComponent::Play()
 {
     FMOD::Sound* sound = UApplication::Get().GetSoundManager()->GetSound(m_SoundName);
     if (!sound)
@@ -73,13 +75,13 @@ void FAudioSourceComponent::Play()
             sound->setMode(FMOD_LOOP_OFF);
         }
 
-        FTransformComponent& transform = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+        UTransformComponent& transform = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 
         SetPosition(transform.Location);
     }
 }
 
-void FAudioSourceComponent::PlaySoundByName(const std::string& soundName, float volume)
+void UAudioSourceComponent::PlaySoundByName(const std::string& soundName, float volume)
 {
     FMOD::Sound* sound = UApplication::Get().GetSoundManager()->GetSound(soundName);
 
@@ -101,7 +103,7 @@ void FAudioSourceComponent::PlaySoundByName(const std::string& soundName, float 
     }
 }
 
-void FAudioSourceComponent::Stop()
+void UAudioSourceComponent::Stop()
 {
     if (m_Channel)
     {
@@ -110,7 +112,7 @@ void FAudioSourceComponent::Stop()
     }
 }
 
-void FAudioSourceComponent::StopAll()
+void UAudioSourceComponent::StopAll()
 {
     for (auto* channel : m_ActiveChannels)
     {
@@ -122,7 +124,7 @@ void FAudioSourceComponent::StopAll()
     m_ActiveChannels.clear();
 }
 
-void FAudioSourceComponent::StopSoundByName(const std::string& soundName)
+void UAudioSourceComponent::StopSoundByName(const std::string& soundName)
 {
     FMOD::Sound* targetSound = UApplication::Get().GetSoundManager()->GetSound(soundName);
     if (!targetSound)
@@ -145,7 +147,7 @@ void FAudioSourceComponent::StopSoundByName(const std::string& soundName)
     }
 }
 
-void FAudioSourceComponent::Pause(bool pause)
+void UAudioSourceComponent::Pause(bool pause)
 {
     if (m_Channel)
     {
@@ -153,7 +155,7 @@ void FAudioSourceComponent::Pause(bool pause)
     }
 }
 
-void FAudioSourceComponent::PauseAll(bool pause)
+void UAudioSourceComponent::PauseAll(bool pause)
 {
     for (auto* channel : m_ActiveChannels)
     {
@@ -164,7 +166,7 @@ void FAudioSourceComponent::PauseAll(bool pause)
     }
 }
 
-void FAudioSourceComponent::PauseSoundByName(const std::string& soundName, bool pause)
+void UAudioSourceComponent::PauseSoundByName(const std::string& soundName, bool pause)
 {
     FMOD::Sound* targetSound = UApplication::Get().GetSoundManager()->GetSound(soundName);
     if (!targetSound)
@@ -183,12 +185,12 @@ void FAudioSourceComponent::PauseSoundByName(const std::string& soundName, bool 
     }
 }
 
-void FAudioSourceComponent::SetLoop(bool loop)
+void UAudioSourceComponent::SetLoop(bool loop)
 {
     bLoop = loop;
 }
 
-void FAudioSourceComponent::SetVolume(float volume)
+void UAudioSourceComponent::SetVolume(float volume)
 {
     m_Volume = volume;
     if (m_Channel)
@@ -197,7 +199,7 @@ void FAudioSourceComponent::SetVolume(float volume)
     }
 }
 
-void FAudioSourceComponent::SetPosition(const glm::vec3& position)
+void UAudioSourceComponent::SetPosition(const glm::vec3& position)
 {
     m_Position = position;
     
@@ -213,12 +215,12 @@ void FAudioSourceComponent::SetPosition(const glm::vec3& position)
     }
 }
 
-void FAudioSourceComponent::SetSoundName(const std::string& soundName)
+void UAudioSourceComponent::SetSoundName(const std::string& soundName)
 {
     m_SoundName = soundName;
 }
 
-void FAudioSourceComponent::SetVolumeBySoundName(const std::string& soundName, float volume)
+void UAudioSourceComponent::SetVolumeBySoundName(const std::string& soundName, float volume)
 {
     FMOD::Sound* targetSound = UApplication::Get().GetSoundManager()->GetSound(soundName);
     if (!targetSound)
@@ -237,7 +239,7 @@ void FAudioSourceComponent::SetVolumeBySoundName(const std::string& soundName, f
     }
 }
 
-bool FAudioSourceComponent::IsSoundPlayingByName(const std::string& soundName) const
+bool UAudioSourceComponent::IsSoundPlayingByName(const std::string& soundName) const
 {
     FMOD::Sound* targetSound = UApplication::Get().GetSoundManager()->GetSound(soundName);
     if (!targetSound)
@@ -262,7 +264,7 @@ bool FAudioSourceComponent::IsSoundPlayingByName(const std::string& soundName) c
     return false;
 }
 
-void FAudioSourceComponent::FadeInSoundByName(const std::string& soundName, float fadeTime, float targetVolume)
+void UAudioSourceComponent::FadeInSoundByName(const std::string& soundName, float fadeTime, float targetVolume)
 {
     FMOD::Sound* targetSound = UApplication::Get().GetSoundManager()->GetSound(soundName);
     if (!targetSound || fadeTime <= 0.0f)
@@ -293,7 +295,7 @@ void FAudioSourceComponent::FadeInSoundByName(const std::string& soundName, floa
         }
     }
 
-    // Se não achou nenhum canal tocando esse som, então toca o som com volume 0 e inicia fade
+    // Se nï¿½o achou nenhum canal tocando esse som, entï¿½o toca o som com volume 0 e inicia fade
     if (!found)
     {
         PlaySoundByName(soundName, 0.0f);  // Toca com volume zero
@@ -314,14 +316,14 @@ void FAudioSourceComponent::FadeInSoundByName(const std::string& soundName, floa
                         targetVolume,
                         EFadeType::FadeIn
                         });
-                    break; // Só adiciona uma vez
+                    break; // Sï¿½ adiciona uma vez
                 }
             }
         }
     }
 }
 
-void FAudioSourceComponent::FadeOutSoundByName(const std::string& soundName, float fadeTime)
+void UAudioSourceComponent::FadeOutSoundByName(const std::string& soundName, float fadeTime)
 {
     FMOD::Sound* targetSound = UApplication::Get().GetSoundManager()->GetSound(soundName);
     if (!targetSound || fadeTime <= 0.0f)
@@ -350,19 +352,19 @@ void FAudioSourceComponent::FadeOutSoundByName(const std::string& soundName, flo
     }
 }
 
-void FAudioSourceComponent::CrossFade(const std::string& fromSound, const std::string& toSound, float fadeTime, float targetVolume)
+void UAudioSourceComponent::CrossFade(const std::string& fromSound, const std::string& toSound, float fadeTime, float targetVolume)
 {
     // Iniciar Fade Out do som atual
     FadeOutSoundByName(fromSound, fadeTime);
 
     // Tocar o som novo com volume 0
-    PlaySoundByName(toSound, 0.0f);  // Começa no volume 0
+    PlaySoundByName(toSound, 0.0f);  // Comeï¿½a no volume 0
 
     // Depois iniciar Fade In
     FadeInSoundByName(toSound, fadeTime, targetVolume);
 }
 
-nlohmann::json FAudioSourceComponent::GetJsonData()
+nlohmann::json UAudioSourceComponent::GetJsonData()
 {
     return nlohmann::json();
 }

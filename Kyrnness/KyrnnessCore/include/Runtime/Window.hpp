@@ -42,6 +42,8 @@ public:
     virtual void SetShowMouseCursor(bool show) { bShowMouseCursor = show; };
     bool GetShowMouseCursor() const { return bShowMouseCursor; }
 
+    void SetShouldClose(bool value) { bShouldClose = true; }
+
 protected:
     UApplication* m_Application = nullptr;
     bool bShouldClose = false;

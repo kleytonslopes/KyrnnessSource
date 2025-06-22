@@ -21,17 +21,16 @@ struct FActiveFade
 	EFadeType Type = EFadeType::FadeIn;
 };
 
-class FAudioSourceComponent : public FComponent
+class UAudioSourceComponent : public UComponent
 {
+	using Super = UComponent;
 public:
-	FAudioSourceComponent() = default;
+	UAudioSourceComponent() = default;
 
-	FAudioSourceComponent(const FAudioSourceComponent&) = delete;
-	FAudioSourceComponent& operator=(const FAudioSourceComponent&) = delete;
-	FAudioSourceComponent(FAudioSourceComponent&&) = delete;
-	FAudioSourceComponent& operator=(FAudioSourceComponent&&) = delete;
-
-	virtual void Update(float deltaTime) override;
+	UAudioSourceComponent(const UAudioSourceComponent&) = delete;
+	UAudioSourceComponent& operator=(const UAudioSourceComponent&) = delete;
+	UAudioSourceComponent(UAudioSourceComponent&&) = delete;
+	UAudioSourceComponent& operator=(UAudioSourceComponent&&) = delete;
 
 	void Play();
 	void PlaySoundByName(const std::string& soundName, float volume = 1.0f);
@@ -52,6 +51,9 @@ public:
 	void CrossFade(const std::string& fromSound, const std::string& toSound, float fadeTime, float targetVolume);
 
 	virtual nlohmann::json GetJsonData() override;
+
+protected:
+	void OnUpdate(float DeltaTime) override;
 
 private:
 	std::string m_SoundName;

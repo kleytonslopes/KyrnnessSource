@@ -29,12 +29,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 1;
 	}
 
-	TComponentBuilder& comp = FComponentBuilder::GetComponentBuilderParameters();
+	TComponentBuilder& comp = UComponentBuilder::GetComponentBuilderParameters();
 	comp.application = &UApplication::Get();
 
 	UApplication::Get().SetHUDClass<UGameHUD>();
 
-	TFrequencyThread SteamUpdateFrequency(10.0, []() {
+	FFrequencyThread SteamUpdateFrequency(10.0, []() {
 		USteamModule::Get().Update(0.f);
 		});
 

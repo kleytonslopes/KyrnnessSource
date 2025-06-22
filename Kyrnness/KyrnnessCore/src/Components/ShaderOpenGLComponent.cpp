@@ -2,18 +2,20 @@
 #include "Components/ShaderOpenGLComponent.hpp"
 #include <Core/AssetManager.hpp>
 
-FShaderOpenGLComponent::FShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile)
+UShaderOpenGLComponent::UShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile)
 	: m_ShaderName(shaderName), m_VertShaderFile(vertShaderFile), m_FragShaderFile(fragShaderFile)
 {
 }
 
-void FShaderOpenGLComponent::Initialize()
+void UShaderOpenGLComponent::OnInitialize()
 {
 	LoadShaderFiles();
 	CreateProgram();
+
+	Super::OnInitialize();
 }
 
-void FShaderOpenGLComponent::Destroy()
+void UShaderOpenGLComponent::OnDestroy()
 {
 	if (m_ShaderProgramId != 0)
 	{
@@ -32,9 +34,11 @@ void FShaderOpenGLComponent::Destroy()
 		glDeleteShader(m_FragmentShaderId);
 		m_FragmentShaderId = 0;
 	}
+
+	Super::OnDestroy();
 }
 
-void FShaderOpenGLComponent::Bind()
+void UShaderOpenGLComponent::Bind()
 {
 	if (m_ShaderProgramId != 0)
 	{
@@ -46,7 +50,7 @@ void FShaderOpenGLComponent::Bind()
 	}
 }
 
-void FShaderOpenGLComponent::Unbind()
+void UShaderOpenGLComponent::Unbind()
 {
 	if (m_ShaderProgramId != 0)
 	{
@@ -58,83 +62,83 @@ void FShaderOpenGLComponent::Unbind()
 	}
 }
 
-void FShaderOpenGLComponent::SetBool(const std::string& name, bool value)
+void UShaderOpenGLComponent::SetBool(const std::string& name, bool value)
 {
 	glUniform1i(glGetUniformLocation(m_ShaderProgramId, name.c_str()), (int)value);
 
 }
 
-void FShaderOpenGLComponent::SetInt(const std::string& name, int value)
+void UShaderOpenGLComponent::SetInt(const std::string& name, int value)
 {
 	glUniform1i(glGetUniformLocation(m_ShaderProgramId, name.c_str()), value);
 }
 
-void FShaderOpenGLComponent::SetFloat(const std::string& name, float value)
+void UShaderOpenGLComponent::SetFloat(const std::string& name, float value)
 {
 	glUniform1f(glGetUniformLocation(m_ShaderProgramId, name.c_str()), value);
 
 }
 
-void FShaderOpenGLComponent::SetVector2(const std::string& name, glm::vec2 value)
+void UShaderOpenGLComponent::SetVector2(const std::string& name, glm::vec2 value)
 {
 	glUniform2f(glGetUniformLocation(m_ShaderProgramId, name.c_str()), value.x, value.y);
 }
 
-void FShaderOpenGLComponent::SetVector2(const std::string& name, float x, float y)
+void UShaderOpenGLComponent::SetVector2(const std::string& name, float x, float y)
 {
 	glUniform2f(glGetUniformLocation(m_ShaderProgramId, name.c_str()), x, y);
 }
 
-void FShaderOpenGLComponent::SetVector3(const std::string& name, glm::vec3 value)
+void UShaderOpenGLComponent::SetVector3(const std::string& name, glm::vec3 value)
 {
 	glUniform3f(glGetUniformLocation(m_ShaderProgramId, name.c_str()), value.x, value.y, value.z);
 }
 
-void FShaderOpenGLComponent::SetVector3(const std::string& name, float x, float y, float z)
+void UShaderOpenGLComponent::SetVector3(const std::string& name, float x, float y, float z)
 {
 	glUniform3f(glGetUniformLocation(m_ShaderProgramId, name.c_str()), x, y, z);
 }
 
-void FShaderOpenGLComponent::SetVector4(const std::string& name, glm::vec4 value)
+void UShaderOpenGLComponent::SetVector4(const std::string& name, glm::vec4 value)
 {
 	glUniform4f(glGetUniformLocation(m_ShaderProgramId, name.c_str()), value.x, value.y, value.z, value.w);
 }
 
-void FShaderOpenGLComponent::SetVector4(const std::string& name, float x, float y, float z, float w)
+void UShaderOpenGLComponent::SetVector4(const std::string& name, float x, float y, float z, float w)
 {
 	glUniform4f(glGetUniformLocation(m_ShaderProgramId, name.c_str()), x, y, z, w);
 }
 
-void FShaderOpenGLComponent::SetMatrix2(const std::string& name, glm::mat2 value)
+void UShaderOpenGLComponent::SetMatrix2(const std::string& name, glm::mat2 value)
 {
 	glUniformMatrix2fv(glGetUniformLocation(m_ShaderProgramId, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }
 
-void FShaderOpenGLComponent::SetMatrix3(const std::string& name, glm::mat3 value)
+void UShaderOpenGLComponent::SetMatrix3(const std::string& name, glm::mat3 value)
 {
 	glUniformMatrix3fv(glGetUniformLocation(m_ShaderProgramId, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }
 
-void FShaderOpenGLComponent::SetMatrix4(const std::string& name, glm::mat4 value)
+void UShaderOpenGLComponent::SetMatrix4(const std::string& name, glm::mat4 value)
 {
 	glUniformMatrix4fv(glGetUniformLocation(m_ShaderProgramId, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }
 
-nlohmann::json FShaderOpenGLComponent::GetJsonData()
+nlohmann::json UShaderOpenGLComponent::GetJsonData()
 {
 	return nlohmann::json();
 }
 
-void FShaderOpenGLComponent::LoadShaderFiles()
+void UShaderOpenGLComponent::LoadShaderFiles()
 {
 	//std::string vertShaderSource = FFile::ReadFile(m_VertShaderFile);
 	//std::string fragShaderSource = FFile::ReadFile(m_FragShaderFile);
 
-	// Carrega o código-fonte do vertex shader
+	// Carrega o cï¿½digo-fonte do vertex shader
 	std::vector<uint8_t> vertexShaderData = UAssetManager::LoadAssetRaw(m_VertShaderFile);
 	std::string vertShaderSource(vertexShaderData.begin(), vertexShaderData.end());
 
-	// Carrega o código-fonte do fragment shader
+	// Carrega o cï¿½digo-fonte do fragment shader
 	std::vector<uint8_t> fragmentShaderData = UAssetManager::LoadAssetRaw(m_FragShaderFile);
 	std::string fragShaderSource(fragmentShaderData.begin(), fragmentShaderData.end());
 
@@ -154,7 +158,7 @@ void FShaderOpenGLComponent::LoadShaderFiles()
 
 }
 
-void FShaderOpenGLComponent::CreateProgram()
+void UShaderOpenGLComponent::CreateProgram()
 {
 	m_ShaderProgramId = glCreateProgram();
 	if (m_ShaderProgramId == 0)
@@ -183,7 +187,7 @@ void FShaderOpenGLComponent::CreateProgram()
 	glDeleteShader(m_FragmentShaderId);
 }
 
-void FShaderOpenGLComponent::CheckCompileErrors(uint32_t shader, const std::string& type)
+void UShaderOpenGLComponent::CheckCompileErrors(uint32_t shader, const std::string& type)
 {
 	GLint result = GL_TRUE;
 

@@ -8,29 +8,33 @@
 #include "Input/InputManager.hpp"
 
 
-using InputAction = std::function<void(int)>;
+using InputAction = TFunction<void(int)>;
 
-void FPlayerComponent::Initialize()
+void UPlayerComponent::OnInitialize()
 {
 	SetupPlayerInput();
+
+	Super::OnInitialize();
 }
 
-void FPlayerComponent::SetupPlayerInput()
+void UPlayerComponent::SetupPlayerInput()
 {
 	if (m_Application)
 	{
-		m_Application->OnUpdateEvent.AddListener(this, &FPlayerComponent::Update);
+		m_Application->OnUpdateEvent.AddListener(this, &UPlayerComponent::Update);
 
 		if (UController* controller = m_Application->GetController())
 		{
-			controller->OnKeyPressedEvent.AddListener(this, &FPlayerComponent::OnKeyPressed);
-			controller->OnMouseMoveEvent.AddListener(this, &FPlayerComponent::OnMouseMove);
+			controller->OnKeyPressedEvent.AddListener(this, &UPlayerComponent::OnKeyPressed);
+			controller->OnMouseMoveEvent.AddListener(this, &UPlayerComponent::OnMouseMove);
 		}
 	}
 }
 
-void FPlayerComponent::Update(float deltaTime)
+void UPlayerComponent::OnUpdate(float deltaTime)
 {
+	Super::OnUpdate(deltaTime);
+
 	if (UInputManager::Get().GetInputMode() == EInputMode::EIM_UI)
 		return;
 
@@ -41,18 +45,20 @@ void FPlayerComponent::Update(float deltaTime)
 	if (bWantMoveDown) MoveDown(deltaTime);
 	if (bWantMoveUp) MoveUp(deltaTime);
 	if (bWantJump) Jump(deltaTime);
+
+	
 }
 
-void FPlayerComponent::UpdateVerticalMovement(float deltaTime)
+void UPlayerComponent::UpdateVerticalMovement(float deltaTime)
 {
-	if (m_Application->GetEnttRegistry().any_of<FCapsuleComponent>(m_EntityOwner))
+	if (m_Application->GetEnttRegistry().any_of<UCapsuleComponent>(m_EntityOwner))
 	{
-		FCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<FCapsuleComponent>(m_EntityOwner);
+		UCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<UCapsuleComponent>(m_EntityOwner);
 		capsuleComp.UpdateVerticalMovement(deltaTime);
 	}
 }
 
-void FPlayerComponent::OnKeyPressed(int keyCode, int status)
+void UPlayerComponent::OnKeyPressed(int keyCode, int status)
 {
 	if (m_Application)
 	{
@@ -63,26 +69,26 @@ void FPlayerComponent::OnKeyPressed(int keyCode, int status)
 	}
 }
 
-void FPlayerComponent::OnMouseMove(float x, float y)
+void UPlayerComponent::OnMouseMove(float x, float y)
 {
 	if (UInputManager::Get().GetInputMode() == EInputMode::EIM_UI)
 		return;
 
-	FCameraComponent& cameraComp = m_Application->GetEnttRegistry().get<FCameraComponent>(m_EntityOwner);
+	UCameraComponent& cameraComp = m_Application->GetEnttRegistry().get<UCameraComponent>(m_EntityOwner);
 	cameraComp.UpdateDirectionFromYawPitch(x * m_MouseSensitivity, y * m_MouseSensitivity);
 }
 
-nlohmann::json FPlayerComponent::GetJsonData()
+nlohmann::json UPlayerComponent::GetJsonData()
 {
 	return nlohmann::json();
 }
 
-void FPlayerComponent::MoveForward(float deltaTime)
+void UPlayerComponent::MoveForward(float deltaTime)
 {
 	
 	if (!m_Application) return;
 
-	FTransformComponent& comp = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+	UTransformComponent& comp = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 
 	glm::vec3 direction = comp.ForwardVector;
 
@@ -98,18 +104,18 @@ void FPlayerComponent::MoveForward(float deltaTime)
 			direction = glm::vec3(0.0f);
 	}
 
-	if (m_Application->GetEnttRegistry().any_of<FCapsuleComponent>(m_EntityOwner))
+	if (m_Application->GetEnttRegistry().any_of<UCapsuleComponent>(m_EntityOwner))
 	{
-		FCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<FCapsuleComponent>(m_EntityOwner);
+		UCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<UCapsuleComponent>(m_EntityOwner);
 		capsuleComp.Move(direction, deltaTime * m_MoveSpeed);
 	}
 }
 
-void FPlayerComponent::MoveBackward(float deltaTime)
+void UPlayerComponent::MoveBackward(float deltaTime)
 {
 	if (!m_Application) return;
 
-	FTransformComponent& comp = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+	UTransformComponent& comp = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 
 	glm::vec3 direction = comp.ForwardVector;
 
@@ -125,20 +131,20 @@ void FPlayerComponent::MoveBackward(float deltaTime)
 			direction = glm::vec3(0.0f);
 	}
 
-	if (m_Application->GetEnttRegistry().any_of<FCapsuleComponent>(m_EntityOwner))
+	if (m_Application->GetEnttRegistry().any_of<UCapsuleComponent>(m_EntityOwner))
 	{
 		direction = -direction;
 
-		FCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<FCapsuleComponent>(m_EntityOwner);
+		UCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<UCapsuleComponent>(m_EntityOwner);
 		capsuleComp.Move(direction, deltaTime * m_MoveSpeed);
 	}
 }
 
-void FPlayerComponent::MoveRight(float deltaTime)
+void UPlayerComponent::MoveRight(float deltaTime)
 {
 	if (!m_Application) return;
 
-	FTransformComponent& comp = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+	UTransformComponent& comp = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 
 	glm::vec3 direction = comp.RightVector;
 	if (!bIsFlyCamera)
@@ -149,18 +155,18 @@ void FPlayerComponent::MoveRight(float deltaTime)
 		else
 			direction = glm::vec3(0.0f);
 	}
-	if (m_Application->GetEnttRegistry().any_of<FCapsuleComponent>(m_EntityOwner))
+	if (m_Application->GetEnttRegistry().any_of<UCapsuleComponent>(m_EntityOwner))
 	{
-		FCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<FCapsuleComponent>(m_EntityOwner);
+		UCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<UCapsuleComponent>(m_EntityOwner);
 		capsuleComp.Move(direction, deltaTime * m_MoveSpeed);
 	}
 }
 
-void FPlayerComponent::MoveLeft(float deltaTime)
+void UPlayerComponent::MoveLeft(float deltaTime)
 {
 	if (!m_Application) return;
 
-	FTransformComponent& comp = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+	UTransformComponent& comp = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 
 	glm::vec3 direction = -comp.RightVector;
 	if (!bIsFlyCamera)
@@ -172,57 +178,57 @@ void FPlayerComponent::MoveLeft(float deltaTime)
 			direction = glm::vec3(0.0f);
 	}
 
-	if (m_Application->GetEnttRegistry().any_of<FCapsuleComponent>(m_EntityOwner))
+	if (m_Application->GetEnttRegistry().any_of<UCapsuleComponent>(m_EntityOwner))
 	{
-		FCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<FCapsuleComponent>(m_EntityOwner);
+		UCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<UCapsuleComponent>(m_EntityOwner);
 		capsuleComp.Move(direction, deltaTime * m_MoveSpeed);
 	}
 }
 
-void FPlayerComponent::MoveDown(float deltaTime)
+void UPlayerComponent::MoveDown(float deltaTime)
 {
 	if (!m_Application) return;
 
-	if (m_Application->GetEnttRegistry().any_of<FCapsuleComponent>(m_EntityOwner))
+	if (m_Application->GetEnttRegistry().any_of<UCapsuleComponent>(m_EntityOwner))
 	{
-		FTransformComponent& comp = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+		UTransformComponent& comp = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 		comp.Location -= comp.UpVector * deltaTime * m_MoveSpeed;
 	}
 }
 
-void FPlayerComponent::MoveUp(float deltaTime)
+void UPlayerComponent::MoveUp(float deltaTime)
 {
 	if (!m_Application) return;
 
-	if (m_Application->GetEnttRegistry().any_of<FCapsuleComponent>(m_EntityOwner))
+	if (m_Application->GetEnttRegistry().any_of<UCapsuleComponent>(m_EntityOwner))
 	{
-		FTransformComponent& comp = m_Application->GetEnttRegistry().get<FTransformComponent>(m_EntityOwner);
+		UTransformComponent& comp = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 		comp.Location += comp.UpVector * deltaTime * m_MoveSpeed;
 	}
 }
 
-void FPlayerComponent::Jump(float deltaTime)
+void UPlayerComponent::Jump(float deltaTime)
 {
 	if (!m_Application) return;
 
-	if (m_Application->GetEnttRegistry().any_of<FCapsuleComponent>(m_EntityOwner))
+	if (m_Application->GetEnttRegistry().any_of<UCapsuleComponent>(m_EntityOwner))
 	{
-		FCapsuleComponent& capsule = m_Application->GetEnttRegistry().get<FCapsuleComponent>(m_EntityOwner);
+		UCapsuleComponent& capsule = m_Application->GetEnttRegistry().get<UCapsuleComponent>(m_EntityOwner);
 		capsule.Jump();
 	}
 
 	bWantJump = false; // dispara apenas uma vez
 
-	//FCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<FCapsuleComponent>(m_EntityOwner);
+	//UCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<UCapsuleComponent>(m_EntityOwner);
 	//if(!capsuleComp.GetIsJumping())
 	//	capsuleComp.SetIsJumping(true);
 }
 
-void FPlayerComponent::Move(FVector Direction, float Scale)
+void UPlayerComponent::Move(FVector Direction, float Scale)
 {
-	if (m_Application->GetEnttRegistry().any_of<FCapsuleComponent>(m_EntityOwner))
+	if (m_Application->GetEnttRegistry().any_of<UCapsuleComponent>(m_EntityOwner))
 	{
-		FCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<FCapsuleComponent>(m_EntityOwner);
+		UCapsuleComponent& capsuleComp = m_Application->GetEnttRegistry().get<UCapsuleComponent>(m_EntityOwner);
 		capsuleComp.Move(Direction, Scale * m_MoveSpeed);
 	}
 }

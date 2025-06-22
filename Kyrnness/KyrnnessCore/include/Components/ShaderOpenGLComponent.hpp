@@ -4,19 +4,19 @@
 
 #include "Components/Component.hpp"
 
-class FShaderOpenGLComponent : public FComponent
+class UShaderOpenGLComponent : public UComponent
 {
+	using Super = UComponent;
 public:
-	FShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile);
-	virtual ~FShaderOpenGLComponent() = default;
+	UShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile);
+	virtual ~UShaderOpenGLComponent() = default;
 
-	FShaderOpenGLComponent(const FShaderOpenGLComponent&) = delete;
-	FShaderOpenGLComponent& operator=(const FShaderOpenGLComponent&) = delete;
-	FShaderOpenGLComponent(FShaderOpenGLComponent&&) = delete;
-	FShaderOpenGLComponent& operator=(FShaderOpenGLComponent&&) = delete;
+	UShaderOpenGLComponent(const UShaderOpenGLComponent&) = delete;
+	UShaderOpenGLComponent& operator=(const UShaderOpenGLComponent&) = delete;
+	UShaderOpenGLComponent(UShaderOpenGLComponent&&) = delete;
+	UShaderOpenGLComponent& operator=(UShaderOpenGLComponent&&) = delete;
 
-	virtual void Initialize();
-	virtual void Destroy();
+	
 	virtual void Bind();
 	virtual void Unbind();
 
@@ -48,6 +48,9 @@ private:
 	uint32 m_ShaderProgramId = 0;
 	uint32 m_VertexShaderId = 0;
 	uint32 m_FragmentShaderId = 0;
+
+	void OnInitialize() override;
+	void OnDestroy() override;
 
 	void LoadShaderFiles();
 	void CreateProgram();

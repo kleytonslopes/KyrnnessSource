@@ -1,7 +1,7 @@
 #include "pch.hpp"
 #include "Components/InputComponent.hpp"
 
-void FInputComponent::RegisterInputAction(const std::string& actionName, const std::function<void()>& callback)
+void UInputComponent::RegisterInputAction(const std::string& actionName, const TFunction<void()>& callback)
 {
 	if (m_InputActions.find(actionName) == m_InputActions.end())
 	{
@@ -15,11 +15,11 @@ void FInputComponent::RegisterInputAction(const std::string& actionName, const s
 	}
 }
 
-nlohmann::json FInputComponent::GetJsonData()
+nlohmann::json UInputComponent::GetJsonData()
 {
 	nlohmann::json jsonData;
 
-	jsonData["Type"] = "FInputComponent";
+	jsonData["Type"] = "UInputComponent";
 	jsonData["Update"] = bCanUpdate;
 
 	return jsonData;

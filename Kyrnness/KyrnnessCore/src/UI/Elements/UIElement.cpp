@@ -191,14 +191,14 @@ void UUIElement::UpdateLayout()
 		break;
 	}
 
-	// Aplica margem para os outros Anchors (exceto Stretch que já aplicou antes)
+	// Aplica margem para os outros Anchors (exceto Stretch que jï¿½ aplicou antes)
 	if (Anchor != EAnchor::Stretch)
 	{
 		baseX += Margin.Left - Margin.Right;
 		baseY += Margin.Top - Margin.Bottom;
 	}
 
-	// A posição final (absoluta) é: Anchor + Offset + LocalX/LocalY
+	// A posiï¿½ï¿½o final (absoluta) ï¿½: Anchor + Offset + LocalX/LocalY
 	x = baseX + OffsetX + LocalX;
 	y = baseY + OffsetY + LocalY;
 
@@ -216,6 +216,32 @@ void UUIElement::UpdateLayout()
 		{
 			child->UpdateLayout();
 		}
+	}
+}
+
+void UUIElement::OnUpdateMouseFocus(double mouseX, double mouseY)
+{
+	if (!bEnabled)
+		return;
+
+	bool insideX = mouseX >= x && mouseX <= (x + width);
+	bool insideY = mouseY >= y && mouseY <= (y + height);
+	bool isInside = insideX && insideY;
+
+	if (isInside && !bHovered)
+	{
+		OnMouseEnter(mouseX, mouseY);
+		bHovered = true;
+		m_MouseFocusState = EMouseFocusState::MFS_MouseEnter;
+
+		if (OnHovered) OnHovered(true);
+	}
+	else if (!isInside && bHovered)
+	{
+		bHovered = false;
+		m_MouseFocusState = EMouseFocusState::MFS_None;
+
+		if (OnHovered) OnHovered(false);
 	}
 }
 
@@ -328,7 +354,7 @@ void UUIElement::DrawSelf()
 		glm::mat4 model = GetWorldModel();
 		glm::mat4 projection = GetProjetion();
 
-		if (FShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI))
+		if (UShaderOpenGLComponent* shader = UShaders::GetShader(SHADER_UI))
 		{
 			shader->Bind();
 			shader->SetMatrix4("uProjection", projection);
@@ -346,3 +372,4 @@ void UUIElement::DrawSelf()
 		}
 	}
 }
+

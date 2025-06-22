@@ -6,9 +6,9 @@
 
 class TSceneObject;
 
-class FGameComponentBuilder : public FComponentBuilder
+class FGameComponentBuilder : public UComponentBuilder
 {
-	using ComponentBuilder = std::function<void(entt::registry&, entt::entity, const nlohmann::json&, TSceneObject*)>;
+	using ComponentBuilder = TFunction<void(entt::registry&, entt::entity, const nlohmann::json&, TSceneObject*)>;
 public:
 	static void RegisterGameComponents();
 

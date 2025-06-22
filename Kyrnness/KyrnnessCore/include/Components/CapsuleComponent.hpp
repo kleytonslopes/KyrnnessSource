@@ -5,22 +5,21 @@
 
 #include "Components/Component.hpp"
 
-class FTransformComponent;
+class UTransformComponent;
 
-class FCapsuleComponent : public FComponent
+class UCapsuleComponent : public UComponent
 {
+	using Super = UComponent;
 public:
-	FCapsuleComponent();
+	UCapsuleComponent();
 
-	virtual ~FCapsuleComponent() = default;
+	virtual ~UCapsuleComponent() = default;
 
-	FCapsuleComponent(const FCapsuleComponent&) = delete;
-	FCapsuleComponent& operator=(const FCapsuleComponent&) = delete;
-	FCapsuleComponent(FCapsuleComponent&&) = delete;
-	FCapsuleComponent& operator=(FCapsuleComponent&&) = delete;
+	UCapsuleComponent(const UCapsuleComponent&) = delete;
+	UCapsuleComponent& operator=(const UCapsuleComponent&) = delete;
+	UCapsuleComponent(UCapsuleComponent&&) = delete;
+	UCapsuleComponent& operator=(UCapsuleComponent&&) = delete;
 
-	virtual void Initialize() override;
-	virtual void Update(float deltaTime) override;
 	virtual nlohmann::json GetJsonData() override;
 
 	void UpdateVerticalMovement(float deltaTime);
@@ -37,6 +36,11 @@ public:
 	bool IsOnGround() const;
 	bool CheckGround(float maxDistance, physx::PxRaycastHit& hitOut) const;
 	bool SweepGround(float maxDistance, physx::PxSweepHit& outHit) const;
+
+protected:
+	void OnInitialize() override;
+	void OnUpdate(float DeltaTime) override;
+
 private:
 	float m_Radius = 0.3f;
 	float m_Height = 1.2f;
@@ -46,7 +50,7 @@ private:
 	float m_VerticalVelocity = 0.f;
 	float m_JumpForce = 8.0f;
 
-	FTransformComponent* m_TransformComponent = nullptr;
+	UTransformComponent* m_TransformComponent = nullptr;
 
 	physx::PxQueryFilterData m_CollisionFilter;
 	physx::PxController* m_CapsuleController = NULL;
