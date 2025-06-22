@@ -27,11 +27,13 @@ public:
 
     void SetTextureIdle(unsigned int value) { m_TextureIdle = value; }
     void SetTextureHovered(unsigned int value) { m_TextureHovered = value; }
+    void SetTextureDisabled(unsigned int value) { m_TextureDisabled = value; }
 private:
 	UUIFont* font = nullptr;
 
-    unsigned int m_TextureIdle    = 0;
-    unsigned int m_TextureHovered = 0;
+    unsigned int m_TextureIdle     = 0;
+    unsigned int m_TextureHovered  = 0;
+    unsigned int m_TextureDisabled = 0;
 };
 
 #endif// KYRNESS_UI_UIBUTTON_HPP

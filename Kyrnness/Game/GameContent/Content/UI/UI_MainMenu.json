@@ -4,6 +4,7 @@
   "Width": 2560,
   "Height": 1080,
   "Texture": "Assets/Textures/UI/tex_bg_mainmenu.png",
+  "Enabled": true,
   "Children": [
     {
       "Type": "UUIBorder",
@@ -11,6 +12,7 @@
       "Width": 1602,
       "Height": 802,
       "Texture": "Assets/Textures/UI/tex_ui_menu_panel_bg.png",
+      "Enabled": true,
       "Children": [
         {
           "Type": "UUIButton",
@@ -22,7 +24,9 @@
           "Text": "New Game",
           "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
-          "OnClick": "OnNewGameButtonClicked"
+          "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
+          "OnClick": "OnNewGameButtonClicked",
+          "Enabled": true
         },
         {
           "Type": "UUIButton",
@@ -34,7 +38,9 @@
           "Text": "Host Game",
           "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
-          "OnClick": "OnHostGameButtonClicked"
+          "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
+          "OnClick": "OnHostGameButtonClicked",
+          "Enabled": true
         },
         {
           "Type": "UUIButton",
@@ -46,7 +52,9 @@
           "Text": "Join Game",
           "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
-          "OnClick": "OnJoinGameButtonClicked"
+          "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
+          "OnClick": "OnJoinGameButtonClicked",
+          "Enabled": true
         },
         {
           "Type": "UUIButton",
@@ -58,7 +66,9 @@
           "Text": "Settings",
           "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
-          "OnClick": "OnSettingsButtonClicked"
+          "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
+          "OnClick": "OnSettingsButtonClicked",
+          "Enabled": false
         },
         {
           "Type": "UUIButton",
@@ -70,7 +80,9 @@
           "Text": "Mods",
           "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
-          "OnClick": "OnModsButtonClicked"
+          "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
+          "OnClick": "OnModsButtonClicked",
+          "Enabled": false
         },
         {
           "Type": "UUIButton",
@@ -82,7 +94,9 @@
           "Text": "QuitGame",
           "TextureIdle": "Assets/Textures/UI/tex_ui_button_03_normal.png",
           "TextureHovered": "Assets/Textures/UI/tex_ui_button_03_hovered.png",
-          "OnClick": "OnQuitGameButtonClicked"
+          "TextureDisabled": "Assets/Textures/UI/tex_ui_button_03_disabled.png",
+          "OnClick": "OnQuitGameButtonClicked",
+          "Enabled": true
         }
       ]
     }

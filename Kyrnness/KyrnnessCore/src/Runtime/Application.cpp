@@ -209,6 +209,11 @@ uint32 UApplication::GetHeight() const
 	return  m_GameConfig.m_Height;
 }
 
+void UApplication::QuitGame()
+{
+	m_Window->SetShouldClose(true);
+}
+
 void UApplication::LoadConfiguration()
 {
 	LoadGameConfiguration();

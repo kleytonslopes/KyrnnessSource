@@ -21,6 +21,8 @@ include_dir["SteamSDK"]         = "%{wks.location}/ThirdParty/SteamSDK/public"
 include_dir["FMOD"]             = "C:/Program Files (x86)/FMOD SoundSystem/FMOD Studio API Windows/api/core/inc"
 include_dir["ZLIB"]             = "%{wks.location}/ThirdParty/ZLIB"
 include_dir["FreeType"]         = "%{wks.location}/ThirdParty/FreeType/include"
+include_dir["SOL"]              = "%{wks.location}/ThirdParty/SOL/include"
+include_dir["LUA"]              = "%{wks.location}/ThirdParty/LUA"
 
 extern_lib_dir = {}
 extern_lib_dir["SDL"]            = "%{wks.location}/ThirdParty/SDL/VisualC/x64/Debug"
@@ -47,6 +49,7 @@ lib["Libs_Debug"]   = {
     --FMOD
     "fmodL_vc.lib",
     "freetype.lib",
+    "Lua"
 }
 lib["Libs_Release"] = {
     "PhysX_64.lib", 
@@ -158,4 +161,5 @@ group "ThirdParty"
     include "ThirdParty/GLAD"
     include "ThirdParty/IMGUI"
     include "ThirdParty/ZLIB"
+    include "ThirdParty/Lua"
 group ""

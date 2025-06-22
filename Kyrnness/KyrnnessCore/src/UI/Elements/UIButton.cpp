@@ -8,7 +8,10 @@ void UUIButton::Initialize()
 {
 	UUIElement::Initialize();
 
-	SetTextureId(m_TextureIdle);
+	if(bEnabled)
+		SetTextureId(m_TextureIdle);
+	else
+		SetTextureId(m_TextureDisabled);
 }
 
 void UUIButton::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool isMouseUp)
@@ -37,7 +40,10 @@ void UUIButton::HandleInput(double mouseX, double mouseY, bool isMouseDown, bool
 
 void UUIButton::OnMouseEnter(double mouseX, double mouseY)
 {
-	UApplication::Get().GetSoundManager()->PlayUISound("button_hovered", 0.2f);
+	if (!bEnabled)
+		return;
+
+	UApplication::Get().GetSoundManager()->PlayUISound("button_hovered", 1.0f);
 }
 
 void UUIButton::OnMouseLeave(double mouseX, double mouseY)
@@ -47,6 +53,9 @@ void UUIButton::OnMouseLeave(double mouseX, double mouseY)
 
 void UUIButton::OnUpdateMouseFocus(double mouseX, double mouseY)
 {
+	if (!bEnabled)
+		return;
+
 	Super::OnUpdateMouseFocus(mouseX, mouseY);
 
 	if (bHovered)

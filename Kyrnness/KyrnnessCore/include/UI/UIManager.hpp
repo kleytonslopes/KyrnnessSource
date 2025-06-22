@@ -34,6 +34,7 @@ public:
 private:
 	UApplication* m_Application = nullptr;
 	std::vector<UUIElement*> m_Elements;
+	EAnchor ParseAnchor(const std::string& anchorStr);
 };
 
 #endif// KYRNESS_UI_UIMANAGER_HPP

@@ -117,6 +117,7 @@ public:
 
     FGameConfig& GetGameConfig() { return m_GameConfig; }
 
+    void QuitGame();
 protected:
     void LoadConfiguration();
 

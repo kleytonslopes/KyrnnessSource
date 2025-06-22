@@ -102,6 +102,8 @@ public:
 	UUIElement* Parent = nullptr;
 	std::vector<UUIElement*> Children;
 
+	std::string UserData_StringEvent;
+
 	TFunction<void()> OnClick;
 	TFunction<void(bool)> OnHovered;
     //float scale;
@@ -174,14 +176,6 @@ protected:
 	  0.5f,  0.5f,        1.0f, 1.0f
 	};
 
-//	float vertices[] = {
-//	// Posi��es (x, y)   // UVs (u, v)
-// -0.5f, -0.5f,        0.0f, 0.0f,
-//  0.5f, -0.5f,        1.0f, 0.0f,
-// -0.5f,  0.5f,        0.0f, 1.0f,
-//  0.5f,  0.5f,        1.0f, 1.0f
-//};
-
 	unsigned int m_TextureID;
 	unsigned int m_VAO;
 	unsigned int m_VBO;
@@ -198,8 +192,6 @@ protected:
 	glm::mat4 GetModel();
 
 	virtual void DrawSelf();
-
-	//void DrawDebugLine(float xPosA, float xPosB, float yPosA, float yPosB);
 };
 
 #endif// KYRNESS_UI_UIELEMENT_HPP

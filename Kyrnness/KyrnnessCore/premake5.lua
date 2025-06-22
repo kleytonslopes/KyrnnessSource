@@ -35,6 +35,8 @@ project "KyrnnessCore"
         "%{include_dir.VULKAN}",
         "%{include_dir.ZLIB}",
         "%{include_dir.FreeType}",
+        "%{include_dir.SOL}",
+        "%{include_dir.LUA}",
     }
 
     libdirs
@@ -56,4 +58,5 @@ project "KyrnnessCore"
         "assimp-vc143-mtd.lib",
         "fmodL_vc.lib",
         "ZLIB",
+        "Lua"
     }

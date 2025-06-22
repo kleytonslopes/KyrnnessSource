@@ -5,10 +5,14 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <io.h>
+#include <locale.h>
 
 void OpenDebugConsole()
 {
     AllocConsole();
+
+    SetConsoleOutputCP(CP_UTF8);
+    setlocale(LC_ALL, ".UTF8");
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD dwMode = 0;
