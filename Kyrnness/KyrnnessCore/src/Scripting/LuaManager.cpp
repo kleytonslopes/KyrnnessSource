@@ -143,13 +143,22 @@ void ULuaManager::RegisterEngineTypes()
 {
     sol::state& lua = m_LuaState;
 
+    // Registro de FVector com construtor exposto para Lua
     lua.new_usertype<FVector>("FVector",
-        sol::constructors<FVector(),FVector(float, float, float)>(),
+        sol::constructors<
+        FVector(),                          // Construtor vazio (opcional)
+        FVector(float, float, float)        // Construtor com 3 floats (X, Y, Z)
+        >(),
         "X", &FVector::X,
         "Y", &FVector::Y,
         "Z", &FVector::Z,
         "Length", &FVector::Length
-        );
+    );
+
+    // Garantir que FVector pode ser chamado como uma função global
+    lua.set_function("FVector", [](float x, float y, float z) {
+        return FVector(x, y, z);
+        });
 
     lua.new_usertype<LuaAPI::FLuaEntity>("Entity",
         "SetLocation", &LuaAPI::FLuaEntity::SetLocation,
