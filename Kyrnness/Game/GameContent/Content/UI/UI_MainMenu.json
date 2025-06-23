@@ -4,7 +4,6 @@
   "Anchor": "Center",
   "Width": 2560,
   "Height": 1080,
-  "Texture": "Assets/Textures/UI/tex_bg_mainmenu.png",
   "Enabled": true,
   "Visible": true,
   "Children": [

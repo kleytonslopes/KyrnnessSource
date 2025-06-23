@@ -21,6 +21,7 @@ public:
     void LoadScript(const std::string& filePath);
     void LoadAllMods();
     void RegisterEventFunction(const std::string& eventName, sol::function func);
+    void RegisterEngineTypes();
 
     sol::state& GetLuaState() { return m_LuaState; }
     ULuaEventManager& GetLuaEventManager() { return *m_LuaEventManager.get(); }
@@ -32,19 +33,24 @@ public:
     {
         auto it = m_RegisteredEvents.find(eventName);
         if (it == m_RegisteredEvents.end())
-        {
             return;
-        }
 
         for (const auto& callback : it->second)
         {
             try
             {
-                callback(std::forward<Args>(args)...);
+                sol::protected_function pfunc = callback; // Protegido contra runtime errors Lua
+                sol::protected_function_result result = pfunc(std::forward<Args>(args)...);
+
+                if (!result.valid())
+                {
+                    sol::error err = result;
+                    FLogger::Error("[Lua] Erro durante execução de evento '%s': %s\n", eventName.c_str(), err.what());
+                }
             }
             catch (const sol::error& e)
             {
-                FLogger::Error("[Lua] Erro ao disparar evento '%s': %s\n", eventName.c_str(), e.what());
+                FLogger::Error("[Lua] Exceção ao chamar evento '%s': %s\n", eventName.c_str(), e.what());
             }
         }
     }

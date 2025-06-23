@@ -31,7 +31,7 @@ void UCapsuleComponent::OnInitialize()
 		// Rotacao
 		//glm::vec3& rotation = transformComponent.Rotation;
 		FQuaternion glmQuat = FQuaternion(glm::radians(transformComponent.Rotation)); // converte Euler -> quat
-		physx::PxQuat pxQuat(glmQuat.X, glmQuat.Y, glmQuat.Z, glmQuat.W);
+		physx::PxQuat pxQuat(glmQuat.X, glmQuat.Z, glmQuat.Z, glmQuat.W);
 
 		physx::PxCapsuleControllerDesc desc;
 		desc.height = m_Height;

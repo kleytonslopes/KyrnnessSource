@@ -92,6 +92,11 @@ public:
         );
     }
 
+    glm::vec3 ToGlm() const
+    {
+        return glm::vec3{ X, Y, Z };
+    }
+
 };
 
 class FVector2

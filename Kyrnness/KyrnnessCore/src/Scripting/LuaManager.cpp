@@ -25,6 +25,8 @@ void ULuaManager::Initialize()
     
     Super::Initialize();
 
+    RegisterEngineTypes();
+
     LoadAllMods();
 
     FLogger::Information("[Lua] Lua State inicializado!\n");
@@ -135,6 +137,29 @@ void ULuaManager::LoadAllMods()
 void ULuaManager::RegisterEventFunction(const std::string& eventName, sol::function func)
 {
     m_RegisteredEvents[eventName].push_back(func);
+}
+
+void ULuaManager::RegisterEngineTypes()
+{
+    sol::state& lua = m_LuaState;
+
+    lua.new_usertype<FVector>("FVector",
+        sol::constructors<FVector(),FVector(float, float, float)>(),
+        "X", &FVector::X,
+        "Y", &FVector::Y,
+        "Z", &FVector::Z,
+        "Length", &FVector::Length
+        );
+
+    lua.new_usertype<LuaAPI::FLuaEntity>("Entity",
+        "SetLocation", &LuaAPI::FLuaEntity::SetLocation,
+        "GetLocation", &LuaAPI::FLuaEntity::GetLocation,
+        "SetRotation", &LuaAPI::FLuaEntity::SetRotation,
+        "GetRotation", &LuaAPI::FLuaEntity::GetRotation,
+        "SetScale", &LuaAPI::FLuaEntity::SetScale,
+        "GetScale", &LuaAPI::FLuaEntity::GetScale,
+        "IsValid", &LuaAPI::FLuaEntity::IsValid
+    );
 }
 
 bool ULuaManager::CallFunction(const std::string& functionName)

@@ -6,6 +6,6 @@
   "Renderer": 0,
   "WindowType": 0,
   "FrameRate": 60,
-  "MainMenuMap": "Content/Maps/map_mainmenu.json",
+  "MainMenuMap": "Content/Maps/EntryMap.json",
   "FontAtlasSize": 512
 }

@@ -4,6 +4,7 @@
 #include "Runtime/Application.hpp"
 #include "UI/UIManager.hpp"
 #include "UI/Elements/UIElement.hpp"
+#include "entt/entt.hpp"
 
 namespace LuaAPI
 {
@@ -14,13 +15,28 @@ namespace LuaAPI
 				ULuaManager::Get().RegisterEventFunction(eventName, func);
 			});
 
-		//Game Global Functions
+		
+		//Audio Global Functions
 		FSolNamespace audioNamespace = lua.create_named_table("Audio");
 		audioNamespace.set_function("PlaySound", Audio::PlaySound);
 
 		//Game Global Functions
 		FSolNamespace gameNamespace = lua.create_named_table("Game");
 		gameNamespace.set_function("QuitGame", Game::QuitGame);
+		gameNamespace.set_function("getPlayer", []() -> FLuaEntity
+			{
+				auto& registry = UApplication::Get().GetEnttRegistry();
+
+				auto view = registry.view<UPlayerComponent, UTransformComponent>();
+				for (auto entity : view)
+				{
+					return FLuaEntity(entity);
+				}
+
+				// Se não achar, devolve um entity inválido
+				return FLuaEntity();
+			});
+
 
 
 		//Engine Global Functions
