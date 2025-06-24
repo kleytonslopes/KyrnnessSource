@@ -6,6 +6,9 @@
 
 void UAudioSourceComponent::OnUpdate(float DeltaTime)
 {
+    if (!m_Application->GetEnttRegistry().valid(m_EntityOwner))
+        return;
+
     UTransformComponent& transform = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
 
     SetPosition(transform.Location);

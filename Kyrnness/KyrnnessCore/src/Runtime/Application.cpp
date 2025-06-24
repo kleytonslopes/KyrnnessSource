@@ -48,6 +48,10 @@ void UApplication::PreInitialize()
 	UInputManager::Get().SetupApplication(this);
 	LoadConfiguration();
 
+	TComponentBuilder& comp = UComponentBuilder::GetComponentBuilderParameters();
+	comp.defaultShader = UShaders::GetShader(SHADER_DEFAULT);
+	UComponentBuilder::RegisterEngineComponents(comp);
+
 	//Initialize Lua Integration
 	m_LuaManager = std::make_unique<ULuaManager>();
 	
@@ -95,8 +99,9 @@ void UApplication::PreInitialize()
 	//Create Physics System
 	m_PhysicsSystem = std::make_unique<UPhysicsSystem>(this);
 
-	//Create Scene
-	m_Scene = std::make_unique<UScene>(this);
+	////Create Scene
+	//m_Scene = std::make_unique<UScene>(this);
+	m_SceneManager = std::make_unique<USceneManager>(this);
 
 	//Create UI Manager
 	m_UIManager = std::make_unique<UUIManager>(this);
@@ -144,8 +149,9 @@ void UApplication::OnUpdate(float DeltaTime)
 
 	OnUpdateEvent.Broadcast(m_DeltaTime);
 
-	m_Scene->Update(m_DeltaTime);
-	m_Scene->DrawScene(m_DeltaTime);
+	//m_Scene->Update(m_DeltaTime);
+	m_SceneManager->Update(DeltaTime);
+	//m_Scene->DrawScene(m_DeltaTime);
 
 	//ImGui_ImplOpenGL3_NewFrame();
 	//ImGui_ImplGlfw_NewFrame();
@@ -163,7 +169,7 @@ void UApplication::OnUpdate(float DeltaTime)
 	m_Window->EndFrame();
 
 
-	m_Scene->ProcessEditMode();
+	//m_Scene->ProcessEditMode();
 
 	USoundManager::Get().SetListenerPosition(
 		0, 0, 0,
@@ -183,6 +189,7 @@ void UApplication::OnUpdate(float DeltaTime)
 
 void UApplication::OnDestroy()
 {
+	m_SceneManager->Destroy();
 	m_SoundManager->Shutdown();
 
 	FMemoryManager::Get().Cleanup();
@@ -223,11 +230,6 @@ uint32 UApplication::GetHeight() const
 {
 	return  m_GameConfig.m_Height;
 }
-
-//void UApplication::CallLuaFunction(const std::string& functionName)
-//{
-//	m_LuaManager->GetLuaEventManager().CallEvent(functionName);
-//}
 
 void UApplication::QuitGame()
 {
@@ -343,15 +345,19 @@ void UApplication::InitializeController()
 
 void UApplication::InitializeScene()
 {
-	/*m_Scene = std::make_unique<UScene>(this);*/
-	if (m_Scene)
+	if (m_SceneManager)
 	{
-		m_Scene->Initialize();
+		m_SceneManager->Initialize();
 	}
-	else
-	{
-		ThrowRuntimeError("Scene not Created!");
-	}
+	//if (m_Scene)
+	//{
+	//	m_Scene->LoadFromFile(m_GameConfig.m_MainMenuMap);
+	//	m_Scene->Initialize();
+	//}
+	//else
+	//{
+	//	ThrowRuntimeError("Scene not Created!");
+	//}
 }
 
 void UApplication::InitializeShaders()

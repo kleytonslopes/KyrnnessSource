@@ -5,7 +5,7 @@
 UGraphicsApi::UGraphicsApi(UApplication* application)
 	: m_Application (application)
 {
-	m_Scene = m_Application->GetScene();
+	//m_Scene = m_Application->GetScene();
 }
 
 UGraphicsApi::~UGraphicsApi()

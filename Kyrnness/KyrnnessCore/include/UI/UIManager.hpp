@@ -25,6 +25,7 @@ public:
 	void RemoveElementByName(const std::string& name);
 	void UpdateElements();
 	void RenderAll();
+	void ClearAllElements();
 	void ProcessInput(float mx, float my, bool isMouseDown, bool isMouseUp);
 	void OnMouseEnter(float mx, float my);
 	void OnMouseLeave(float mx, float my);

@@ -2,9 +2,11 @@
 #include "Scripting/LuaAPI.hpp"
 #include "Core/Core.hpp"
 #include "Runtime/Application.hpp"
+#include "Runtime/SceneManager.hpp"
 #include "UI/UIManager.hpp"
 #include "UI/Elements/UIElement.hpp"
 #include "entt/entt.hpp"
+
 
 namespace LuaAPI
 {
@@ -36,6 +38,7 @@ namespace LuaAPI
 				// Se não achar, devolve um entity inválido
 				return FLuaEntity();
 			});
+		gameNamespace.set_function("LoadScene", Game::LoadScene);
 
 
 
@@ -62,6 +65,11 @@ namespace LuaAPI
 		void QuitGame()
 		{
 			UApplication::Get().QuitGame();
+		}
+
+		void LoadScene(const std::string& scenePath)
+		{
+			UApplication::Get().GetSceneManager()->SwitchScene(scenePath, true, false, false);
 		}
 	}
 

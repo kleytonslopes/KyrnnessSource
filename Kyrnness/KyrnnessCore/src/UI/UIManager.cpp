@@ -96,6 +96,12 @@ void UUIManager::RenderAll()
 		e->Draw();
 }
 
+void UUIManager::ClearAllElements()
+{
+	for (auto& e : m_Elements)
+		RemoveElement(e);
+}
+
 void UUIManager::ProcessInput(float mx, float my, bool isMouseDown, bool isMouseUp)
 {
 	for (auto& e : m_Elements)

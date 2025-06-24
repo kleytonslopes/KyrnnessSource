@@ -171,6 +171,10 @@ void ULuaManager::RegisterEngineTypes()
     );
 }
 
+void ULuaManager::ClearEvents()
+{
+}
+
 bool ULuaManager::CallFunction(const std::string& functionName)
 {
     sol::function func = m_LuaState[functionName];

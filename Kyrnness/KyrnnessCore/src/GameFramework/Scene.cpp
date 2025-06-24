@@ -31,25 +31,61 @@ UScene::~UScene()
 
 void UScene::Initialize()
 {
+	Super::Initialize();
+
 	SetupInputActions();
 
-	TComponentBuilder& comp = UComponentBuilder::GetComponentBuilderParameters();
+	//TComponentBuilder& comp = UComponentBuilder::GetComponentBuilderParameters();
 
-	comp.defaultShader = UShaders::GetShader(SHADER_DEFAULT);
+	//comp.defaultShader = UShaders::GetShader(SHADER_DEFAULT);
 
-	UComponentBuilder::RegisterEngineComponents(comp);
+	//UComponentBuilder::RegisterEngineComponents(comp);
 
-	nlohmann::json sceneJson = UAssetManager::LoadJson(m_Application->GetGameConfig().m_MainMenuMap);
+	//nlohmann::json sceneJson = UAssetManager::LoadJson(m_SceneFile);
 
-	SpawnEntityFromJson(sceneJson);
+	//SpawnEntityFromJson(sceneJson);
 }
 
 void UScene::Update(float deltaTime)
 {
+	Super::Update(deltaTime);
+
 	for (auto& [key, action] : m_InputActions)
 	{
 		action(deltaTime);
 	}
+}
+
+void UScene::OnDestroy()
+{
+	Super::OnDestroy();
+
+	auto& registry = m_Application->GetEnttRegistry();
+
+	// 1. Limpar os SceneObjects
+	for (TSceneObject* obj : m_SceneData.m_Objects)
+	{
+		if (obj)
+		{
+			// Apenas limpar o mapa de componentes (não precisa deletar os componentes, pois o entt fará isso)
+			obj->m_Components.clear();
+
+			// Liberar o próprio TSceneObject
+			FMemoryManager::Deallocate(obj);
+		}
+	}
+
+	m_SceneData.m_Objects.clear();
+
+	// 2. Resetar ponteiros da cena
+	m_MainCamera = nullptr;
+	m_DefaultShader = nullptr;
+	m_MainCameraEntity = entt::null;
+
+	// 3. Limpar o registry (isso deleta os componentes internamente)
+	registry.clear();
+
+	FLogger::Information("[Scene] Cena limpa!\n");
 }
 
 void UScene::DrawScene(float deltaTime)
@@ -109,6 +145,12 @@ void UScene::SaveScene()
 	}
 
 	UAssetManager::SaveJson("Content/Maps/EntryMap.json", sceneJson);
+}
+
+void UScene::LoadFromFile(const std::string& sceneFile)
+{
+	m_SceneFile = sceneFile;
+
 }
 
 TSceneObject* UScene::GetSelectedObject(float mouseX, float mouseY, glm::mat4 projection, glm::mat4 view)

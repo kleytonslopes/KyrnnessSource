@@ -3,7 +3,7 @@
 #ifndef KYRNNESS_SCENE_HPP
 #define KYRNNESS_SCENE_HPP
 
-#include "Core/Core.hpp"
+#include "Class.hpp"
 #include "nlohmann/json.hpp"
 
 class UApplication;
@@ -44,8 +44,9 @@ struct TScene
 
 
 
-class UScene
+class UScene : public UClass
 {
+	using Super = UClass;
 	const std::string defaultShaderName = "DefaultShader";
 	using InputAction = TFunction<void(float)>;
 
@@ -58,10 +59,12 @@ public:
 	UScene(UScene&&) = delete;
 	UScene& operator=(UScene&&) = delete;
 
-	void Initialize();
-	void Update(float deltaTime);
+	void Initialize() override;
+	void Update(float deltaTime) override;
+	void OnDestroy() override;
 	void DrawScene(float deltaTime);
 	void SaveScene();
+	void LoadFromFile(const std::string& sceneFile);
 
 	float GetGravity() const { return m_Gravity; }
 
@@ -72,10 +75,12 @@ public:
 	glm::vec3 ScreenPosToWorldRay(float mouseX, float mouseY, glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
 	std::vector<TSceneObject*>& GetObjects();
 	void ProcessEditMode();
+	void SpawnEntityFromJson(const nlohmann::json& jsonObject);
+
 private:
 	UApplication* m_Application = nullptr;
 	TScene m_SceneData;
-
+	std::string m_SceneFile;
 	TMap<int32, InputAction> m_InputActions;
 
 	entt::entity m_MainCameraEntity = entt::null;
@@ -99,7 +104,7 @@ private:
 	//void UpdateSceneObjectsAfterLoaded();
 
 	void SpawnEntity(const TSceneObject& sceneObject);
-	void SpawnEntityFromJson(const nlohmann::json& jsonObject);
+	
 
 	friend class UUIEditor;
 };

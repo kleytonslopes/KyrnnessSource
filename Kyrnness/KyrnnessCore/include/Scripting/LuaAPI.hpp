@@ -96,6 +96,7 @@ namespace LuaAPI
 	namespace Game
 	{
 		void QuitGame();
+        void LoadScene(const std::string& scenePath);
 		
 	}
 

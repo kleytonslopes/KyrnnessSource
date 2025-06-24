@@ -18,9 +18,7 @@ function OnQuitGameButtonClicked()
 end
 
 function OnNewGameButtonClicked()
-	print("[Lua] New Game.");
-	Game.PlaySound("music");
-	Engine.Log("Playing music!");
+	Game.LoadScene("Content/Maps/EntryMap.json")
 end
 
 function OnJoinGameButtonClicked()

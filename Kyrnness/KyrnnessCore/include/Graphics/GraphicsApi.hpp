@@ -34,7 +34,7 @@ public:
 
 protected:
     UApplication* m_Application = nullptr;
-	UScene* m_Scene = nullptr;
+	//UScene* m_Scene = nullptr;
 };
 
 #endif // KYRNNES_CORE_GRAPHICS_GRAPHICS_API_HPP

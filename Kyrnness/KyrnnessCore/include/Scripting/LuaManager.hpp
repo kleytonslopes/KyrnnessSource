@@ -22,6 +22,7 @@ public:
     void LoadAllMods();
     void RegisterEventFunction(const std::string& eventName, sol::function func);
     void RegisterEngineTypes();
+    void ClearEvents();
 
     sol::state& GetLuaState() { return m_LuaState; }
     ULuaEventManager& GetLuaEventManager() { return *m_LuaEventManager.get(); }

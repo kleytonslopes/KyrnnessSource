@@ -14,7 +14,7 @@
 #include "Audio/SoundManager.hpp"
 #include "UI/HUD.hpp"
 #include "UI/UIManager.hpp"
-
+#include "Runtime/SceneManager.hpp"
 #include "Scripting/LuaManager.hpp"
 
 enum EGraphicsApi
@@ -91,11 +91,12 @@ public:
 			});
 	}
 
-	UScene* GetScene() const { return m_Scene.get(); }
+	UScene* GetScene() const { return m_SceneManager.get()->GetCurrentScene(); }
 	UController* GetController() const { return m_Controller.get(); }
 	UPhysicsSystem* GetPhysicsSystem() const { return m_PhysicsSystem.get(); }
 	USoundManager* GetSoundManager() { return m_SoundManager.get(); }
 	UUIManager* GetUIManager() const { return m_UIManager.get(); }
+	USceneManager* GetSceneManager() { return m_SceneManager.get(); }
 
 	float GetDeltaTime() const { return m_DeltaTime; }
 
@@ -142,13 +143,14 @@ protected:
 private:
 	std::unique_ptr<UWindow> m_Window;
 	std::unique_ptr<UGraphicsApi> m_GraphicsApi;
-	std::unique_ptr<UScene> m_Scene;
+	///std::unique_ptr<UScene> m_Scene;
 	std::unique_ptr<UController> m_Controller;
 	std::unique_ptr<UPhysicsSystem> m_PhysicsSystem;
 	std::unique_ptr<UHUD> m_HUD;
 	std::unique_ptr<USoundManager> m_SoundManager;
 	std::unique_ptr<UUIManager> m_UIManager;
 	std::unique_ptr<ULuaManager> m_LuaManager;
+	std::unique_ptr<USceneManager> m_SceneManager;
 
 	TFunction<std::unique_ptr<UHUD>(UApplication*)> m_HUDFactory;
 
