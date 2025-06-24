@@ -7,15 +7,13 @@ project "KyrnnessCore"
 
     files
     {
-        "include/**.hpp",
-        "include/**.h",
-        "include/**.cpp",
-        "src/**.cpp"
+        "Sources/**.hpp",
+        "Sources/**.cpp",
     }
 
     includedirs
     {
-        "include",
+        "Sources",
         "%{include_dir.KyrnnessPacker}",
         "%{include_dir.FMOD}",
         "%{include_dir.SDL}",
