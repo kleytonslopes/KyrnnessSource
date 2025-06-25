@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "Components/InputComponent.hpp"
 
 void UInputComponent::RegisterInputAction(const std::string& actionName, const TFunction<void()>& callback)

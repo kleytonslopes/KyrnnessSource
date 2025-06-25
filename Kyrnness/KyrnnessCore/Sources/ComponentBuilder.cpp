@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "ComponentBuilder.hpp"
 #include "Core/Json.hpp"
 #include "Runtime/Application.hpp"

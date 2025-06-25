@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "Input/InputManager.hpp"
 #include "Runtime/Application.hpp"
 #include "GameFramework/Controller.hpp"
@@ -48,7 +48,7 @@ void UInputManager::SetKeyPressed(int32 keyCode, EInputKeyStatus status)
 		}
 	}
 
-	// Se não existe, adiciona
+	// Se nï¿½o existe, adiciona
 	TInputKey newKey;
 	newKey.KeyCode = keyCode;
 	newKey.Status = status;

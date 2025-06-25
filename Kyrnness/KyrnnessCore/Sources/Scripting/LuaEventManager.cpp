@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "Scripting/LuaEventManager.hpp"
 
 ULuaEventManager::ULuaEventManager(FSolState& luaState) 

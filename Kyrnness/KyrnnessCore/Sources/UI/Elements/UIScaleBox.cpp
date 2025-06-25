@@ -1,10 +1,10 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "UI/Elements/UIScaleBox.hpp"
 #include "Runtime/Application.hpp"
 
 void UUIScaleBox::UpdateLayout()
 {
-    UUIElement::UpdateLayout(); // Primeiro calcula posição própria
+    UUIElement::UpdateLayout(); // Primeiro calcula posiï¿½ï¿½o prï¿½pria
 
     float targetWidth = static_cast<float>(UApplication::Get().GetWidth());
     float targetHeight = static_cast<float>(UApplication::Get().GetHeight());
@@ -36,7 +36,7 @@ void UUIScaleBox::UpdateLayout()
     {
         if (child)
         {
-            // Aqui é o segredo: Recalcula posição e tamanho a cada frame a partir do BaseX/BaseY/BaseWidth/BaseHeight
+            // Aqui ï¿½ o segredo: Recalcula posiï¿½ï¿½o e tamanho a cada frame a partir do BaseX/BaseY/BaseWidth/BaseHeight
             child->x = child->BaseX * CurrentScale.x;
             child->y = child->BaseY * CurrentScale.y;
             child->width = child->BaseWidth * CurrentScale.x;
@@ -60,7 +60,7 @@ glm::mat4 UUIScaleBox::GetWorldModel()
         model = parentModel * model;
     }
 
-    // Depois da transformação de posição/tamanho, aplicamos a escala
+    // Depois da transformaï¿½ï¿½o de posiï¿½ï¿½o/tamanho, aplicamos a escala
     model = glm::scale(model, glm::vec3(CurrentScale.x, CurrentScale.y, 1.0f));
 
     return model;

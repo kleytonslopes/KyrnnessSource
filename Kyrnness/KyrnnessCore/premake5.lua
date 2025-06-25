@@ -2,8 +2,8 @@ project "KyrnnessCore"
     kind "StaticLib"
     SetupCommonProjectSettings()
 
-    -- pchheader "pch.hpp"
-    -- pchsource "src/pch.cpp"
+    pchheader "CorePCH.hpp"
+    pchsource "Sources/CorePCH.cpp"
 
     files
     {

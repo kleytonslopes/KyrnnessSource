@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "GameFramework/Terrain.hpp"
 #include <glm/gtc/noise.hpp>
 
@@ -16,7 +16,7 @@ void UTerrain::GenerateTerrain(float noise, float amplitude, int width, int heig
 	{
 		for (int x = 0; x < width; ++x)
 		{
-			// Cálculo da altura por Perlin noise
+			// Cï¿½lculo da altura por Perlin noise
 			auto GetHeight = [&](float fx, float fy) -> float {
 				FVector2 p(fx * noise, fy * noise);
 				return FMath::PerlinGLM(p) * amplitude;

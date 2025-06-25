@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "Scripting/LuaAPI.hpp"
 #include "Core/Core.hpp"
 #include "Runtime/Application.hpp"
@@ -35,7 +35,7 @@ namespace LuaAPI
 					return FLuaEntity(entity);
 				}
 
-				// Se não achar, devolve um entity inválido
+				// Se nï¿½o achar, devolve um entity invï¿½lido
 				return FLuaEntity();
 			});
 		gameNamespace.set_function("LoadScene", Game::LoadScene);

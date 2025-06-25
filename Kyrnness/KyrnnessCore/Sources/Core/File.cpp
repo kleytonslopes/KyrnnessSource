@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "Core/File.hpp"
 
 std::string FFile::ReadFile(const std::string& filePath)

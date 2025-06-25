@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "Scripting/LuaManager.hpp"
 #include "Scripting/LuaAPI.hpp"
 #include "Runtime/Application.hpp"
@@ -62,12 +62,12 @@ void ULuaManager::LoadScript(const std::string& filePath)
                 FLogger::Log("[Lua] Executado main() do script %s com sucesso.\n", filePath.c_str());
             }
 
-            // Limpa a global "main" pra evitar conflito com o próximo script
+            // Limpa a global "main" pra evitar conflito com o prï¿½ximo script
             m_LuaState["main"] = sol::nil;
         }
         else
         {
-            FLogger::Warning("[Lua] Script %s não possui função main().\n", filePath.c_str());
+            FLogger::Warning("[Lua] Script %s nï¿½o possui funï¿½ï¿½o main().\n", filePath.c_str());
         }
 
         FLogger::Success("[Lua] Script carregado: %s\n", filePath.c_str());
@@ -104,7 +104,7 @@ void ULuaManager::LoadAllMods()
 
         if (!std::filesystem::exists(myModLuaPath))
         {
-            FLogger::Warning("[Lua] Ignorando Mod: %s (MyMod.lua não encontrado)\n", modPath.c_str());
+            FLogger::Warning("[Lua] Ignorando Mod: %s (MyMod.lua nï¿½o encontrado)\n", modPath.c_str());
             continue;
         }
 
@@ -155,7 +155,7 @@ void ULuaManager::RegisterEngineTypes()
         "Length", &FVector::Length
     );
 
-    // Garantir que FVector pode ser chamado como uma função global
+    // Garantir que FVector pode ser chamado como uma funï¿½ï¿½o global
     lua.set_function("FVector", [](float x, float y, float z) {
         return FVector(x, y, z);
         });
@@ -181,7 +181,7 @@ bool ULuaManager::CallFunction(const std::string& functionName)
 
     if (!func.valid())
     {
-        FLogger::Error("[Lua] Função '%s' não encontrada!\n", functionName.c_str());
+        FLogger::Error("[Lua] Funï¿½ï¿½o '%s' nï¿½o encontrada!\n", functionName.c_str());
         return false;
     }
 
@@ -190,7 +190,7 @@ bool ULuaManager::CallFunction(const std::string& functionName)
     if (!result.valid())
     {
         sol::error err = result;
-        FLogger::Error("[Lua] Erro ao chamar função '%s': %s\n", functionName.c_str(), err.what());
+        FLogger::Error("[Lua] Erro ao chamar funï¿½ï¿½o '%s': %s\n", functionName.c_str(), err.what());
         return false;
     }
 

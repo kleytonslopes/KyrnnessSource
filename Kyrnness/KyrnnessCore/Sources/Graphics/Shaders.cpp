@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "Graphics/Shaders.hpp"
 #include "Components/ShaderOpenGLComponent.hpp"
 #include "MemoryManager.hpp"

@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "Components/MeshCollisionComponent.hpp"
 
 nlohmann::json UMeshCollisionComponent::GetJsonData()

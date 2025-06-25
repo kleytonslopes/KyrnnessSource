@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "CorePCH.hpp"
 #include "Class.hpp"
 
 void UClass::Initialize()

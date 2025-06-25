@@ -1,3 +1,4 @@
+#include "CorePCH.hpp"
 #include "DebugUtils.hpp"
 
 #ifdef _DEBUG
