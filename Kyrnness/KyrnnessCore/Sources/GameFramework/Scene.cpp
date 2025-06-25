@@ -100,6 +100,9 @@ void UScene::OnDestroy()
 
 void UScene::DrawScene(float deltaTime)
 {
+	if (!IsValid())
+		return;
+
 	auto& registry = m_Application->GetEnttRegistry();
 
 	if (registry.valid(m_MainCameraEntity))
@@ -412,6 +415,13 @@ void UScene::SpawnEntityFromJson(const nlohmann::json& jsonObject)
 		m_SceneData.m_Objects.emplace_back(sceneObject);
 	}
 
+}
+
+void UScene::OnUpdate(float DeltaTime)
+{
+	Super::OnUpdate(DeltaTime);
+
+	DrawScene(DeltaTime);
 }
 
 void TSceneObject::SetPosition(const glm::vec3& position)

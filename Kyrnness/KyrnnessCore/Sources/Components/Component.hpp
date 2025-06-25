@@ -22,8 +22,15 @@ class UComponent : public UClass
 	using Super = UClass;
 
 public:
+	UComponent() = default;
+
+	UComponent(const UComponent&) = delete;
+	UComponent& operator=(const UComponent&) = delete;
+
 	entt::entity GetEntityOwner() const { return m_EntityOwner; }
 	
+	void Update(float DeltaTime) override;
+
 	void SetEntityOwner(entt::entity entity);
 	void SetApplication(UApplication* application);
 	void SetCanUpdate(bool canUpdate);
@@ -35,6 +42,7 @@ protected:
 	entt::entity m_EntityOwner = entt::null;
 
 	void OnInitialize() override;
+	void OnDestroy() override;
 
 	friend class UComponentBuilder;
 };

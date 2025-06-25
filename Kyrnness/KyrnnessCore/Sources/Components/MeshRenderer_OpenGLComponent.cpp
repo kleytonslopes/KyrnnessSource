@@ -51,6 +51,8 @@ void UMeshRenderer_OpenGLComponent::OnInitialize()
 
 void UMeshRenderer_OpenGLComponent::Render(const TRenderParameters& renderParameters)
 {
+	if (!m_Shader)
+		return;
 	uint32 diffuseNr = 1;
 	uint32 specularNr = 1;
 	uint32 normalNr = 1;

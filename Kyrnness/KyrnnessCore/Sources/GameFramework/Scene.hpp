@@ -87,6 +87,9 @@ public:
 	void ProcessEditMode();
 	void SpawnEntityFromJson(const nlohmann::json& jsonObject);
 
+protected:
+	void OnUpdate(float DeltaTime) override;
+
 private:
 	UApplication* m_Application = nullptr;
 	TScene m_SceneData;

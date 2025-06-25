@@ -29,54 +29,115 @@ public:
 	bool operator!=(const FDelegateHandle& other) const { return m_ID != other.m_ID; }
 
 private:
-	size_t m_ID = 0; // ID == 0 significa "inv�lido"
+	size_t m_ID = 0;
 };
 
 template<typename... Args>
 class FFunctionEvent
 {
 public:
-    using HandlerType = TFunction<void(Args...)>;
+	using HandlerType = TFunction<void(Args...)>;
 
-    FDelegateHandle AddListener(const HandlerType& listener)
-    {
-        FDelegateHandle handle(++m_LastID);
-        m_Listeners[handle.GetID()] = listener;
-        return handle;
-    }
+	struct FListenerEntry
+	{
+		HandlerType Callback;
+		void* ObjectPtr = nullptr;
+		void* MethodPtr = nullptr;
+	};
 
-    template<typename ClassType>
-    FDelegateHandle AddListener(ClassType* instance, void (ClassType::* method)(Args...))
-    {
-        return AddListener([=](Args... args) {
-            (instance->*method)(args...);
-            });
-    }
+	FDelegateHandle AddListener(const HandlerType& listener)
+	{
+		FDelegateHandle handle(++m_LastID);
+		FListenerEntry entry;
+		entry.Callback = listener;
+		m_Listeners[handle.GetID()] = entry;
+		return handle;
+	}
 
-    // Remove via handle
-    bool RemoveListener(FDelegateHandle handle)
-    {
-        return m_Listeners.erase(handle.GetID()) > 0;
-    }
+	template<typename ClassType>
+	FDelegateHandle AddListener(ClassType* instance, void (ClassType::* method)(Args...))
+	{
+		FDelegateHandle handle(++m_LastID);
+		FListenerEntry entry;
+		entry.ObjectPtr = static_cast<void*>(instance);
+		entry.MethodPtr = *reinterpret_cast<void**>(&method);
+		entry.Callback = [=](Args... args) {
+			(instance->*method)(args...);
+			};
+		m_Listeners[handle.GetID()] = entry;
+		return handle;
+	}
 
-    // Chamada para todos os listeners
-    void Broadcast(Args... args) const
-    {
-        for (const auto& [id, listener] : m_Listeners)
-        {
-            if (listener)
-                listener(args...);
-        }
-    }
+	template<typename ClassType>
+	FDelegateHandle AddListener(const ClassType* instance, void (ClassType::* method)(Args...) const)
+	{
+		FDelegateHandle handle(++m_LastID);
+		FListenerEntry entry;
+		entry.ObjectPtr = const_cast<void*>(static_cast<const void*>(instance));
+		entry.MethodPtr = *reinterpret_cast<void**>(&method);
+		entry.Callback = [=](Args... args) {
+			(instance->*method)(args...);
+			};
+		m_Listeners[handle.GetID()] = entry;
+		return handle;
+	}
 
-    void Clear()
-    {
-        m_Listeners.clear();
-    }
+	bool RemoveListener(FDelegateHandle handle)
+	{
+		return m_Listeners.erase(handle.GetID()) > 0;
+	}
+
+	template<typename ClassType>
+	bool RemoveListener(ClassType* instance, void (ClassType::* method)(Args...))
+	{
+		void* objPtr = static_cast<void*>(instance);
+		void* methodPtr = *reinterpret_cast<void**>(&method);
+
+		for (auto it = m_Listeners.begin(); it != m_Listeners.end(); ++it)
+		{
+			if (it->second.ObjectPtr == objPtr && it->second.MethodPtr == methodPtr)
+			{
+				m_Listeners.erase(it);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	template<typename ClassType>
+	bool RemoveListener(const ClassType* instance, void (ClassType::* method)(Args...) const)
+	{
+		void* objPtr = const_cast<void*>(static_cast<const void*>(instance));
+		void* methodPtr = *reinterpret_cast<void**>(&method);
+
+		for (auto it = m_Listeners.begin(); it != m_Listeners.end(); ++it)
+		{
+			if (it->second.ObjectPtr == objPtr && it->second.MethodPtr == methodPtr)
+			{
+				m_Listeners.erase(it);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	void Broadcast(Args... args) const
+	{
+		for (const auto& [id, listener] : m_Listeners)
+		{
+			if (listener.Callback)
+				listener.Callback(args...);
+		}
+	}
+
+	void Clear()
+	{
+		m_Listeners.clear();
+	}
 
 private:
-    size_t m_LastID = 0;
-    TMap<size_t, HandlerType> m_Listeners;
+	size_t m_LastID = 0;
+	TMap<size_t, FListenerEntry> m_Listeners;
 };
 
 #endif// K_EVENT_FUNCTION_HPP

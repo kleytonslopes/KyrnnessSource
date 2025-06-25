@@ -16,15 +16,25 @@ void UComponent::OnInitialize()
 {
 	if (m_Application)
 	{
-		m_Application->OnUpdateEvent.AddListener([this](float deltaTime) {
-			if (bCanUpdate)
-			{
-				Update(deltaTime);
-			}
-			});
+		m_Application->OnUpdateEvent.AddListener(this, &UComponent::Update);
 	}
 
 	Super::OnInitialize();
+}
+
+void UComponent::OnDestroy()
+{
+	Super::OnDestroy();
+
+	if (m_Application)
+	{
+		m_Application->OnUpdateEvent.RemoveListener(this, &UComponent::Update);
+	}
+}
+
+void UComponent::Update(float DeltaTime)
+{
+	Super::Update(DeltaTime);
 }
 
 void UComponent::SetEntityOwner(entt::entity entity)

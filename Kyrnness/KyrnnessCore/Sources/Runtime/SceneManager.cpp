@@ -45,7 +45,6 @@ void USceneManager::OnUpdate(float deltaTime)
     if (m_CurrentScene)
     {
         m_CurrentScene->Update(deltaTime);
-        m_CurrentScene->DrawScene(deltaTime);
     }
 }
 
