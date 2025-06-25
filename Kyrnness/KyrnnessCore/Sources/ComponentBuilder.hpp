@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: ComponentBuilder.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_COMPONENT_BUILDER_HPP
-#define KYRNNESS_COMPONENT_BUILDER_HPP
+#ifndef K_COMPONENT_BUILDER_HPP
+#define K_COMPONENT_BUILDER_HPP
 
 #include "Core/Core.hpp"
 #include "Core/MinimalComponents.hpp"
@@ -49,4 +59,4 @@ private:
 	static ComponentBuilder RegisterAudioSourceComponent(const TComponentBuilder& componentBuilderParameters);
 };
 
-#endif // KYRNNESS_COMPONENT_BUILDER_HPP
+#endif // K_COMPONENT_BUILDER_HPP

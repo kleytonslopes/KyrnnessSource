@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: EventFunction.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_EVENT_FUNCTION_HPP
-#define KYRNNESS_EVENT_FUNCTION_HPP
+#ifndef K_EVENT_FUNCTION_HPP
+#define K_EVENT_FUNCTION_HPP
 
 #include "Core/TypesDefinition.hpp"
 
@@ -69,4 +79,4 @@ private:
     TMap<size_t, HandlerType> m_Listeners;
 };
 
-#endif// KYRNNESS_EVENT_FUNCTION_HPP
+#endif// K_EVENT_FUNCTION_HPP

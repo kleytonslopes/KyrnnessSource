@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: LuaManager.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_LUAMANAGER_HPP
-#define KYRNESS_LUAMANAGER_HPP
+#ifndef K_LUAMANAGER_HPP
+#define K_LUAMANAGER_HPP
 
 #include "Class.hpp"
 #include "Core/TypesDefinition.hpp"
@@ -46,12 +56,12 @@ public:
                 if (!result.valid())
                 {
                     sol::error err = result;
-                    FLogger::Error("[Lua] Erro durante execução de evento '%s': %s\n", eventName.c_str(), err.what());
+                    FLogger::Error("[Lua] Erro durante execuï¿½ï¿½o de evento '%s': %s\n", eventName.c_str(), err.what());
                 }
             }
             catch (const sol::error& e)
             {
-                FLogger::Error("[Lua] Exceção ao chamar evento '%s': %s\n", eventName.c_str(), e.what());
+                FLogger::Error("[Lua] Exceï¿½ï¿½o ao chamar evento '%s': %s\n", eventName.c_str(), e.what());
             }
         }
     }
@@ -68,4 +78,4 @@ private:
     std::unique_ptr<ULuaEventManager> m_LuaEventManager;
 };
 
-#endif // KYRNESS_LUAMANAGER_HPP
+#endif // K_LUAMANAGER_HPP

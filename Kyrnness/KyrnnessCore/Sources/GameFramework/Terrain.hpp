@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: Terrain.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_TERRAIN_HPP
-#define KYRNNESS_TERRAIN_HPP
+#ifndef K_TERRAIN_HPP
+#define K_TERRAIN_HPP
 
 #include "Core/Core.hpp"
 #include "Core/Vertex.hpp"
@@ -18,4 +28,4 @@ public:
 
 	static void GenerateTerrain(float noise, float amplitude, int width, int height, float tileSize, std::vector<Vertex>& outVertices, std::vector<uint32>& outIndices);
 };
-#endif// KYRNNESS_TERRAIN_HPP
+#endif// K_TERRAIN_HPP

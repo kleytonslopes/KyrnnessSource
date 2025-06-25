@@ -1,7 +1,17 @@
+/*********************************************************************
+ *   File: AssetManager.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
-#ifndef KYRNNESS_ASSET_MANAGER_HPP
-#define KYRNNESS_ASSET_MANAGER_HPP
+#ifndef K_ASSET_MANAGER_HPP
+#define K_ASSET_MANAGER_HPP
 
 #include "Core/Core.hpp"
 #include "nlohmann/json.hpp"
@@ -76,4 +86,4 @@ private:
 	static void XORDecrypt(std::vector<uint8_t>& data, uint8_t key);
 };
 
-#endif // KYRNNESS_ASSET_MANAGER_HPP
+#endif // K_ASSET_MANAGER_HPP

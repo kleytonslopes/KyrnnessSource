@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: UIEditor.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_UI_EDITOR_HPP
-#define KYRNNESS_UI_EDITOR_HPP
+#ifndef K_UI_EDITOR_HPP
+#define K_UI_EDITOR_HPP
 
 #include "UI/HUD.hpp"
 #include <memory>
@@ -20,4 +30,4 @@ private:
 	
 };
 
-#endif // KYRNNESS_UI_EDITOR_HPP
+#endif // K_UI_EDITOR_HPP

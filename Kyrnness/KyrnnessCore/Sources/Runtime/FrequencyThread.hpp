@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: FrequencyThread.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_FREQUENCY_THREAD_HPP
-#define KYRNESS_FREQUENCY_THREAD_HPP
+#ifndef K_FREQUENCY_THREAD_HPP
+#define K_FREQUENCY_THREAD_HPP
 
 #include <chrono>
 #include <iostream>
@@ -76,5 +86,5 @@ private:
     FThread m_Thread;
 };
 
-#endif // KYRNESS_FREQUENCY_THREAD_HPP
+#endif // K_FREQUENCY_THREAD_HPP
 

@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: SceneManager.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_SCENE_MANAGER_HPP
-#define KYRNESS_SCENE_MANAGER_HPP
+#ifndef K_SCENE_MANAGER_HPP
+#define K_SCENE_MANAGER_HPP
 
 #include "Class.hpp"
 #include "GameFramework/Scene.hpp"
@@ -15,7 +25,7 @@ public:
     void Initialize() override;
     void OnUpdate(float deltaTime) override;
 
-    // Troca de cena síncrona
+    // Troca de cena sï¿½ncrona
     void SwitchScene(const std::string& scenePath, bool clearUI = true, bool clearAudio = false, bool clearLua = true);
 
     // Retorna ponteiro para a cena atual
@@ -31,4 +41,4 @@ private:
     std::string m_CurrentScenePath;
 };
 
-#endif //KYRNESS_SCENE_MANAGER_HPP
+#endif //K_SCENE_MANAGER_HPP

@@ -7,6 +7,7 @@
  *
  * Copyright (c) 2023 Kyrnness. All rights reserved.
  *********************************************************************/
+
 #pragma once
 
 #ifndef KYRNNES_CORE_FORMATTER_HPP

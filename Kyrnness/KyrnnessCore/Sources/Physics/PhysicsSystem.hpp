@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: PhysicsSystem.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef	KYRNNESS_PHYSICS_SYSTEM_HPP
-#define KYRNNESS_PHYSICS_SYSTEM_HPP
+#ifndef	K_PHYSICS_SYSTEM_HPP
+#define K_PHYSICS_SYSTEM_HPP
 
 #include "Core/Core.hpp"
 #include "Physics/PhysicsDebug.hpp"
@@ -86,4 +96,4 @@ private:
 	//physx::PxCooking* m_Cooking = NULL;
 };
 
-#endif // KYRNNESS_PHYSICS_SYSTEM_HPP
+#endif // K_PHYSICS_SYSTEM_HPP

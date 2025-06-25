@@ -1,7 +1,17 @@
+/*********************************************************************
+ *   File: IdentityComponent.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
-#ifndef KYRNNESS_IDENTITY_COMPONENT_HPP
-#define KYRNNESS_IDENTITY_COMPONENT_HPP
+#ifndef K_IDENTITY_COMPONENT_HPP
+#define K_IDENTITY_COMPONENT_HPP
 
 #include "Components/Component.hpp"
 
@@ -34,4 +44,4 @@ friend class UScene;
 friend class FJson;
 };
 
-#endif // !KYRNNESS_IDENTITY_COMPONENT_HPP
+#endif // !K_IDENTITY_COMPONENT_HPP

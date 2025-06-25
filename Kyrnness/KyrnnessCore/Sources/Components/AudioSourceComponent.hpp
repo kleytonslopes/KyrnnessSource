@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: AudioSourceComponent.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_AUDIO_SOURCE_COMPONENT_HPP
-#define KYRNNESS_AUDIO_SOURCE_COMPONENT_HPP
+#ifndef K_AUDIO_SOURCE_COMPONENT_HPP
+#define K_AUDIO_SOURCE_COMPONENT_HPP
 
 #include "Components/Component.hpp"
 #include <fmod.hpp>
@@ -65,4 +75,4 @@ private:
 	std::vector<FActiveFade> m_ActiveFades;
 };
 
-#endif // KYRNNESS_AUDIO_SOURCE_COMPONENT_HPP
+#endif // K_AUDIO_SOURCE_COMPONENT_HPP

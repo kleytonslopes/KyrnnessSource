@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: HUD.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_HUD_HPP
-#define KYRNNESS_HUD_HPP
+#ifndef K_HUD_HPP
+#define K_HUD_HPP
 
 #include "Core/Core.hpp" 
 
@@ -24,4 +34,4 @@ protected:
 	UApplication* m_Application;
 };
 
-#endif // KYRNNESS_HUD_HPP
+#endif // K_HUD_HPP

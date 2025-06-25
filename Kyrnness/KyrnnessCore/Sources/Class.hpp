@@ -1,7 +1,17 @@
+/*********************************************************************
+ *   File: Class.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
-#ifndef KYRNNESS_CLASS_HPP
-#define KYRNNESS_CLASS_HPP
+#ifndef K_CLASS_HPP
+#define K_CLASS_HPP
 
 #include "Core/Core.hpp"
 
@@ -42,4 +52,4 @@ protected:
 
 };
 
-#endif // KYRNNESS_CLASS_HPP;
+#endif // K_CLASS_HPP;

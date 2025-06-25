@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: TypesDefinition.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_TYPES_DEFINITION_HPP
-#define KYRNESS_TYPES_DEFINITION_HPP
+#ifndef K_TYPES_DEFINITION_HPP
+#define K_TYPES_DEFINITION_HPP
 
 #include <unordered_map>
 #include <functional>
@@ -68,4 +78,4 @@ using FSolFunction = sol::function;
 using FSolNamespace = sol::table;
 
 
-#endif // KYRNESS_FREQUENCY_THREAD_HPP
+#endif // K_FREQUENCY_THREAD_HPP

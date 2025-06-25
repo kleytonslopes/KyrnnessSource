@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: TerrainComponent.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_TERRAIN_COMPONENT_HPP
-#define KYRNNESS_TERRAIN_COMPONENT_HPP
+#ifndef K_TERRAIN_COMPONENT_HPP
+#define K_TERRAIN_COMPONENT_HPP
 
 #include "Components/Component.hpp"
 #include "GameFramework/Terrain.hpp"
@@ -47,4 +57,4 @@ private:
 	void GenerateTerrain();
 };
 
-#endif // !KYRNNESS_TERRAIN_COMPONENT_HPP
+#endif // !K_TERRAIN_COMPONENT_HPP

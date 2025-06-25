@@ -1,3 +1,13 @@
+/*********************************************************************
+ *   File: InputComponent.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 #ifndef	KYRNNES_INPUT_COMPONENT_HPP
 #define KYRNNES_INPUT_COMPONENT_HPP
@@ -23,4 +33,4 @@ private:
 	TMap<std::string, TFunction<void()>> m_InputActions;
 };
 
-#endif// KYRNNESS_INPUT_COMPONENT_HPP
+#endif// K_INPUT_COMPONENT_HPP

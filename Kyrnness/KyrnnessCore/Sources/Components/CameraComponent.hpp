@@ -1,7 +1,17 @@
+/*********************************************************************
+ *   File: CapsuleComponent.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
-#ifndef KYRNESS_CAMERA_HPP
-#define KYRNESS_CAMERA_HPP
+#ifndef K_CAMERA_HPP
+#define K_CAMERA_HPP
 
 #include "Components/Component.hpp"
 
@@ -33,4 +43,4 @@ private:
 	float AspectRatio = 1.0f;
 };
 
-#endif // KYRNESS_CAMERA_HPP
+#endif // K_CAMERA_HPP

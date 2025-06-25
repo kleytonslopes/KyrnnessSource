@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: IgnoreControllerFilterCallback.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_IGNORE_CONTROLLER_FILTER_CALLBACK_HPP
-#define KYRNNESS_IGNORE_CONTROLLER_FILTER_CALLBACK_HPP
+#ifndef K_IGNORE_CONTROLLER_FILTER_CALLBACK_HPP
+#define K_IGNORE_CONTROLLER_FILTER_CALLBACK_HPP
 
 #include <PxPhysicsAPI.h>
 
@@ -13,7 +23,7 @@ public:
         : IgnoredShape(shapeToIgnore)
     {}
 
-    // Pré-filtro chamado para cada shape que o sweep intersecta
+    // Prï¿½-filtro chamado para cada shape que o sweep intersecta
     physx::PxQueryHitType::Enum preFilter(
         const physx::PxFilterData& filterData,
         const physx::PxShape* shape,
@@ -26,11 +36,11 @@ public:
         return physx::PxQueryHitType::eBLOCK;
     }
     //const PxFilterData& filterData, const PxQueryHit& hit, const PxShape* shape, const PxRigidActor* actor
-    // Pós-filtro — raramente usado aqui
+    // Pï¿½s-filtro ï¿½ raramente usado aqui
     physx::PxQueryHitType::Enum postFilter(const physx::PxFilterData& filterData, const physx::PxQueryHit& hit, const physx::PxShape* shape, const physx::PxRigidActor* actor)
     {
         return physx::PxQueryHitType::eBLOCK;
     }
 };
 
-#endif //KYRNNESS_IGNORE_CONTROLLER_FILTER_CALLBACK_HPP
+#endif //K_IGNORE_CONTROLLER_FILTER_CALLBACK_HPP

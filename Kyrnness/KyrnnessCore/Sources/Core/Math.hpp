@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: Math.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_MATH_HPP
-#define KYRNNESS_MATH_HPP
+#ifndef K_MATH_HPP
+#define K_MATH_HPP
 
 #include "Core/Vector.hpp"
 #include <cmath>
@@ -46,7 +56,7 @@ public:
 
 	static inline int32_t Fade(int32_t t)
 	{
-		// Função fade suave 6t^5 - 15t^4 + 10t^3
+		// Funï¿½ï¿½o fade suave 6t^5 - 15t^4 + 10t^3
 		return t * t * t * (t * (t * 6 - 15) + 10);
 	}
 
@@ -70,24 +80,24 @@ public:
 
 	static float Perlin(float x, float y)
 	{
-		// Encontra o "grid cell" que o ponto está
+		// Encontra o "grid cell" que o ponto estï¿½
 		int X = (int)std::floor(x) & 255;
 		int Y = (int)std::floor(y) & 255;
 
-		// Posições relativas dentro da célula
+		// Posiï¿½ï¿½es relativas dentro da cï¿½lula
 		float xf = x - std::floor(x);
 		float yf = y - std::floor(y);
 
 		float u = Fade(xf);
 		float v = Fade(yf);
 
-		// Hash dos cantos da célula
+		// Hash dos cantos da cï¿½lula
 		int aa = permutation[permutation[X] + Y];
 		int ab = permutation[permutation[X] + Y + 1];
 		int ba = permutation[permutation[X + 1] + Y];
 		int bb = permutation[permutation[X + 1] + Y + 1];
 
-		// Interpolação do gradiente nos 4 cantos
+		// Interpolaï¿½ï¿½o do gradiente nos 4 cantos
 		float x1 = Lerp(Grad(aa, xf, yf), Grad(ba, xf - 1, yf), u);
 		float x2 = Lerp(Grad(ab, xf, yf - 1), Grad(bb, xf - 1, yf - 1), u);
 		float result = Lerp(x1, x2, v);
@@ -101,4 +111,4 @@ private:
 	static const int permutation[256];
 };
 
-#endif //KYRNNESS_MATH_HPP
+#endif //K_MATH_HPP

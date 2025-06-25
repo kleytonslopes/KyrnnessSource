@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: UIManager.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_UI_UIMANAGER_HPP
-#define KYRNESS_UI_UIMANAGER_HPP
+#ifndef K_UI_UIMANAGER_HPP
+#define K_UI_UIMANAGER_HPP
 
 #include <vector>
 #include "UI/Elements/UIElement.hpp"
@@ -55,6 +65,6 @@ private:
 	void ClearNameCache();
 };
 
-#endif// KYRNESS_UI_UIMANAGER_HPP
+#endif// K_UI_UIMANAGER_HPP
 
 

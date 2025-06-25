@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: UIScaleBox.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_UISCALEBOX_HPP
-#define KYRNESS_UISCALEBOX_HPP
+#ifndef K_UISCALEBOX_HPP
+#define K_UISCALEBOX_HPP
 
 #include "UI/Elements/UIElement.hpp"
 
@@ -20,4 +30,4 @@ protected:
 
 };
 
-#endif// KYRNESS_UISCALEBOX_HPP
+#endif// K_UISCALEBOX_HPP

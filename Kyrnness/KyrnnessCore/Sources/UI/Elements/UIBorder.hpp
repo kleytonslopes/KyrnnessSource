@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: UIBorder.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_UUIBORDER_HPP
-#define KYRNESS_UUIBORDER_HPP
+#ifndef K_UUIBORDER_HPP
+#define K_UUIBORDER_HPP
 
 #include "UI/Elements/UIElement.hpp"
 
@@ -18,4 +28,4 @@ public:
 
 };
 
-#endif// KYRNESS_UUIBORDER_HPP
+#endif// K_UUIBORDER_HPP

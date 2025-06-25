@@ -1,3 +1,13 @@
+/*********************************************************************
+ *   File: Core.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
 #ifndef KYRNNES_CORE_RUNTIME_CORE_HPP

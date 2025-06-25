@@ -1,7 +1,17 @@
+/*********************************************************************
+ *   File: CapsuleComponent.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
-#ifndef KYRNNESS_CAPSULE_COMPONENT_HPP
-#define KYRNNESS_CAPSULE_COMPONENT_HPP
+#ifndef K_CAPSULE_COMPONENT_HPP
+#define K_CAPSULE_COMPONENT_HPP
 
 #include "Components/Component.hpp"
 
@@ -57,4 +67,4 @@ private:
 };
 
 
-#endif // KYRNNESS_CAPSULE_COMPONENT_HPP
+#endif // K_CAPSULE_COMPONENT_HPP

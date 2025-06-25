@@ -1,7 +1,17 @@
+/*********************************************************************
+ *   File: Scene.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
-#ifndef KYRNNESS_SCENE_HPP
-#define KYRNNESS_SCENE_HPP
+#ifndef K_SCENE_HPP
+#define K_SCENE_HPP
 
 #include "Class.hpp"
 #include "nlohmann/json.hpp"
@@ -109,5 +119,5 @@ private:
 	friend class UUIEditor;
 };
 
-#endif // KYRNNESS_SCENE_HPP
+#endif // K_SCENE_HPP
 

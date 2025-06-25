@@ -1,3 +1,13 @@
+/*********************************************************************
+ *   File: Controller.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 #ifndef KYRNNES_CONTROLLER_HPP
 #define	KYRNNES_CONTROLLER_HPP

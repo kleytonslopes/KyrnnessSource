@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: Vector.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_VECTOR_HPP
-#define KYRNNESS_VECTOR_HPP
+#ifndef K_VECTOR_HPP
+#define K_VECTOR_HPP
 
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include "glm/glm.hpp"
@@ -41,11 +51,11 @@ public:
     FVector& operator*=(float scalar) { X *= scalar; Y *= scalar; Z *= scalar; return *this; }
     FVector& operator/=(float scalar) { X /= scalar; Y /= scalar; Z /= scalar; return *this; }
 
-    // Comparação
+    // Comparaï¿½ï¿½o
     bool operator==(const FVector& other) const { return X == other.X && Y == other.Y && Z == other.Z; }
     bool operator!=(const FVector& other) const { return !(*this == other); }
 
-    // Utilitários
+    // Utilitï¿½rios
     float Length() const { return std::sqrt(X * X + Y * Y + Z * Z); }
     float LengthSquared() const { return X * X + Y * Y + Z * Z; }
 
@@ -112,7 +122,7 @@ public:
     FVector2(const glm::vec2& value) : X(value.x), Y(value.y) {}
     FVector2(const physx::PxVec2& value) : X(value.x), Y(value.y) {}
 
-    // Conversões implícitas
+    // Conversï¿½es implï¿½citas
     operator glm::vec2() const { return glm::vec2(X, Y); }
     operator physx::PxVec2() const { return physx::PxVec2(X, Y); }
 
@@ -128,11 +138,11 @@ public:
     FVector2& operator*=(float scalar) { X *= scalar; Y *= scalar; return *this; }
     FVector2& operator/=(float scalar) { X /= scalar; Y /= scalar; return *this; }
 
-    // Comparação
+    // Comparaï¿½ï¿½o
     bool operator==(const FVector2& other) const { return X == other.X && Y == other.Y; }
     bool operator!=(const FVector2& other) const { return !(*this == other); }
 
-    // Utilitários
+    // Utilitï¿½rios
     float Length() const { return std::sqrt(X * X + Y * Y); }
     float LengthSquared() const { return X * X + Y * Y; }
 
@@ -177,10 +187,10 @@ public:
     // Construtores a partir de glm
     FVector4(const glm::vec4& value) : X(value.x), Y(value.y), Z(value.z), W(value.w) {}
 
-    // Operadores de conversão
+    // Operadores de conversï¿½o
     operator glm::vec4() const { return glm::vec4(X, Y, Z, W); }
 
-    // Operadores aritméticos
+    // Operadores aritmï¿½ticos
     FVector4 operator+(const FVector4& other) const { return FVector4(X + other.X, Y + other.Y, Z + other.Z, W + other.W); }
     FVector4 operator-(const FVector4& other) const { return FVector4(X - other.X, Y - other.Y, Z - other.Z, W - other.W); }
     FVector4 operator*(float scalar) const { return FVector4(X * scalar, Y * scalar, Z * scalar, W * scalar); }
@@ -192,11 +202,11 @@ public:
     FVector4& operator*=(float scalar) { X *= scalar; Y *= scalar; Z *= scalar; W *= scalar; return *this; }
     FVector4& operator/=(float scalar) { X /= scalar; Y /= scalar; Z /= scalar; W /= scalar; return *this; }
 
-    // Comparação
+    // Comparaï¿½ï¿½o
     bool operator==(const FVector4& other) const { return X == other.X && Y == other.Y && Z == other.Z && W == other.W; }
     bool operator!=(const FVector4& other) const { return !(*this == other); }
 
-    // Utilitários
+    // Utilitï¿½rios
     float Length() const { return std::sqrt(X * X + Y * Y + Z * Z + W * W); }
     float LengthSquared() const { return X * X + Y * Y + Z * Z + W * W; }
 
@@ -228,27 +238,27 @@ public:
 //    FMatrix() : matrix(1.0f) {} // Matriz identidade
 //    FMatrix(const glm::mat4& mat) : matrix(mat) {}
 //
-//    // Conversão implícita
+//    // Conversï¿½o implï¿½cita
 //    operator glm::mat4() const { return matrix; }
 //
-//    // Operadores aritméticos
+//    // Operadores aritmï¿½ticos
 //    FMatrix operator*(const FMatrix& other) const { return FMatrix(matrix * other.matrix); }
 //
-//    // Multiplicação por vetor
+//    // Multiplicaï¿½ï¿½o por vetor
 //    glm::vec4 operator*(const glm::vec4& vec) const { return matrix * vec; }
 //    glm::vec3 operator*(const glm::vec3& vec) const { return glm::vec3(matrix * glm::vec4(vec, 1.0f)); }
 //
-//    // Comparação
+//    // Comparaï¿½ï¿½o
 //    bool operator==(const FMatrix& other) const { return matrix == other.matrix; }
 //    bool operator!=(const FMatrix& other) const { return matrix != other.matrix; }
 //
-//    // Utilitários
+//    // Utilitï¿½rios
 //    FMatrix Inverse() const { return FMatrix(glm::inverse(matrix)); }
 //    FMatrix Transpose() const { return FMatrix(glm::transpose(matrix)); }
 //
 //    static FMatrix Identity() { return FMatrix(glm::mat4(1.0f)); }
 //
-//    // Transformações comuns
+//    // Transformaï¿½ï¿½es comuns
 //    static FMatrix Translate(const glm::vec3& v) { return FMatrix(glm::translate(glm::mat4(1.0f), v)); }
 //    static FMatrix Rotate(float radians, const glm::vec3& axis) { return FMatrix(glm::rotate(glm::mat4(1.0f), radians, axis)); }
 //    static FMatrix Scale(const glm::vec3& scale) { return FMatrix(glm::scale(glm::mat4(1.0f), scale)); }
@@ -279,4 +289,4 @@ public:
 //    }
 //};
 
-#endif KYRNNESS_VECTOR_HPP
+#endif K_VECTOR_HPP

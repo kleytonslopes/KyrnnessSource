@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: InputManager.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_INPUT_MANAGER_HPP
-#define KYRNNESS_INPUT_MANAGER_HPP
+#ifndef K_INPUT_MANAGER_HPP
+#define K_INPUT_MANAGER_HPP
 
 #include "Input/InputKey.hpp"
 #include <unordered_map>
@@ -64,5 +74,5 @@ private:
 
 };
 
-#endif// KYRNNESS_INPUT_MANAGER_HPP
+#endif// K_INPUT_MANAGER_HPP
 

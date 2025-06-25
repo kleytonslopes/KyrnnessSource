@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: Logger.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_CORE_LOGGER_HPP
-#define KYRNESS_CORE_LOGGER_HPP
+#ifndef K_CORE_LOGGER_HPP
+#define K_CORE_LOGGER_HPP
 
 #include <string>
 #include <iostream>
@@ -116,4 +126,4 @@ struct FException
 	}
 };
 
-#endif// KYRNESS_CORE_LOGGER_HPP
+#endif// K_CORE_LOGGER_HPP

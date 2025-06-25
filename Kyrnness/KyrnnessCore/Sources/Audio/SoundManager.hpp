@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: SoundManager.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_AUDIO_SOUNDMANAGER_HPP
-#define KYRNNESS_AUDIO_SOUNDMANAGER_HPP
+#ifndef K_AUDIO_SOUNDMANAGER_HPP
+#define K_AUDIO_SOUNDMANAGER_HPP
 
 #include <fmod.hpp>
 #include <string>
@@ -72,5 +82,5 @@ private:
     bool bIsInitialzied = false;
 };
 
-#endif // KYRNNESS_AUDIO_SOUNDMANAGER_HPP
+#endif // K_AUDIO_SOUNDMANAGER_HPP
 

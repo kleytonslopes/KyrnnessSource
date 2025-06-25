@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: PhysicsDebug.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_PHYSICS_DEBUG_HPP
-#define KYRNNESS_PHYSICS_DEBUG_HPP
+#ifndef K_PHYSICS_DEBUG_HPP
+#define K_PHYSICS_DEBUG_HPP
 
 #include "Core/Core.hpp"
 
@@ -23,4 +33,4 @@ public:
 
 };
 
-#endif // KYRNNESS_PHYSICS_DEBUG_HPP
+#endif // K_PHYSICS_DEBUG_HPP

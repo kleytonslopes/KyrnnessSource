@@ -1,7 +1,17 @@
+/*********************************************************************
+ *   File: MinimalComponents.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
-#ifndef	KYRNNESS_MINIMAL_COMPONENTS_HPP
-#define KYRNNESS_MINIMAL_COMPONENTS_HPP
+#ifndef	K_MINIMAL_COMPONENTS_HPP
+#define K_MINIMAL_COMPONENTS_HPP
 
 #include <unordered_map>
 #include "Components/CameraComponent.hpp"
@@ -18,4 +28,4 @@
 #include "Components/TerrainComponent.hpp"
 #include "Components/AudioSourceComponent.hpp"
 
-#endif // KYRNNESS_MINIMAL_COMPONENTS_HPP
+#endif // K_MINIMAL_COMPONENTS_HPP

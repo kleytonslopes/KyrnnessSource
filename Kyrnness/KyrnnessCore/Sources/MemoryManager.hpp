@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: MemoryManager.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_MEMORY_MEMORYMANAGER_HPP
-#define KYRNESS_MEMORY_MEMORYMANAGER_HPP
+#ifndef K_MEMORY_MEMORYMANAGER_HPP
+#define K_MEMORY_MEMORYMANAGER_HPP
 
 #include <unordered_map>
 #include <functional>
@@ -192,4 +202,4 @@ private:
 	}
 };
 
-#endif // KYRNESS_MEMORY_MEMORYMANAGER_HPP
+#endif // K_MEMORY_MEMORYMANAGER_HPP

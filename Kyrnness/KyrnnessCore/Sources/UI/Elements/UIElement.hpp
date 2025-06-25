@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: UIElement.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_UI_UIELEMENT_HPP
-#define KYRNESS_UI_UIELEMENT_HPP
+#ifndef K_UI_UIELEMENT_HPP
+#define K_UI_UIELEMENT_HPP
 
 #include "Class.hpp"
 
@@ -207,4 +217,4 @@ protected:
 	virtual void OnUpdateMouseFocus(double mouseX, double mouseY);
 };
 
-#endif// KYRNESS_UI_UIELEMENT_HPP
+#endif// K_UI_UIELEMENT_HPP

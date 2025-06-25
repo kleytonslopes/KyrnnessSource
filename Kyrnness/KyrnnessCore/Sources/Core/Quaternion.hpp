@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: Quaternion.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_QUATERNION_HPP
-#define KYRNNESS_QUATERNION_HPP
+#ifndef K_QUATERNION_HPP
+#define K_QUATERNION_HPP
 
 #include "Core/Vector.hpp"
 #include "Core/Math.hpp"
@@ -45,12 +55,12 @@ public:
 		return glm::quat(W, X, Y, Z);
 	}
 
-	// Conversão implícita para PxQuat
+	// Conversï¿½o implï¿½cita para PxQuat
 	operator physx::PxQuat() const
 	{
 		return physx::PxQuat(X, Y, Z, W);
 	}
-	// Atribuição de PxQuat
+	// Atribuiï¿½ï¿½o de PxQuat
 	FQuaternion& operator=(const physx::PxQuat& quat)
 	{
 		X = quat.x;
@@ -60,7 +70,7 @@ public:
 		return *this;
 	}
 
-	// Multiplicação de quaternions (rotação composta)
+	// Multiplicaï¿½ï¿½o de quaternions (rotaï¿½ï¿½o composta)
 	FQuaternion operator*(const FQuaternion& q) const
 	{
 		return FQuaternion(
@@ -110,4 +120,4 @@ public:
 	}
 };
 
-#endif // KYRNNESS_QUATERNION_HPP
+#endif // K_QUATERNION_HPP

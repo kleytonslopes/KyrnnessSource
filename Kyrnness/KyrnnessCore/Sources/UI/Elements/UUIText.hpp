@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: UUIText.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_UUITEXT_HPP
-#define KYRNESS_UUITEXT_HPP
+#ifndef K_UUITEXT_HPP
+#define K_UUITEXT_HPP
 
 #include "UI/Elements/UIElement.hpp"
 #include "UI/UIFont.hpp"
@@ -59,4 +69,4 @@ private:
     int VertexCount = 0;
 };
 
-#endif// KYRNESS_UUIBORDER_HPP
+#endif// K_UUIBORDER_HPP

@@ -1,7 +1,17 @@
+/*********************************************************************
+ *   File: Guid.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
-#ifndef KYRNNESS_GUID_HPP
-#define KYRNNESS_GUID_HPP
+#ifndef K_GUID_HPP
+#define K_GUID_HPP
 
 #include <string>
 #include <random>
@@ -59,4 +69,4 @@ public:
     };
 };
 
-#endif // !KYRNNESS_GUID_HPP
+#endif // !K_GUID_HPP

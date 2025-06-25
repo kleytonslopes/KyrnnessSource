@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: UIFont.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_UI_UIFONT_HPP
-#define KYRNESS_UI_UIFONT_HPP
+#ifndef K_UI_UIFONT_HPP
+#define K_UI_UIFONT_HPP
 
 #include "Core/Core.hpp"
 #include <ft2build.h>
@@ -32,4 +42,4 @@ private:
     int m_AtlasHeight = 0;
 };
 
-#endif// KYRNESS_UI_UIFONT_HPP
+#endif// K_UI_UIFONT_HPP

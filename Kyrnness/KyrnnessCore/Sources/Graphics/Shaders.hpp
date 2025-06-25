@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: Shaders.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_SHADERS_HPP
-#define KYRNNESS_SHADERS_HPP
+#ifndef K_SHADERS_HPP
+#define K_SHADERS_HPP
 
 #include <string>
 #include <unordered_map>
@@ -37,4 +47,4 @@ private:
 	static void CompileShaders();
 };
 
-#endif // KYRNNESS_SHADERS_HPP
+#endif // K_SHADERS_HPP

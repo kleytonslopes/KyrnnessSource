@@ -1,7 +1,17 @@
+/*********************************************************************
+ *   File: MeshRenderer_OpenGLComponent.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
-#ifndef KYRNNESS_MESH_RENDERER_OPENGL_COMPONENT_HPP
-#define KYRNNESS_MESH_RENDERER_OPENGL_COMPONENT_HPP
+#ifndef K_MESH_RENDERER_OPENGL_COMPONENT_HPP
+#define K_MESH_RENDERER_OPENGL_COMPONENT_HPP
 
 #include "Components/Component.hpp"
 //#include "Core/Vertex.hpp"
@@ -52,4 +62,4 @@ private:
 	void CreateTexture();
 };
 
-#endif// KYRNNESS_MESH_RENDERER_OPENGL_COMPONENT_HPP
+#endif// K_MESH_RENDERER_OPENGL_COMPONENT_HPP

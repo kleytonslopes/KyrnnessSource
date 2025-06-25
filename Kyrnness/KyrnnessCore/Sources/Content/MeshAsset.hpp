@@ -1,5 +1,15 @@
+/*********************************************************************
+ *   File: MeshAsset.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_MESH_ASSET_HPP
+#ifndef K_MESH_ASSET_HPP
 #define KYRNNES_MESH_ASSET_HPP
 
 #include "Core/Core.hpp"
@@ -24,4 +34,4 @@ struct FMeshAsset
 	std::vector<tinygltf::Image> images;
 };
 
-#endif // KYRNNESS_MESH_ASSET_HPP
+#endif // K_MESH_ASSET_HPP

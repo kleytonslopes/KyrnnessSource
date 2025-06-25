@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: ShaderOpenGLComponent.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_SHADER_OPENGL_HPP
-#define KYRNNESS_SHADER_OPENGL_HPP
+#ifndef K_SHADER_OPENGL_HPP
+#define K_SHADER_OPENGL_HPP
 
 #include "Components/Component.hpp"
 
@@ -58,4 +68,4 @@ private:
 	void CheckCompileErrors(uint32_t shader, const std::string& type);
 };
 
-#endif // !KYRNNESS_SHADER_OPENGL_HPP
+#endif // !K_SHADER_OPENGL_HPP

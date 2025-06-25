@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: PlayerComponent.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_PLAYER_COMPONENT_HPP
-#define KYRNNESS_PLAYER_COMPONENT_HPP
+#ifndef K_PLAYER_COMPONENT_HPP
+#define K_PLAYER_COMPONENT_HPP
 
 #include "Components/Component.hpp"
 
@@ -56,4 +66,4 @@ protected:
 	void Move(FVector Direction, float Scale);
 };
 
-#endif// KYRNNESS_PLAYER_COMPONENT_HPP
+#endif// K_PLAYER_COMPONENT_HPP

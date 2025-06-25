@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: Matrix.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNNESS_MATRIX_HPP
-#define KYRNNESS_MATRIX_HPP
+#ifndef K_MATRIX_HPP
+#define K_MATRIX_HPP
 
 #include "Core/Vector.hpp"
 
@@ -14,11 +24,11 @@ public:
     FMatrix(float diagonal) : Value(glm::mat4(diagonal)) {}
     FMatrix(const glm::mat4& mat) : Value(mat) {}
 
-    // Operadores de conversão
+    // Operadores de conversï¿½o
     operator glm::mat4() const { return Value; }
     static FMatrix FromGLM(const glm::mat4& mat) { return FMatrix(mat); }
 
-    // Operadores aritméticos
+    // Operadores aritmï¿½ticos
     FMatrix operator*(const FMatrix& other) const
     {
         return FMatrix(Value * other.Value);
@@ -36,11 +46,11 @@ public:
         return FVector4(result.x, result.y, result.z, result.w);
     }
 
-    // Comparação
+    // Comparaï¿½ï¿½o
     bool operator==(const FMatrix& other) const { return Value == other.Value; }
     bool operator!=(const FMatrix& other) const { return !(*this == other); }
 
-    // Transformações
+    // Transformaï¿½ï¿½es
     static FMatrix Identity() { return FMatrix(1.0f); }
 
     static FMatrix Translate(const FVector& v)
@@ -105,7 +115,7 @@ public:
 //                M[row][col] = mat[col][row]; // glm::mat4 usa column-major
 //    }
 //
-//    // Operadores aritméticos
+//    // Operadores aritmï¿½ticos
 //    FMatrix operator*(const FMatrix& other) const
 //    {
 //        FMatrix result(0.0f);
@@ -117,7 +127,7 @@ public:
 //    }
 //
 //
-//    // Multiplicação por vetor
+//    // Multiplicaï¿½ï¿½o por vetor
 //    FVector4 operator*(const FVector4& vec) const
 //    {
 //        float x = M[0][0] * vec.X + M[0][1] * vec.Y + M[0][2] * vec.Z + M[0][3] * vec.W;
@@ -133,7 +143,7 @@ public:
 //        return FVector(temp.X, temp.Y, temp.Z);
 //    }
 //
-//    // Comparação
+//    // Comparaï¿½ï¿½o
 //    bool operator==(const FMatrix& other) const
 //    {
 //        for (int i = 0; i < 4; ++i)
@@ -149,14 +159,14 @@ public:
 //        glm::mat4 result(1.0f);
 //        for (int row = 0; row < 4; ++row)
 //            for (int col = 0; col < 4; ++col)
-//                result[col][row] = M[row][col]; // glm é column-major
+//                result[col][row] = M[row][col]; // glm ï¿½ column-major
 //        return result;
 //    }
 //
-//    // Utilitários
+//    // Utilitï¿½rios
 //    static FMatrix Identity() { return FMatrix(1.0f); }
 //
-//    // Transformações
+//    // Transformaï¿½ï¿½es
 //    static FMatrix Translate(const FVector& v)
 //    {
 //        FMatrix result = Identity();
@@ -260,7 +270,7 @@ public:
 //        result.M[2][1] = -f.Y;
 //        result.M[2][2] = -f.Z;
 //
-//        // Quarta coluna: posição (translação)
+//        // Quarta coluna: posiï¿½ï¿½o (translaï¿½ï¿½o)
 //        result.M[3][0] = -FVector::Dot(s, eye);
 //        result.M[3][1] = -FVector::Dot(u, eye);
 //        result.M[3][2] = FVector::Dot(f, eye);
@@ -299,4 +309,4 @@ public:
 //    }
 //};
 
-#endif // KYRNNESS_MATRIX_HPP
+#endif // K_MATRIX_HPP

@@ -1,7 +1,17 @@
+/*********************************************************************
+ *   File: TransformComponent.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
 
-#ifndef KYRNESS_TRANSFORM_HPP
-#define KYRNESS_TRANSFORM_HPP
+#ifndef K_TRANSFORM_HPP
+#define K_TRANSFORM_HPP
 
 #include "Components/Component.hpp"
 #include "glm/glm.hpp"
@@ -20,4 +30,4 @@ public:
 	virtual nlohmann::json GetJsonData() override;
 };
 
-#endif // KYRNESS_TRANSFORM_HPP
+#endif // K_TRANSFORM_HPP

@@ -1,6 +1,16 @@
+/*********************************************************************
+ *   File: UIButton.hpp
+ *  Brief:
+ *
+ * Author: Kleyton Lopes
+ *   Date: junho 2025
+ *
+ * Copyright (c) 2025 Kyrnness. All rights reserved.
+ *********************************************************************/
+
 #pragma once
-#ifndef KYRNESS_UI_UIBUTTON_HPP
-#define KYRNESS_UI_UIBUTTON_HPP
+#ifndef K_UI_UIBUTTON_HPP
+#define K_UI_UIBUTTON_HPP
 
 #include "UI/Elements/UIElement.hpp"
 #include "UI/UIFont.hpp"
@@ -34,4 +44,4 @@ private:
     unsigned int m_TextureDisabled = 0;
 };
 
-#endif// KYRNESS_UI_UIBUTTON_HPP
+#endif// K_UI_UIBUTTON_HPP
