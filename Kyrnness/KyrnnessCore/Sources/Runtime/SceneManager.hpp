@@ -15,6 +15,13 @@
 #include "Class.hpp"
 #include "GameFramework/Scene.hpp"
 
+enum class ESceneState
+{
+    Idle,
+    Transitioning,
+    Finalizing
+};
+
 class USceneManager : public UClass
 {
     using Super = UClass;
@@ -35,14 +42,22 @@ public:
 protected:
     void OnDestroy() override;
 
-private:
-    void UnloadCurrentScene(bool clearUI, bool clearAudio, bool clearLua);
-    void LoadSceneFromPath(const std::string& scenePath);
+    void BeginSceneTransition(UScene* nextScene);
+    void FinalizeSceneTransition();
 
 private:
     UApplication* m_Application = nullptr;
+    
+    ESceneState m_State = ESceneState::Idle;
+
+    UScene* m_PreviousScene = nullptr;
     UScene* m_CurrentScene = nullptr;
+    UScene* m_TransientScene = nullptr;
+    UScene* m_NextScene = nullptr;
     std::string m_CurrentScenePath;
+
+    void UnloadCurrentScene(bool clearUI, bool clearAudio, bool clearLua);
+    void LoadSceneFromPath(const std::string& scenePath);
 };
 
 #endif //K_SCENE_MANAGER_HPP

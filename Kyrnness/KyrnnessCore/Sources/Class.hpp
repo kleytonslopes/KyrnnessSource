@@ -35,6 +35,8 @@ public:
 	virtual void Update(float DeltaTime);
 	virtual void Destroy();
 
+	bool IsInitialized() const;
+
 protected:
 	bool bCanUpdate = true;
 	EClassState m_State = EClassState::CS_None;

@@ -14,6 +14,7 @@
 
 void UClass::Initialize()
 {
+	FLogger::Information("Initializing '%s'...", typeid(*this).name());
 	using enum EClassState;
 
 	if (m_State == EClassState::CS_Initializing || m_State == EClassState::CS_Initialized)
@@ -41,11 +42,12 @@ void UClass::Initialize()
 
 void UClass::PreInitialize()
 {
-
+	FLogger::Information("PreInitializing '%s'...", typeid(*this).name());
 }
 
 void UClass::PostInitialize()
 {
+	FLogger::Information("PostInitializing '%s'...", typeid(*this).name());
 	using enum EClassState;
 
 	if (m_State == EClassState::CS_Destroying || m_State == EClassState::CS_Destroyed)
@@ -85,25 +87,32 @@ void UClass::Update(float DeltaTime)
 
 void UClass::Destroy()
 {
+	FLogger::Warning("Destroying %s Object...", typeid(*this).name());
+
 	if (m_State == EClassState::CS_Destroying || m_State == EClassState::CS_Destroyed)
 	{
 		FLogger::Error("Attempt to destroy '%s' that is already being destroyed!", typeid(*this).name());
 		return;
 	}
 
-	FLogger::Warning("Destroying %s Object...", typeid(*this).name());
-
 	m_State = EClassState::CS_Destroying;
 
 	OnDestroy();
 }
 
+bool UClass::IsInitialized() const
+{
+	return m_State == EClassState::CS_Initialized;
+}
+
 void UClass::OnInitialize()
 {
+	FLogger::Information("OnInitialize %s Object!", typeid(*this).name());
 }
 
 void UClass::OnPostInitialize()
 {
+	FLogger::Information("OnPostInitialize %s Object!", typeid(*this).name());
 }
 
 void UClass::OnUpdate(float DeltaTime)

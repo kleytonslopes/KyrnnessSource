@@ -50,6 +50,7 @@ void USceneManager::OnUpdate(float deltaTime)
 
 void USceneManager::SwitchScene(const std::string& scenePath, bool clearUI, bool clearAudio, bool clearLua)
 {
+
     UnloadCurrentScene(clearUI, clearAudio, clearLua);
     LoadSceneFromPath(scenePath);
 }
@@ -60,6 +61,33 @@ void USceneManager::OnDestroy()
         m_CurrentScene->Destroy();
 
     Super::OnDestroy();
+}
+
+void USceneManager::BeginSceneTransition(UScene* nextScene)
+{
+    m_PreviousScene = m_CurrentScene;
+    m_CurrentScene = m_TransientScene;
+    m_TransientScene = nullptr;
+
+    if (m_PreviousScene)
+        FMemoryManager::SetPendingDestroy(m_PreviousScene);
+
+    m_NextScene = nextScene;
+    m_State = ESceneState::Transitioning;
+}
+
+void USceneManager::FinalizeSceneTransition()
+{
+    if (m_State != ESceneState::Transitioning || !m_NextScene)
+        return;
+
+    if (!m_NextScene->IsInitialized())
+        return;
+
+    m_CurrentScene = m_NextScene;
+    m_NextScene = nullptr;
+
+    m_State = ESceneState::Idle;
 }
 
 void USceneManager::UnloadCurrentScene(bool clearUI, bool clearAudio, bool clearLua)
