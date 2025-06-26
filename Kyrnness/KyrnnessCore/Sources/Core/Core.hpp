@@ -32,6 +32,7 @@
 #include "Core/Quaternion.hpp"
 #include "Core/Matrix.hpp"
 #include "Core/Logger.hpp"
+#include "MemoryManager.hpp"
 
 #define ThrowRuntimeError(A) FException::RuntimeError(A)
 #define ThrowInvalidArgument(A) FException::InvalidArgument(A)

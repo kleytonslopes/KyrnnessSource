@@ -27,6 +27,7 @@
 #include "Runtime/SceneManager.hpp"
 #include "Scripting/LuaManager.hpp"
 
+
 enum EGraphicsApi
 {
 	GA_OpenGL = 0,
@@ -65,20 +66,20 @@ public:
 	template<typename T>
 	inline T* GetWindow() const noexcept
 	{
-		return static_cast<T*>(m_Window.get());
+		return static_cast<T*>(m_Window);
 	}
 	inline UWindow* GetWindow() const noexcept
 	{
-		return m_Window.get();
+		return m_Window;
 	}
 	template<typename T>
 	inline T* GetGraphicsApi() const noexcept
 	{
-		return static_cast<T*>(m_GraphicsApi.get());
+		return static_cast<T*>(m_GraphicsApi);
 	}
 	inline UGraphicsApi* GetGraphicsApi() const noexcept
 	{
-		return m_GraphicsApi.get();
+		return m_GraphicsApi;
 	}
 	template<typename T>
 	inline T* GetHUD() const noexcept
@@ -87,26 +88,26 @@ public:
 	}
 	inline UHUD* GetHUD() const noexcept
 	{
-		return m_HUD.get();
+		return m_HUD;
 	}
 
-	void SetupHUDFactory(TFunction<std::unique_ptr<UHUD>(UApplication*)> Factory);
+	void SetupHUDFactory(TFunction<UHUD*(UApplication*)> Factory);
 
 	template<typename THUD>
 	void SetHUDClass()
 	{
 		SetupHUDFactory([](UApplication* App)
 			{
-				return std::make_unique<THUD>(App);
+				return FMemoryManager::Allocate<THUD>(App);
 			});
 	}
 
-	UScene* GetScene() const { return m_SceneManager.get()->GetCurrentScene(); }
-	UController* GetController() const { return m_Controller.get(); }
-	UPhysicsSystem* GetPhysicsSystem() const { return m_PhysicsSystem.get(); }
-	USoundManager* GetSoundManager() { return m_SoundManager.get(); }
-	UUIManager* GetUIManager() const { return m_UIManager.get(); }
-	USceneManager* GetSceneManager() { return m_SceneManager.get(); }
+	UScene* GetScene() const { return m_SceneManager->GetCurrentScene(); }
+	UController* GetController() const { return m_Controller; }
+	UPhysicsSystem* GetPhysicsSystem() const { return m_PhysicsSystem; }
+	USoundManager* GetSoundManager() { return m_SoundManager; }
+	UUIManager* GetUIManager() const { return m_UIManager; }
+	USceneManager* GetSceneManager() { return m_SceneManager; }
 
 	float GetDeltaTime() const { return m_DeltaTime; }
 
@@ -136,8 +137,6 @@ public:
 	FSolState& GetLuaState() { return m_LuaManager->GetLuaState(); }
 	ULuaManager& GetLuaManager() { return *m_LuaManager; }
 
-	//void CallLuaFunction(const std::string& functionName);
-
 	void QuitGame();
 protected:
 	void LoadConfiguration();
@@ -151,18 +150,17 @@ protected:
 	void GameLoop();
 
 private:
-	std::unique_ptr<UWindow> m_Window;
-	std::unique_ptr<UGraphicsApi> m_GraphicsApi;
-	///std::unique_ptr<UScene> m_Scene;
-	std::unique_ptr<UController> m_Controller;
-	std::unique_ptr<UPhysicsSystem> m_PhysicsSystem;
-	std::unique_ptr<UHUD> m_HUD;
-	std::unique_ptr<USoundManager> m_SoundManager;
-	std::unique_ptr<UUIManager> m_UIManager;
-	std::unique_ptr<ULuaManager> m_LuaManager;
-	std::unique_ptr<USceneManager> m_SceneManager;
+	UWindow* m_Window = nullptr;
+	UGraphicsApi* m_GraphicsApi;
+	UController* m_Controller;
+	UPhysicsSystem* m_PhysicsSystem;
+	UHUD* m_HUD;
+	USoundManager* m_SoundManager;
+	UUIManager* m_UIManager;
+	ULuaManager* m_LuaManager;
+	USceneManager* m_SceneManager;
 
-	TFunction<std::unique_ptr<UHUD>(UApplication*)> m_HUDFactory;
+	TFunction<UHUD*(UApplication*)> m_HUDFactory;
 
 	float m_DeltaTime = 0.0f;
 

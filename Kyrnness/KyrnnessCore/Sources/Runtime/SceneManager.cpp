@@ -24,7 +24,7 @@ USceneManager::USceneManager(UApplication* app)
 
 USceneManager::~USceneManager()
 {
-    UnloadCurrentScene(true, true, true);
+  
 }
 
 void USceneManager::Initialize()
@@ -52,6 +52,14 @@ void USceneManager::SwitchScene(const std::string& scenePath, bool clearUI, bool
 {
     UnloadCurrentScene(clearUI, clearAudio, clearLua);
     LoadSceneFromPath(scenePath);
+}
+
+void USceneManager::OnDestroy()
+{
+    if (m_CurrentScene)
+        m_CurrentScene->Destroy();
+
+    Super::OnDestroy();
 }
 
 void USceneManager::UnloadCurrentScene(bool clearUI, bool clearAudio, bool clearLua)

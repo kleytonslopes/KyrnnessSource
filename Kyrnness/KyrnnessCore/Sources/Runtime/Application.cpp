@@ -45,7 +45,7 @@ UApplication::~UApplication()
 void UApplication::Run()
 {
 	FLogger::Log("Initializing Application...");
-	
+
 	Initialize();
 
 	GameLoop();
@@ -63,32 +63,32 @@ void UApplication::PreInitialize()
 	UComponentBuilder::RegisterEngineComponents(comp);
 
 	//Initialize Lua Integration
-	m_LuaManager = std::make_unique<ULuaManager>();
-	
+	m_LuaManager = FMemoryManager::Allocate<ULuaManager>();
+
 	//Create Window
 	switch (m_GameConfig.m_WindowType)
 	{
 	case EWindowType::WT_GLFW:
-		m_Window = std::make_unique<UWindowGLFW>(this);
+		m_Window = FMemoryManager::Allocate<UWindowGLFW>(this);//std::make_unique<UWindowGLFW>(this);
 		break;
 	case EWindowType::WT_SDL:
-		m_Window = std::make_unique<UWindowSDL>(this);
+		m_Window = FMemoryManager::Allocate<UWindowSDL>(this);//std::make_unique<UWindowSDL>(this);
 		break;
 	default:
-		m_Window = std::make_unique<UWindowSDL>(this);
+		m_Window = FMemoryManager::Allocate<UWindowSDL>(this);//std::make_unique<UWindowSDL>(this);
 		break;
 	}
 
 	InitializeWindow();
 
 	//Create Sound Manager
-	m_SoundManager = std::make_unique<USoundManager>();
+	m_SoundManager = FMemoryManager::Allocate<USoundManager>();
 
 	//Create Graphics API
 	switch (m_GameConfig.m_Renderer)
 	{
 	case EGraphicsApi::GA_OpenGL:
-		m_GraphicsApi = std::make_unique<UGraphicsApi_OpenGL>(this);
+		m_GraphicsApi = FMemoryManager::Allocate<UGraphicsApi_OpenGL>(this);
 		break;
 	case EGraphicsApi::GA_Vulkan:
 		break;
@@ -104,17 +104,17 @@ void UApplication::PreInitialize()
 	UShaders::Register(FShaderAsset(SHADER_UI_DEBUG, "Assets/Shaders/OpenGL/debug_ui_vert.glsl", "Assets/Shaders/OpenGL/debug_ui_frag.glsl"));
 
 	//Create Controller
-	m_Controller = std::make_unique<UController>(this);
+	m_Controller = FMemoryManager::Allocate<UController>(this);
 
 	//Create Physics System
-	m_PhysicsSystem = std::make_unique<UPhysicsSystem>(this);
+	m_PhysicsSystem = FMemoryManager::Allocate<UPhysicsSystem>(this);
 
 	////Create Scene
 	//m_Scene = std::make_unique<UScene>(this);
-	m_SceneManager = std::make_unique<USceneManager>(this);
+	m_SceneManager = FMemoryManager::Allocate<USceneManager>(this);
 
 	//Create UI Manager
-	m_UIManager = std::make_unique<UUIManager>(this);
+	m_UIManager = FMemoryManager::Allocate<UUIManager>(this);
 
 	//Create HUD
 	if (m_HUDFactory)
@@ -200,13 +200,10 @@ void UApplication::OnUpdate(float DeltaTime)
 void UApplication::OnDestroy()
 {
 	m_SceneManager->Destroy();
+
 	m_SoundManager->Shutdown();
 
-	FMemoryManager::Get().Cleanup();
-
 	m_Window->Destroy();
-
-	FLogger::Warning("UApplication::Destroy");
 
 	Super::OnDestroy();
 }
@@ -216,9 +213,9 @@ void UApplication::OnResolutionUpdated(int newWidth, int newHeght)
 	OnResolutionUpdatedEvent.Broadcast(newWidth, newHeght);
 }
 
-void UApplication::SetupHUDFactory(TFunction<std::unique_ptr<UHUD>(UApplication*)> Factory)
+void UApplication::SetupHUDFactory(TFunction<UHUD*(UApplication*)> Factory)
 {
-	m_HUDFactory = std::move(Factory);
+	m_HUDFactory = Factory;
 }
 
 EGraphicsApi UApplication::GetGraphicsApiType() const
@@ -330,14 +327,9 @@ void UApplication::InitializeWindow()
 	}*/
 
 	if (!m_Window)
-	{
 		ThrowRuntimeError("Window not Created!");
-	}
 
-	if (m_Window.get())
-	{
-		m_Window->Initialize();
-	}
+	m_Window->Initialize();
 }
 
 void UApplication::InitializeController()
@@ -399,7 +391,7 @@ void UApplication::InitializeGraphicsApi()
 		ThrowRuntimeError("GraphicAPI not Created!");
 	}
 
-	if (m_GraphicsApi.get())
+	if (m_GraphicsApi)
 	{
 		m_GraphicsApi->Initialize();
 	}

@@ -10,6 +10,7 @@
 
 #include "CorePCH.hpp"
 #include "Class.hpp"
+#include <typeinfo>
 
 void UClass::Initialize()
 {
@@ -17,13 +18,13 @@ void UClass::Initialize()
 
 	if (m_State == EClassState::CS_Initializing || m_State == EClassState::CS_Initialized)
 	{
-		FLogger::Error("The Object is already being Initialized or has already been initialized");
+		FLogger::Error("The '%s' already being Initialized or has already been initialized", typeid(*this).name());
 		return;
 	}
 
 	if (m_State == EClassState::CS_Destroying || m_State == EClassState::CS_Destroyed)
 	{
-		FLogger::Error("Attempt to Initialize an Object that is or has been destroyed!");
+		FLogger::Error("Attempt to Initialize '%s' that is or has been destroyed!", typeid(*this).name());
 		return;
 	}
 
@@ -49,12 +50,12 @@ void UClass::PostInitialize()
 
 	if (m_State == EClassState::CS_Destroying || m_State == EClassState::CS_Destroyed)
 	{
-		FLogger::Error("Attempt to process Initialization of an Object that is or has been destroyed!");
+		FLogger::Error("Attempt to process Initialization of '%s' that is or has been destroyed!", typeid(*this).name());
 	}
 
 	if (m_State != EClassState::CS_Initializing)
 	{
-		FLogger::Error("Attempting to process Initialization of an Object that is not being Initialized!");
+		FLogger::Error("Attempting to process Initialization of '%s' that is not being Initialized!", typeid(*this).name());
 	}
 
 	OnPostInitialize();
@@ -86,19 +87,15 @@ void UClass::Destroy()
 {
 	if (m_State == EClassState::CS_Destroying || m_State == EClassState::CS_Destroyed)
 	{
-		FLogger::Error("Attempt to destroy an object that is already being destroyed!");
+		FLogger::Error("Attempt to destroy '%s' that is already being destroyed!", typeid(*this).name());
 		return;
 	}
 
-	FLogger::Warning("Destroying Object...");
+	FLogger::Warning("Destroying %s Object...", typeid(*this).name());
 
 	m_State = EClassState::CS_Destroying;
 
 	OnDestroy();
-	
-	m_State = EClassState::CS_Destroyed;
-
-	FMemoryManager::SetPendingDestroy(this);
 }
 
 void UClass::OnInitialize()
@@ -115,5 +112,7 @@ void UClass::OnUpdate(float DeltaTime)
 
 void UClass::OnDestroy()
 {
-
+	FMemoryManager::SetPendingDestroy(this);
+	FLogger::Warning("%s Destroyed!", typeid(*this).name());
+	m_State = EClassState::CS_Destroyed;
 }
