@@ -4,9 +4,9 @@
   "Anchor": "Center",
   "Width": 2560,
   "Height": 1080,
-  "Texture": "Assets/Textures/UI/tex_bg_mainmenu.png",
   "Enabled": true,
   "Visible": true,
+  "Texture": "Assets/Textures/UI/tex_ui_menu_panel_bg.png",
   "Children": [
     {
       "Type": "UUIBorder",

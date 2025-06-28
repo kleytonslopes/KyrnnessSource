@@ -123,9 +123,12 @@
                     "Type": "UCapsuleComponent",
                     "Update": true
                 },
-                {
-                    "Type": "FMyPlayerComponent"
-                }
+              {
+                "Type": "FMyPlayerComponent"
+              },
+              {
+                "Type": "UPlayerComponent"
+              }
             ],
             "Id": "",
             "IsSelectable": false,

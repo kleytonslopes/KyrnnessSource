@@ -1,5 +1,5 @@
 include_dir = {}
-include_dir["KyrnnessCore"]        = "%{wks.location}/Kyrnness/KyrnnessCore/include"
+include_dir["KyrnnessCore"]        = "%{wks.location}/Kyrnness/KyrnnessCore/Sources"
 include_dir["KyrnnessSteamModule"] = "%{wks.location}/Kyrnness/KyrnnessSteamModule/include"
 include_dir["KyrnnessPacker"]       = "%{wks.location}/Kyrnness/KyrnnessPacker/include"
 

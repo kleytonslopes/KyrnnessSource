@@ -1,0 +1,8 @@
+[
+    {
+        "Name": "UClass",
+        "Path": "Sources/Core",
+        "Include": "Core/Class.hpp",
+        "Files": ["Class.hpp", "Class.cpp"]
+    }
+]
