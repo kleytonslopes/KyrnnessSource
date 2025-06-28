@@ -18,7 +18,7 @@ class UShaderOpenGLComponent : public UComponent
 {
 	using Super = UComponent;
 public:
-	UShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile);
+	UShaderOpenGLComponent(/*const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile*/);
 	virtual ~UShaderOpenGLComponent() = default;
 
 	UShaderOpenGLComponent(const UShaderOpenGLComponent&) = delete;
@@ -26,7 +26,10 @@ public:
 	UShaderOpenGLComponent(UShaderOpenGLComponent&&) = delete;
 	UShaderOpenGLComponent& operator=(UShaderOpenGLComponent&&) = delete;
 
-	
+	void SetShaderName(const std::string& shaderName);
+	void SetVertShaderFile(const std::string& filePath);
+	void SetFragShaderFile(const std::string& filePath);
+
 	virtual void Bind();
 	virtual void Unbind();
 

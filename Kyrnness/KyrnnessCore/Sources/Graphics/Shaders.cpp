@@ -36,12 +36,11 @@ void UShaders::CompileShaders()
         FShaderAsset& shaderAsset = shaderPair.second;
 
         // Create an OpenGL shader component for compilation
-        UShaderOpenGLComponent* shaderComponent = FMemoryManager::Allocate<UShaderOpenGLComponent>(
-            shaderName,
-            shaderAsset.VertexShaderPath.c_str(),
-            shaderAsset.FragmentShaderPath.c_str()
-        );
-
+        UShaderOpenGLComponent* shaderComponent = FMemoryManager::Allocate<UShaderOpenGLComponent>();
+        shaderComponent->SetShaderName(shaderName);
+        shaderComponent->SetVertShaderFile(shaderAsset.VertexShaderPath);
+        shaderComponent->SetFragShaderFile(shaderAsset.FragmentShaderPath);
+           
         // Initialize and compile the shader
         shaderComponent->Initialize();
         shaderComponent->Bind();

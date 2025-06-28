@@ -44,6 +44,7 @@ void UComponentBuilder::RegisterEngineComponents(const TComponentBuilder& compon
 	g_ComponentBuilders["UBoxCollisionComponent"] = RegisterBoxCollisionComponent(componentBuilderParameters);
 	g_ComponentBuilders["UTerrainComponent"] = RegisterTerrainComponent(componentBuilderParameters);
 	g_ComponentBuilders["UAudioSourceComponent"] = RegisterAudioSourceComponent(componentBuilderParameters);
+	g_ComponentBuilders["UMainCamera"] = RegisterMainCameraComponent(componentBuilderParameters);
 }
 
 ComponentBuilder UComponentBuilder::RegisterIdentityComponent(const TComponentBuilder& componentBuilderParameters)
@@ -61,7 +62,7 @@ ComponentBuilder UComponentBuilder::RegisterIdentityComponent(const TComponentBu
 				if (data.contains("Id")) comp.SetId(data["Id"]);
 				if (data.contains("ObjectName")) comp.SetName(data["ObjectName"]);
 
-				sceneObject->m_Components["UIdentityComponent"] = &comp;
+				//sceneObject->m_Components["UIdentityComponent"] = &comp;
 			}
 		};
 }
@@ -83,7 +84,7 @@ ComponentBuilder UComponentBuilder::RegisterTransformComponent(const TComponentB
 				if (data.contains("UpVector"))comp.UpVector = { data["UpVector"][0], data["UpVector"][1], data["UpVector"][2] };
 				if (data.contains("ForwardVector"))comp.ForwardVector = { data["ForwardVector"][0], data["ForwardVector"][1], data["ForwardVector"][2] };
 
-				sceneObject->m_Components["UTransformComponent"] = &comp;
+				//sceneObject->m_Components["UTransformComponent"] = &comp;
 			}
 		};
 }
@@ -106,7 +107,7 @@ ComponentBuilder UComponentBuilder::RegisterCameraComponent(const TComponentBuil
 				comp.SetApplication(componentBuilderParameters.application);
 				comp.Initialize();
 
-				sceneObject->m_Components["UCameraComponent"] = &comp;
+				//sceneObject->m_Components["UCameraComponent"] = &comp;
 			}
 		};
 }
@@ -118,18 +119,19 @@ ComponentBuilder UComponentBuilder::RegisterMeshComponent(const TComponentBuilde
 			{
 				auto& comp = registry.emplace<UMeshComponent>(entity, data["MeshName"], data["MeshPath"]);
 				if (data.contains("Update")) comp.SetCanUpdate(data["Update"]);
+				if (data.contains("ShaderName")) comp.SetShaderName(data["ShaderName"]);
 				comp.SetEntityOwner(entity);
 				comp.SetApplication(componentBuilderParameters.application);
 				comp.Initialize();
 
 
-				auto& comp2 = registry.emplace<UMeshRenderer_OpenGLComponent>(entity, comp.GetMeshAsset(), componentBuilderParameters.defaultShader); // Assuming shader is set later
+				auto& comp2 = registry.emplace<UMeshRenderer_OpenGLComponent>(entity, comp.GetMeshAsset()); // Assuming shader is set later
 				if (data.contains("Update")) comp2.SetCanUpdate(data["Update"]);
 				comp2.SetEntityOwner(entity);
 				comp2.SetApplication(componentBuilderParameters.application);
 				comp2.Initialize();
 
-				sceneObject->m_Components["UMeshComponent"] = &comp;
+				//sceneObject->m_Components["UMeshComponent"] = &comp;
 			}
 		};
 }
@@ -145,7 +147,7 @@ ComponentBuilder UComponentBuilder::RegisterInputComponent(const TComponentBuild
 				comp.SetApplication(componentBuilderParameters.application);
 				comp.Initialize();
 
-				sceneObject->m_Components["UInputComponent"] = &comp;
+				//sceneObject->m_Components["UInputComponent"] = &comp;
 			}
 		};
 }
@@ -161,7 +163,7 @@ ComponentBuilder UComponentBuilder::RegisterCapsuleComponent(const TComponentBui
 				comp.SetApplication(componentBuilderParameters.application);
 				comp.Initialize();
 
-				sceneObject->m_Components["UCapsuleComponent"] = &comp;
+				//sceneObject->m_Components["UCapsuleComponent"] = &comp;
 			}
 		};
 }
@@ -177,7 +179,7 @@ ComponentBuilder UComponentBuilder::RegisterPlayerComponent(const TComponentBuil
 				comp.SetApplication(componentBuilderParameters.application);
 				comp.Initialize();
 
-				sceneObject->m_Components["UPlayerComponent"] = &comp;
+				//sceneObject->m_Components["UPlayerComponent"] = &comp;
 			}
 		};
 }
@@ -194,7 +196,7 @@ ComponentBuilder UComponentBuilder::RegisterBoxCollisionComponent(const TCompone
 				comp.SetApplication(componentBuilderParameters.application);
 				comp.Initialize();
 
-				sceneObject->m_Components["UBoxCollisionComponent"] = &comp;
+				//sceneObject->m_Components["UBoxCollisionComponent"] = &comp;
 			}
 		};
 }
@@ -214,17 +216,17 @@ ComponentBuilder UComponentBuilder::RegisterTerrainComponent(const TComponentBui
 				if (data.contains("TileSize")) comp.SetTileSize(data["TileSize"]);
 				if (data.contains("Amplitude")) comp.SetAmplitude(data["Amplitude"]);
 				if (data.contains("Noise")) comp.SetNoise(data["Noise"]);
-
+				if (data.contains("ShaderName")) comp.SetShaderName(data["ShaderName"]);
 				comp.Initialize();
 
 
-				auto& comp2 = registry.emplace<UMeshRenderer_OpenGLComponent>(entity, comp.GetMeshAsset(), componentBuilderParameters.defaultShader); // Assuming shader is set later
+				auto& comp2 = registry.emplace<UMeshRenderer_OpenGLComponent>(entity, comp.GetMeshAsset()); // Assuming shader is set later
 				if (data.contains("Update")) comp2.SetCanUpdate(data["Update"]);
 				comp2.SetEntityOwner(entity);
 				comp2.SetApplication(componentBuilderParameters.application);
 				comp2.Initialize();
 
-				sceneObject->m_Components["UTerrainComponent"] = &comp;
+				//sceneObject->m_Components["UTerrainComponent"] = &comp;
 			}
 		};
 }
@@ -246,7 +248,26 @@ ComponentBuilder UComponentBuilder::RegisterAudioSourceComponent(const TComponen
 				comp.SetApplication(componentBuilderParameters.application);
 				comp.Initialize();
 
-				sceneObject->m_Components["UAudioSourceComponent"] = &comp;
+				//sceneObject->m_Components["UAudioSourceComponent"] = &comp;
+			}
+		};
+}
+
+ComponentBuilder UComponentBuilder::RegisterMainCameraComponent(const TComponentBuilder& componentBuilderParameters)
+{
+	return [componentBuilderParameters](entt::registry& registry, entt::entity entity, const nlohmann::json& data, TSceneObject* sceneObject)
+		{
+			if (!registry.any_of<UMainCamera>(entity))
+			{
+				auto& comp = registry.emplace<UMainCamera>(entity);
+				if (data.contains("Update")) comp.SetCanUpdate(data["Update"]);
+				if (data.contains("IsActive")) comp.SetIsActive(data["IsActive"]);
+
+				comp.SetEntityOwner(entity);
+				comp.SetApplication(componentBuilderParameters.application);
+				comp.Initialize();
+
+				//sceneObject->m_Components["UMainCamera"] = &comp;
 			}
 		};
 }

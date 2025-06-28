@@ -36,6 +36,7 @@ public:
 	void SetTileSize(float value);
 	void SetAmplitude(float value);
 	void SetNoise(float value);
+	void SetShaderName(const std::string& shaderName);
 
 	FMeshAsset& GetMeshAsset() { return m_MeshAsset; }
 

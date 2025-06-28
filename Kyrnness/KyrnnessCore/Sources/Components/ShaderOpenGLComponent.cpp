@@ -12,8 +12,8 @@
 #include "Components/ShaderOpenGLComponent.hpp"
 #include <Core/AssetManager.hpp>
 
-UShaderOpenGLComponent::UShaderOpenGLComponent(const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile)
-	: m_ShaderName(shaderName), m_VertShaderFile(vertShaderFile), m_FragShaderFile(fragShaderFile)
+UShaderOpenGLComponent::UShaderOpenGLComponent(/*const std::string& shaderName, const char* vertShaderFile, const char* fragShaderFile*/)
+	/*: m_ShaderName(shaderName), m_VertShaderFile(vertShaderFile), m_FragShaderFile(fragShaderFile)*/
 {
 }
 
@@ -46,6 +46,21 @@ void UShaderOpenGLComponent::OnDestroy()
 	}
 
 	Super::OnDestroy();
+}
+
+void UShaderOpenGLComponent::SetShaderName(const std::string& shaderName)
+{
+	m_ShaderName = shaderName;
+}
+
+void UShaderOpenGLComponent::SetVertShaderFile(const std::string& filePath)
+{
+	m_VertShaderFile = filePath.c_str();
+}
+
+void UShaderOpenGLComponent::SetFragShaderFile(const std::string& filePath)
+{
+	m_FragShaderFile = filePath.c_str();
 }
 
 void UShaderOpenGLComponent::Bind()

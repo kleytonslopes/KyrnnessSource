@@ -24,7 +24,7 @@ class UMeshRenderer_OpenGLComponent : public UComponent
 {
 	using Super = UComponent;
 public:
-	UMeshRenderer_OpenGLComponent(FMeshAsset& meshAsset,/*std::vector<Vertex> vertices, std::vector<uint32> indices,*/ UShaderOpenGLComponent* shaderComponent);
+	UMeshRenderer_OpenGLComponent(FMeshAsset& meshAsset);
 	virtual ~UMeshRenderer_OpenGLComponent() = default;
 
 	UMeshRenderer_OpenGLComponent(const UMeshRenderer_OpenGLComponent&) = delete;
@@ -38,12 +38,14 @@ public:
 	virtual nlohmann::json GetJsonData() override;
 
 protected:
+	std::string m_ShaderName;
+
 	void OnInitialize() override;
 
 private:
 	FMeshAsset& m_MeshAsset;
-
-	UShaderOpenGLComponent* m_Shader = nullptr;
+	
+	//UShaderOpenGLComponent* m_Shader = nullptr;
 
 	uint32 m_VAO;
 	uint32 m_VBO;

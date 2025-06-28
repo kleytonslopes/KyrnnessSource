@@ -32,9 +32,10 @@ void USceneManager::Initialize()
     Super::Initialize();
 
     const std::string& entryScene = m_Application->GetGameConfig().m_MainMenuMap;
+
     if (!entryScene.empty())
     {
-        SwitchScene(entryScene, false, false, true);
+        LoadSceneFromPath(entryScene);
     }
 }
 
@@ -53,6 +54,11 @@ void USceneManager::SwitchScene(const std::string& scenePath, bool clearUI, bool
 
     UnloadCurrentScene(clearUI, clearAudio, clearLua);
     LoadSceneFromPath(scenePath);
+}
+
+UScene* USceneManager::GetCurrentScene() const
+{
+    return m_CurrentScene;
 }
 
 void USceneManager::OnDestroy()
@@ -126,6 +132,6 @@ void USceneManager::LoadSceneFromPath(const std::string& scenePath)
     m_CurrentScenePath = scenePath;
 
     nlohmann::json sceneJson = UAssetManager::LoadJson(scenePath);
-    m_CurrentScene->SpawnEntityFromJson(sceneJson);
     m_CurrentScene->Initialize();
+    m_CurrentScene->SpawnEntityFromJson(sceneJson);
 }

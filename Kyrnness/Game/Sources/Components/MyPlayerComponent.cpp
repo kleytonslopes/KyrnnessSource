@@ -1,4 +1,4 @@
-#include "pch.hpp"
+#include "GamePCH.hpp"
 #include "Components/MyPlayerComponent.hpp"
 #include "Components/TransformComponent.hpp"
 #include "Runtime/Application.hpp"
@@ -22,7 +22,6 @@ void FMyPlayerComponent::SetupPlayerInput()
 
 	if (m_Application)
 	{
-		/*
 		m_InputActions[EInputKey::W] = [this](int status) { if (status == 1) bWantMoveForward = true; else bWantMoveForward = false;	};
 		m_InputActions[EInputKey::S] = [this](int status) { if (status == 1) bWantMoveBackward = true; else bWantMoveBackward = false;	};
 		m_InputActions[EInputKey::A] = [this](int status) { if (status == 1) bWantMoveLeft = true; else bWantMoveLeft = false;	};
@@ -43,7 +42,7 @@ void FMyPlayerComponent::SetupPlayerInput()
 					UInputManager::Get().SetShowMouseCursor(currentShowMouse);
 				}
 			};
-			*/
+			
 	}
 }
 

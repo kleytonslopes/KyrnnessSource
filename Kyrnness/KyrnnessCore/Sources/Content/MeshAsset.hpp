@@ -21,6 +21,7 @@ struct FMeshAsset
 {
 	std::vector<Vertex> vertices;
 	std::vector<uint32> indices;
+	std::string shaderName;
 
 	glm::vec3 boundingBoxMin = glm::vec3(FLT_MAX);
 	glm::vec3 boundingBoxMax = glm::vec3(-FLT_MAX);

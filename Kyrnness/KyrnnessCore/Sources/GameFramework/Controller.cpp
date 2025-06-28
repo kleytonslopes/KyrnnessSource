@@ -17,27 +17,17 @@ UController::UController(UApplication* application) : m_Application(application)
 {
 }
 
-void UController::Initialize()
+void UController::SetupPawn()
 {
 	if (m_Application)
 	{
-		auto view = m_Application->GetEnttRegistry().view<UCapsuleComponent>();
+		auto view = m_Application->GetRegistry().view<UCapsuleComponent>();
 
 		view.each([this](const auto entity, auto& capsule)
 			{
 				m_Pawn = entity;
 			});
 	}
-}
-
-void UController::Update(float DeltaTime)
-{
-
-}
-
-void UController::Shutdown()
-{
-
 }
 
 void UController::OnKeyPressed(int Key)

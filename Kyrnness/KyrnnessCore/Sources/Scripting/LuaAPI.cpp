@@ -37,7 +37,7 @@ namespace LuaAPI
 		gameNamespace.set_function("QuitGame", Game::QuitGame);
 		gameNamespace.set_function("getPlayer", []() -> FLuaEntity
 			{
-				auto& registry = UApplication::Get().GetEnttRegistry();
+				auto& registry = UApplication::Get().GetRegistry();
 
 				auto view = registry.view<UPlayerComponent, UTransformComponent>();
 				for (auto entity : view)

@@ -12,12 +12,13 @@
 #ifndef KYRNNES_CONTROLLER_HPP
 #define	KYRNNES_CONTROLLER_HPP
 
-#include "Core/Core.hpp"
+#include "Class.hpp"
 
 class UApplication;
 
-class UController
+class UController : public UClass
 {
+	using Super = UClass;
 public:
 	FFunctionEvent<int, int> OnKeyPressedEvent;
 	FFunctionEvent<float, float> OnMouseMoveEvent;
@@ -31,10 +32,7 @@ public:
 	UController(UController&&) = delete;
 	UController& operator=(UController&&) = delete;
 
-	// Add any necessary methods or properties for the controller here
-	virtual void Initialize();
-	virtual void Update(float DeltaTime);
-	virtual void Shutdown();
+	void SetupPawn();
 
 	void OnKeyPressed(int Key);
 	void OnKeyReleased(int Key);

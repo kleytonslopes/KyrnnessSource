@@ -32,12 +32,9 @@ public:
     void Initialize() override;
     void OnUpdate(float deltaTime) override;
     
-
-    // Troca de cena s�ncrona
     void SwitchScene(const std::string& scenePath, bool clearUI = true, bool clearAudio = false, bool clearLua = true);
 
-    // Retorna ponteiro para a cena atual
-    UScene* GetCurrentScene() const { return m_CurrentScene; }
+    UScene* GetCurrentScene() const;// { return m_CurrentScene; }
 
 protected:
     void OnDestroy() override;
@@ -54,6 +51,7 @@ private:
     UScene* m_CurrentScene = nullptr;
     UScene* m_TransientScene = nullptr;
     UScene* m_NextScene = nullptr;
+
     std::string m_CurrentScenePath;
 
     void UnloadCurrentScene(bool clearUI, bool clearAudio, bool clearLua);

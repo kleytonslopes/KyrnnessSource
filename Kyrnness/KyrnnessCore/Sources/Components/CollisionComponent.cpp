@@ -16,8 +16,8 @@
 
 void UCollisionComponent::OnInitialize()
 {
-	UTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
-	UMeshComponent& meshComponent = m_Application->GetEnttRegistry().get<UMeshComponent>(m_EntityOwner);
+	UTransformComponent& transformComponent = m_Application->GetRegistry().get<UTransformComponent>(m_EntityOwner);
+	UMeshComponent& meshComponent = m_Application->GetRegistry().get<UMeshComponent>(m_EntityOwner);
 
 	std::vector<glm::vec3> positions;
 	positions.reserve(meshComponent.GetVertices().size());

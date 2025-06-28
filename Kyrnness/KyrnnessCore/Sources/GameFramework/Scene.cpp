@@ -43,17 +43,10 @@ void UScene::Initialize()
 {
 	Super::Initialize();
 
+	m_EntityManagement = FMemoryManager::Allocate<UEntityManagement>();
+	m_EntityManagement->Initialize();
+
 	SetupInputActions();
-
-	//TComponentBuilder& comp = UComponentBuilder::GetComponentBuilderParameters();
-
-	//comp.defaultShader = UShaders::GetShader(SHADER_DEFAULT);
-
-	//UComponentBuilder::RegisterEngineComponents(comp);
-
-	//nlohmann::json sceneJson = UAssetManager::LoadJson(m_SceneFile);
-
-	//SpawnEntityFromJson(sceneJson);
 }
 
 void UScene::Update(float deltaTime)
@@ -70,30 +63,32 @@ void UScene::OnDestroy()
 {
 	Super::OnDestroy();
 
-	auto& registry = m_Application->GetEnttRegistry();
+	//auto& registry = m_Application->GetRegistry();
 
-	// 1. Limpar os SceneObjects
-	for (TSceneObject* obj : m_SceneData.m_Objects)
-	{
-		if (obj)
-		{
-			// Apenas limpar o mapa de componentes (não precisa deletar os componentes, pois o entt fará isso)
-			obj->m_Components.clear();
-
-			// Liberar o próprio TSceneObject
-			FMemoryManager::Deallocate(obj);
-		}
-	}
+	///// 1. Limpar os SceneObjects
+	///for (TSceneObject* obj : m_SceneData.m_Objects)
+	///{
+	///	if (obj)
+	///	{
+	///		// Apenas limpar o mapa de componentes (não precisa deletar os componentes, pois o entt fará isso)
+	///		obj->m_Components.clear();
+	///
+	///		// Liberar o próprio TSceneObject
+	///		FMemoryManager::Deallocate(obj);
+	///	}
+	///}
 
 	m_SceneData.m_Objects.clear();
 
 	// 2. Resetar ponteiros da cena
-	m_MainCamera = nullptr;
-	m_DefaultShader = nullptr;
-	m_MainCameraEntity = entt::null;
+	//m_MainCamera = nullptr;
+	//m_DefaultShader = nullptr;
+	//m_MainCameraEntity = entt::null;
 
 	// 3. Limpar o registry (isso deleta os componentes internamente)
-	registry.clear();
+	//registry.clear();
+
+	m_EntityManagement->Destroy();
 
 	FLogger::Information("[Scene] Cena limpa!\n");
 }
@@ -103,18 +98,28 @@ void UScene::DrawScene(float deltaTime)
 	if (!IsValid())
 		return;
 
-	auto& registry = m_Application->GetEnttRegistry();
+	auto mainCameraView = m_EntityManagement->GetRegistry().view<UMainCamera>();
+	FEntity mainCameraActive = entt::null;
 
-	if (registry.valid(m_MainCameraEntity))
+	mainCameraView.each([&](const auto& entity, UMainCamera& cameraComp)
+		{
+			if (mainCameraActive == entt::null)
+				mainCameraActive = entity;
+
+			if(cameraComp.GetIsActive())
+				mainCameraActive = entity;
+
+		});
+
+	if (m_EntityManagement->IsValidEntity(mainCameraActive))
 	{
+		auto objectsSceneView = m_EntityManagement->GetRegistry().view<UTransformComponent, UMeshRenderer_OpenGLComponent>();
 
-		auto objectsScene = registry.view<UTransformComponent, UMeshRenderer_OpenGLComponent>();
-
-		UCameraComponent& cameraScene = registry.get<UCameraComponent>(m_MainCameraEntity);
+		UCameraComponent& cameraScene = m_EntityManagement->GetRegistry().get<UCameraComponent>(mainCameraActive);
 
 		cameraScene.UpdateAspectRatio(m_Application->GetWidth(), m_Application->GetHeight());
 
-		objectsScene.each([&](const auto entity, auto& transform, auto& meshRenderer)
+		objectsSceneView.each([&](const auto entity, auto& transform, auto& meshRenderer)
 			{
 				TRenderParameters renderParameters
 				{
@@ -131,6 +136,7 @@ void UScene::DrawScene(float deltaTime)
 
 void UScene::SaveScene()
 {
+	FLogger::Error("Save Scene not Completed, Check this method!");
 	nlohmann::json sceneJson;
 	sceneJson["SceneName"] = m_SceneData.m_SceneName;
 	sceneJson["Objects"] = nlohmann::json::array();
@@ -144,15 +150,15 @@ void UScene::SaveScene()
 
 		objJson["Components"] = nlohmann::json::array();
 
-		for (const auto& [key, component] : obj->m_Components)
-		{
-			if (component)
-			{
-				const auto& a = component->GetJsonData();
-
-				objJson["Components"].push_back(a);
-			}
-		}
+		//for (const auto& [key, component] : obj->m_Components)
+		//{
+		//	if (component)
+		//	{
+		//		const auto& a = component->GetJsonData();
+		//
+		//		objJson["Components"].push_back(a);
+		//	}
+		//}
 
 		sceneJson["Objects"].push_back(objJson);
 	}
@@ -240,7 +246,7 @@ void UScene::ProcessEditMode()
 	if (!ImGui::GetIO().WantCaptureMouse)
 	{
 		// Verificar clique do mouse
-		if(m_Application->GetWindow()->GetMouseButtonState(1) == 1)
+		if (m_Application->GetWindow()->GetMouseButtonState(1) == 1)
 		{
 			float x, y;
 			m_Application->GetWindow()->GetMousePosition(x, y);
@@ -251,15 +257,15 @@ void UScene::ProcessEditMode()
 			}
 
 			// Tentar selecionar objeto
-			TSceneObject* selected = GetSelectedObject(
+	/*		TSceneObject* selected = GetSelectedObject(
 				(float)x, (float)y,
 				m_MainCamera->GetProjectionMatrix(),
-				m_MainCamera->GetViewMatrix());
+				m_MainCamera->GetViewMatrix());*/
 
-			if (selected) {
-				selected->bIsSelected = true;
-				m_SelectedObject = selected;
-			}
+				//if (selected) {
+				//	selected->bIsSelected = true;
+				//	m_SelectedObject = selected;
+				//}
 		}
 	}
 }
@@ -288,81 +294,87 @@ void UScene::SetupInputActions()
 		};
 }
 
-void UScene::CreateMainCamera()
-{
-	m_MainCameraEntity = m_Application->GetEnttRegistry().create();
-
-	if (m_Application->GetEnttRegistry().valid(m_MainCameraEntity))
-	{
-		m_Application->GetEnttRegistry().emplace<UTransformComponent>(m_MainCameraEntity);
-		m_Application->GetEnttRegistry().emplace<UCameraComponent>(m_MainCameraEntity);
-		m_Application->GetEnttRegistry().emplace<UIdentityComponent>(m_MainCameraEntity, "MainCamera");
-
-		auto view = m_Application->GetEnttRegistry().view<UTransformComponent, UCameraComponent>();
-
-		view.each([this](const auto entity, auto& transform, auto& camera)
-			{
-				transform.Location = glm::vec3(0.f, 0.f, 5.f);
-
-				camera.Fov = 45.f;
-				camera.Near = 0.0001f;
-				camera.Far = 100000.f;
-				camera.UpdateAspectRatio(m_Application->GetWidth(), m_Application->GetHeight());
-			});
-	}
-}
+//void UScene::CreateMainCamera()
+//{
+//	m_MainCameraEntity = m_EntityManagement->CreateEntity();
+//
+//	if (m_Application->GetRegistry().valid(m_MainCameraEntity))
+//	{
+//		m_Application->GetRegistry().emplace<UTransformComponent>(m_MainCameraEntity);
+//		m_Application->GetRegistry().emplace<UCameraComponent>(m_MainCameraEntity);
+//		m_Application->GetRegistry().emplace<UIdentityComponent>(m_MainCameraEntity, "MainCamera");
+//
+//		auto view = m_Application->GetRegistry().view<UTransformComponent, UCameraComponent>();
+//
+//		view.each([this](const auto entity, auto& transform, auto& camera)
+//			{
+//				transform.Location = glm::vec3(0.f, 0.f, 5.f);
+//
+//				camera.Fov = 45.f;
+//				camera.Near = 0.0001f;
+//				camera.Far = 100000.f;
+//				camera.UpdateAspectRatio(m_Application->GetWidth(), m_Application->GetHeight());
+//			});
+//	}
+//}
 
 void UScene::CreateShaders()
 {
 	// Create default shader
-	m_DefaultShaderEntity = m_Application->GetEnttRegistry().create();
+	auto m_DefaultShaderEntity = m_EntityManagement->CreateEntity();
 
-	if (m_Application->GetEnttRegistry().valid(m_DefaultShaderEntity))
+	if (m_EntityManagement->IsValidEntity(m_DefaultShaderEntity))
 	{
-		m_Application->GetEnttRegistry().emplace<UShaderOpenGLComponent>(m_DefaultShaderEntity, defaultShaderName, "Assets/Shaders/OpenGL/vert.glsl", "Assets/Shaders/OpenGL/frag.glsl");
+		UShaderOpenGLComponent& shaderComponent = m_EntityManagement->AddComponent<UShaderOpenGLComponent>(m_DefaultShaderEntity);//m_Application->GetRegistry().get<UShaderOpenGLComponent>(m_DefaultShaderEntity);
+		shaderComponent.SetShaderName(defaultShaderName);
+		shaderComponent.SetVertShaderFile("Assets/Shaders/OpenGL/vert.glsl");
+		shaderComponent.SetFragShaderFile("Assets/Shaders/OpenGL/frag.glsl");
 
-		UShaderOpenGLComponent& shaderComponent = m_Application->GetEnttRegistry().get<UShaderOpenGLComponent>(m_DefaultShaderEntity);
 		shaderComponent.Initialize();
 
-		m_DefaultShader = &shaderComponent;
+		//m_DefaultShader = &shaderComponent;
 	}
 
 	// Create Shader Debug
-	auto debugShader = m_Application->GetEnttRegistry().create();
+	auto debugShader = m_EntityManagement->CreateEntity();
 
-	if (m_Application->GetEnttRegistry().valid(debugShader))
+	if (m_EntityManagement->IsValidEntity(debugShader))
 	{
-		m_Application->GetEnttRegistry().emplace<UShaderOpenGLComponent>(debugShader, "debugShader", "Assets/Shaders/OpenGL/debug_vert.glsl", "Assets/Shaders/OpenGL/debug_frag.glsl");
+		UShaderOpenGLComponent& shaderComponent = m_EntityManagement->AddComponent<UShaderOpenGLComponent>(debugShader);
+		shaderComponent.SetShaderName("debugShader");
+		shaderComponent.SetVertShaderFile("Assets/Shaders/OpenGL/debug_vert.glsl");
+		shaderComponent.SetFragShaderFile("Assets/Shaders/OpenGL/debug_frag.glsl");
 
-		UShaderOpenGLComponent& shaderComponent = m_Application->GetEnttRegistry().get<UShaderOpenGLComponent>(debugShader);
 		shaderComponent.Initialize();
 	}
 
 	// Create Shader UI
-	auto uiShader = m_Application->GetEnttRegistry().create();
+	auto uiShader = m_EntityManagement->CreateEntity();
 
-	if (m_Application->GetEnttRegistry().valid(uiShader))
+	if (m_EntityManagement->IsValidEntity(uiShader))
 	{
-		m_Application->GetEnttRegistry().emplace<UShaderOpenGLComponent>(uiShader, "uiShader", "uiShader.vert", "uiShader.frag");
+		UShaderOpenGLComponent& shaderComponent = m_EntityManagement->AddComponent<UShaderOpenGLComponent>(uiShader);
+		shaderComponent.SetShaderName("uiShader");
+		shaderComponent.SetVertShaderFile("uiShader.vert");
+		shaderComponent.SetFragShaderFile("uiShader.frag");
 
-		UShaderOpenGLComponent& shaderComponent = m_Application->GetEnttRegistry().get<UShaderOpenGLComponent>(uiShader);
 		shaderComponent.Initialize();
 	}
 }
 
 void UScene::SpawnEntity(const TSceneObject& sceneObject)
 {
-	auto& registry = m_Application->GetEnttRegistry();
-	entt::entity entity = registry.create();
+	FEntity entity = m_EntityManagement->CreateEntity();
 
-	auto& transform = registry.emplace<UTransformComponent>(entity);
+	UTransformComponent& transform = m_EntityManagement->AddComponent<UTransformComponent>(entity);
+
 	transform.Location = sceneObject.m_Position;
 	transform.Rotation = sceneObject.m_Rotation;
 	transform.Scale = sceneObject.m_Scale;
 	transform.ForwardVector = sceneObject.m_ForwardVector;
 	transform.UpVector = sceneObject.m_UpVector;
 
-	auto& identity = registry.emplace<UIdentityComponent>(entity, sceneObject.m_ObjectName);
+	UIdentityComponent& identity = m_EntityManagement->AddComponent<UIdentityComponent>(entity, sceneObject.m_ObjectName);
 	identity.SetId(sceneObject.m_Id);
 	identity.SetName(sceneObject.m_ObjectName);
 
@@ -372,8 +384,7 @@ void UScene::SpawnEntityFromJson(const nlohmann::json& jsonObject)
 {
 	for (const auto& obj : jsonObject["Objects"])
 	{
-		auto& registry = m_Application->GetEnttRegistry();
-		entt::entity entity = registry.create();
+		FEntity entity = m_EntityManagement->CreateEntity();
 
 		TSceneObject* sceneObject = FMemoryManager::Allocate<TSceneObject>();
 
@@ -382,15 +393,15 @@ void UScene::SpawnEntityFromJson(const nlohmann::json& jsonObject)
 		std::string objectName = obj["ObjectName"].get<std::string>();
 		bool isSelectable = obj["IsSelectable"].get<bool>();
 
-		if (objectName == "MainCamera")
-			m_MainCameraEntity = entity;
+		//if (objectName == "MainCamera")
+		//	m_MainCameraEntity = entity;
 
 		if (obj.contains("Components")) {
 			for (const auto& compJson : obj["Components"]) {
 				std::string type = compJson["Type"];
 				if (UComponentBuilder::Contains(type))
 				{
-					UComponentBuilder::Build(type, registry, entity, compJson, sceneObject);
+					UComponentBuilder::Build(type, m_EntityManagement->GetRegistry(), entity, compJson, sceneObject);
 				}
 				else {
 					std::cerr << "Componente desconhecido: " << type << "\n";
@@ -398,7 +409,7 @@ void UScene::SpawnEntityFromJson(const nlohmann::json& jsonObject)
 			}
 		}
 
-		UTransformComponent& transform = registry.get<UTransformComponent>(entity);
+		UTransformComponent& transform = m_EntityManagement->GetComponent<UTransformComponent>(entity);//registry.get<UTransformComponent>(entity);
 		sceneObject->m_Position = transform.Location;
 		sceneObject->m_Rotation = transform.Rotation;
 		sceneObject->m_ForwardVector = transform.ForwardVector;
@@ -407,10 +418,10 @@ void UScene::SpawnEntityFromJson(const nlohmann::json& jsonObject)
 		sceneObject->m_ObjectName = objectName;
 		sceneObject->bIsSelectable = isSelectable;
 
-		if (objectName == "MainCamera")
-		{
-			m_MainCamera = &registry.get<UCameraComponent>(m_MainCameraEntity);
-		}
+		//if (objectName == "MainCamera")
+		//{
+		//	m_MainCamera = &registry.get<UCameraComponent>(m_MainCameraEntity);
+		//}
 
 		m_SceneData.m_Objects.emplace_back(sceneObject);
 	}
@@ -424,12 +435,19 @@ void UScene::OnUpdate(float DeltaTime)
 	DrawScene(DeltaTime);
 }
 
+void UScene::PreInitialize()
+{
+	Super::PreInitialize();
+
+	m_EntityManagement = FMemoryManager::Allocate<UEntityManagement>();
+}
+
 void TSceneObject::SetPosition(const glm::vec3& position)
 {
 	m_Position = position;
 	if (m_Entity != entt::null)
 	{
-		auto& transform = UApplication::Get().GetEnttRegistry().get<UTransformComponent>(m_Entity);
+		auto& transform = m_Scene->GetEntityManager()->GetComponent<UTransformComponent>(m_Entity);
 		transform.Location = position;
 	}
 }
@@ -439,7 +457,7 @@ void TSceneObject::SetRotation(const glm::vec3& rotation)
 	m_Rotation = rotation;
 	if (m_Entity != entt::null)
 	{
-		auto& transform = UApplication::Get().GetEnttRegistry().get<UTransformComponent>(m_Entity);
+		auto& transform = m_Scene->GetEntityManager()->GetComponent<UTransformComponent>(m_Entity); // UApplication::Get().GetRegistry().get<UTransformComponent>(m_Entity);
 		transform.Rotation = rotation;
 	}
 }

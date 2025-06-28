@@ -1,3 +1,4 @@
+#include "GamePCH.hpp"
 #include "GameComponentBuilder.hpp"
 #include "Components/MyPlayerComponent.hpp"
 #include "GameFramework/Scene.hpp"
@@ -21,7 +22,7 @@ ComponentBuilder FGameComponentBuilder::RegisterMyPlayerComponent(const TCompone
 				comp.SetApplication(componentBuilderParameters.application);
 				comp.Initialize();
 
-				sceneObject->m_Components["FMyPlayerComponent"] = &comp;
+				//sceneObject->m_Components["FMyPlayerComponent"] = &comp;
 			}
 		};
 }

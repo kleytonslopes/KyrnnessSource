@@ -44,6 +44,11 @@ std::vector<uint32> UMeshComponent::GetIndices() const
 	return m_MeshAsset.indices;
 }
 
+void UMeshComponent::SetShaderName(const std::string& shaderName)
+{
+	m_MeshAsset.shaderName = shaderName;
+}
+
 nlohmann::json UMeshComponent::GetJsonData()
 {
 	nlohmann::json jsonData;
@@ -52,6 +57,7 @@ nlohmann::json UMeshComponent::GetJsonData()
 	jsonData["Update"] = bCanUpdate;
 	jsonData["MeshName"] = m_MeshName;
 	jsonData["MeshPath"] = m_MeshFilePath;
+	jsonData["ShaderName"] = m_MeshAsset.shaderName;
 
 	return jsonData;
 }

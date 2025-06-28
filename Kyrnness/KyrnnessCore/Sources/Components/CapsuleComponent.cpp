@@ -27,7 +27,7 @@ void UCapsuleComponent::OnInitialize()
 {
 	if (m_Application)
 	{
-		UTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
+		UTransformComponent& transformComponent = m_Application->GetRegistry().get<UTransformComponent>(m_EntityOwner);
 
 		
 		m_CollisionFilter.data.word0 = CollisionGroup::Player; // Grupo da capsula

@@ -11,14 +11,13 @@
 #include "CorePCH.hpp"
 #include "Components/MeshRenderer_OpenGLComponent.hpp"
 #include "Components/ShaderOpenGLComponent.hpp"
+#include "Runtime/Application.hpp"
+#include "Graphics/Shaders.hpp"
 
-UMeshRenderer_OpenGLComponent::UMeshRenderer_OpenGLComponent(FMeshAsset& meshAsset/*std::vector<Vertex> vertices, std::vector<uint32> indices*/, UShaderOpenGLComponent* shaderComponent)
-	//: m_Vertices(vertices)
-	//, m_Indices(indices)
+UMeshRenderer_OpenGLComponent::UMeshRenderer_OpenGLComponent(FMeshAsset& meshAsset)
 	: m_MeshAsset(meshAsset)
-	, m_Shader(shaderComponent)
 {
-	Initialize();
+
 }
 
 void UMeshRenderer_OpenGLComponent::OnInitialize()
@@ -38,11 +37,6 @@ void UMeshRenderer_OpenGLComponent::OnInitialize()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, uv)));
 	glEnableVertexAttribArray(1);
 
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));
-	//glEnableVertexAttribArray(1);
-
-
-
 	glBindVertexArray(0);
 
 	Super::OnInitialize();
@@ -51,8 +45,11 @@ void UMeshRenderer_OpenGLComponent::OnInitialize()
 
 void UMeshRenderer_OpenGLComponent::Render(const TRenderParameters& renderParameters)
 {
+
+	UShaderOpenGLComponent* m_Shader = UShaders::GetShader(m_MeshAsset.shaderName);
 	if (!m_Shader)
-		return;
+		FException::RuntimeError("InvalidShader");
+
 	uint32 diffuseNr = 1;
 	uint32 specularNr = 1;
 	uint32 normalNr = 1;
@@ -65,15 +62,6 @@ void UMeshRenderer_OpenGLComponent::Render(const TRenderParameters& renderParame
 	matrix = glm::rotate(matrix, glm::radians(renderParameters.rotation.y), glm::vec3{ 0.f, 1.f, 0.f });
 	matrix = glm::rotate(matrix, glm::radians(renderParameters.rotation.z), glm::vec3{ 0.f, 0.f, 1.f });
 	matrix = glm::scale(matrix, renderParameters.scale);
-
-	////glm::vec3 loc{2.f, 0.f, 5.f};
-	///glm::mat4 view = glm::lookAt(
-	///							glm::vec3(4, 3, 3), // Camera is at (4,3,3), in World Space
-	///							glm::vec3(0,0,0), // and looks at the origin
-	///							glm::vec3(0,0,1)  // Head is up (set to 0,-1,0 to look upside-down)
-	///					   );//glm::lookAt(loc, location + glm::vec3{1.f, 0.f, 0.f}, glm::vec3{ 0.f, 0.f, 1.f });
-
-	//glm::mat4 projection = glm::perspective(glm::radians(45.f), 1280.f / 720.f, 0.0001f, 10000.0f);
 
 	m_Shader->Bind();
 	m_Shader->SetMatrix4("projection", renderParameters.projectionMatrix);

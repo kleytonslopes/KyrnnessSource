@@ -115,7 +115,7 @@ void UUIEditor::Draw(float deltaTime)
         {
             auto it = std::find(m_Application->GetScene()->GetObjects().begin(), m_Application->GetScene()->GetObjects().end(), m_Application->GetScene()->m_SelectedObject);
             if (it != m_Application->GetScene()->GetObjects().end()) {
-                m_Application->GetEnttRegistry().destroy(m_Application->GetScene()->m_SelectedObject->m_Entity);
+                m_Application->GetRegistry().destroy(m_Application->GetScene()->m_SelectedObject->m_Entity);
 
                 delete* it;
                 m_Application->GetScene()->GetObjects().erase(it);
@@ -131,7 +131,7 @@ void UUIEditor::Draw(float deltaTime)
             }
             /*auto it = std::find(m_Application->GetScene()->GetObjects().begin(), m_Application->GetScene()->GetObjects().end(), m_Application->GetScene()->m_SelectedObject);
             if (it != m_Application->GetScene()->GetObjects().end()) {
-                m_Application->GetEnttRegistry().destroy(m_Application->GetScene()->m_SelectedObject->m_Entity);
+                m_Application->GetRegistry().destroy(m_Application->GetScene()->m_SelectedObject->m_Entity);
 
                 delete* it;
                 m_Application->GetScene()->GetObjects().erase(it);

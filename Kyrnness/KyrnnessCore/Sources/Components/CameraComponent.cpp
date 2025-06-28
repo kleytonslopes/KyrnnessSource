@@ -28,7 +28,7 @@ void UCameraComponent::UpdateDirectionFromYawPitch(float yaw, float pitch)
 		if (Pitch > 89.0f) Pitch = 89.0f;
 		if (Pitch < -89.0f) Pitch = -89.0f;
 
-		UTransformComponent& transform = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
+		UTransformComponent& transform = m_Application->GetRegistry().get<UTransformComponent>(m_EntityOwner);
 
 		glm::vec3 direction;
 		direction.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
@@ -70,7 +70,7 @@ FMatrix UCameraComponent::GetViewMatrix() const
 {
 	if (m_Application)
 	{
-		UTransformComponent& transform = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
+		UTransformComponent& transform = m_Application->GetRegistry().get<UTransformComponent>(m_EntityOwner);
 
 		FVector location = transform.Location + LocationOffset;
 

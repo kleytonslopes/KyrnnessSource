@@ -19,6 +19,7 @@
 #include <atomic>
 
 #include "sol/sol.hpp"
+#include "entt/entt.hpp"
 
 namespace us::types
 {
@@ -77,5 +78,6 @@ using FSolState = sol::state;
 using FSolFunction = sol::function;
 using FSolNamespace = sol::table;
 
+using FEntity = entt::entity;
 
 #endif // K_FREQUENCY_THREAD_HPP

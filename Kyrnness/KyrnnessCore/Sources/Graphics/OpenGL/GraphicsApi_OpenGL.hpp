@@ -44,7 +44,7 @@ private:
 #ifdef DEBUG
     void DebugDrawLine(const glm::vec3& from, const glm::vec3& to, const glm::vec4& color);
 #endif
-	entt::registry& m_EnttRegistry;
+	//entt::registry& m_EnttRegistry;
 };
 
 #endif // KYRNNES_CORE_GRAPHICS_GRAPHICS_API_HPP

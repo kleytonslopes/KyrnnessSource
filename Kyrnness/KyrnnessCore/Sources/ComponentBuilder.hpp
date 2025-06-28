@@ -57,6 +57,7 @@ private:
 	static ComponentBuilder RegisterBoxCollisionComponent(const TComponentBuilder& componentBuilderParameters);
 	static ComponentBuilder RegisterTerrainComponent(const TComponentBuilder& componentBuilderParameters);
 	static ComponentBuilder RegisterAudioSourceComponent(const TComponentBuilder& componentBuilderParameters);
+	static ComponentBuilder RegisterMainCameraComponent(const TComponentBuilder& componentBuilderParameters);
 };
 
 #endif // K_COMPONENT_BUILDER_HPP

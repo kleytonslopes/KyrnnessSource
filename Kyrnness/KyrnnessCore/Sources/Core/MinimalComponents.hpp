@@ -27,5 +27,6 @@
 #include "Components/BoxCollisionComponent.hpp"
 #include "Components/TerrainComponent.hpp"
 #include "Components/AudioSourceComponent.hpp"
+#include "Components/MainCamera.hpp"
 
 #endif // K_MINIMAL_COMPONENTS_HPP

@@ -15,15 +15,19 @@
 
 #include "Class.hpp"
 #include "nlohmann/json.hpp"
+#include "Managements/EntityManagement.hpp"
 
 class UApplication;
 class UShaderOpenGLComponent;
 class UCameraComponent;
 class UComponent;
+class UScene;
 
 struct TSceneObject
 {
 public:
+	TSceneObject(){}
+	
 	entt::entity m_Entity = entt::null;
 
 	std::string m_ObjectName;
@@ -39,10 +43,16 @@ public:
 
 	bool bIsSelectable = true;
 
-	TMap<std::string, UComponent*> m_Components;
+	//TMap<std::string, UComponent*> m_Components;
 
+	void SetScene(UScene& sceneRef) { m_Scene = &sceneRef; }
 	void SetPosition(const glm::vec3& position);
 	void SetRotation(const glm::vec3& rotation);
+
+	UScene& GetScene() { return *m_Scene; }
+
+private:
+	UScene* m_Scene;
 };
 
 struct TScene
@@ -87,8 +97,11 @@ public:
 	void ProcessEditMode();
 	void SpawnEntityFromJson(const nlohmann::json& jsonObject);
 
+	UEntityManagement* GetEntityManager() { return m_EntityManagement; }
+
 protected:
 	void OnUpdate(float DeltaTime) override;
+	void PreInitialize() override;
 
 private:
 	UApplication* m_Application = nullptr;
@@ -96,22 +109,24 @@ private:
 	std::string m_SceneFile;
 	TMap<int32, InputAction> m_InputActions;
 
-	entt::entity m_MainCameraEntity = entt::null;
-	entt::entity m_DefaultShaderEntity = entt::null;
+	//entt::entity m_MainCameraEntity = entt::null;
+	//entt::entity m_DefaultShaderEntity = entt::null;
 
 	FVector m_LocationDebug = FVector(0.0f);
 
 	float m_Gravity = -20.8f;
 
-	UShaderOpenGLComponent* m_DefaultShader = nullptr;
-	UCameraComponent* m_MainCamera = nullptr;
+	///UShaderOpenGLComponent* m_DefaultShader = nullptr;
+	///UCameraComponent* m_MainCamera = nullptr;
 	TSceneObject* m_SelectedObject = nullptr;
+
+	UEntityManagement* m_EntityManagement = nullptr;
 
 	void MakeScene();
 
 	void SetupInputActions();
 
-	void CreateMainCamera();
+	//void CreateMainCamera();
 	void CreateShaders();
 
 	//void UpdateSceneObjectsAfterLoaded();

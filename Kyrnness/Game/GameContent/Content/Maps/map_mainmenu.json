@@ -40,6 +40,10 @@
         },
         {
           "Type": "FMyPlayerComponent"
+        },
+        {
+          "Type": "UMainCamera",
+          "IsActive": true
         }
       ],
       "Id": "",

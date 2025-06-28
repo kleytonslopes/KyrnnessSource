@@ -16,10 +16,10 @@
 
 void UAudioSourceComponent::OnUpdate(float DeltaTime)
 {
-    if (!m_Application->GetEnttRegistry().valid(m_EntityOwner))
+    if (!m_Application->GetRegistry().valid(m_EntityOwner))
         return;
 
-    UTransformComponent& transform = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
+    UTransformComponent& transform = m_Application->GetRegistry().get<UTransformComponent>(m_EntityOwner);
 
     SetPosition(transform.Location);
 
@@ -88,7 +88,7 @@ void UAudioSourceComponent::Play()
             sound->setMode(FMOD_LOOP_OFF);
         }
 
-        UTransformComponent& transform = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
+        UTransformComponent& transform = m_Application->GetRegistry().get<UTransformComponent>(m_EntityOwner);
 
         SetPosition(transform.Location);
     }

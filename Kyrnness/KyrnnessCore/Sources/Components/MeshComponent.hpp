@@ -36,6 +36,8 @@ public:
 	glm::vec3 GetBoundingBox() const { return m_MeshAsset.boundingBoxMax - m_MeshAsset.boundingBoxMin; }
 	glm::vec3 GetBoundingBoxCenter() const { return m_MeshAsset.BoundingBoxCenter(); }
 
+	void SetShaderName(const std::string& shaderName);
+
 	virtual nlohmann::json GetJsonData() override;
 
 protected:

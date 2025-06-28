@@ -24,7 +24,6 @@
 
 UGraphicsApi_OpenGL::UGraphicsApi_OpenGL(UApplication* application)
 	: UGraphicsApi(application)
-	, m_EnttRegistry(application->GetEnttRegistry())
 {
 	FLogger::Log("Initializing OpenGL Graphics API...");
 
@@ -94,7 +93,7 @@ void UGraphicsApi_OpenGL::DebugDrawLine(const glm::vec3& from, const glm::vec3& 
 		sColor[4] = color.y;
 		sColor[5] = color.z;
 
-		auto entities = m_EnttRegistry.view<UTransformComponent, UCameraComponent>();
+		auto entities = UApplication::Get().GetRegistry().view<UTransformComponent, UCameraComponent>();
 
 		glm::vec3 location = World::ZeroVector;
 		glm::vec3 forwardVector = World::ForwardVector;//{ 0.f, 0.f, -1.f };

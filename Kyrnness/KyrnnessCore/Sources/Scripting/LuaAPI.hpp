@@ -30,7 +30,7 @@ namespace LuaAPI
         // Set/Get Location
         void SetLocation(const FVector& newPosition)
         {
-            auto& registry = UApplication::Get().GetEnttRegistry();
+            auto& registry = UApplication::Get().GetRegistry();
             if (registry.valid(EntityHandle) && registry.all_of<UTransformComponent>(EntityHandle))
             {
                 registry.get<UTransformComponent>(EntityHandle).Location = newPosition.ToGlm();
@@ -39,7 +39,7 @@ namespace LuaAPI
 
         FVector GetLocation() const
         {
-            auto& registry = UApplication::Get().GetEnttRegistry();
+            auto& registry = UApplication::Get().GetRegistry();
             if (registry.valid(EntityHandle) && registry.all_of<UTransformComponent>(EntityHandle))
             {
                 return FVector(registry.get<UTransformComponent>(EntityHandle).Location);
@@ -50,7 +50,7 @@ namespace LuaAPI
         // Set/Get Rotation (em Euler degrees)
         void SetRotation(const FVector& newRotation)
         {
-            auto& registry = UApplication::Get().GetEnttRegistry();
+            auto& registry = UApplication::Get().GetRegistry();
             if (registry.valid(EntityHandle) && registry.all_of<UTransformComponent>(EntityHandle))
             {
                 registry.get<UTransformComponent>(EntityHandle).Rotation = newRotation.ToGlm();
@@ -59,7 +59,7 @@ namespace LuaAPI
 
         FVector GetRotation() const
         {
-            auto& registry = UApplication::Get().GetEnttRegistry();
+            auto& registry = UApplication::Get().GetRegistry();
             if (registry.valid(EntityHandle) && registry.all_of<UTransformComponent>(EntityHandle))
             {
                 return FVector(registry.get<UTransformComponent>(EntityHandle).Rotation);
@@ -70,7 +70,7 @@ namespace LuaAPI
         // Set/Get Scale
         void SetScale(const FVector& newScale)
         {
-            auto& registry = UApplication::Get().GetEnttRegistry();
+            auto& registry = UApplication::Get().GetRegistry();
             if (registry.valid(EntityHandle) && registry.all_of<UTransformComponent>(EntityHandle))
             {
                 registry.get<UTransformComponent>(EntityHandle).Scale = newScale.ToGlm();
@@ -79,7 +79,7 @@ namespace LuaAPI
 
         FVector GetScale() const
         {
-            auto& registry = UApplication::Get().GetEnttRegistry();
+            auto& registry = UApplication::Get().GetRegistry();
             if (registry.valid(EntityHandle) && registry.all_of<UTransformComponent>(EntityHandle))
             {
                 return FVector(registry.get<UTransformComponent>(EntityHandle).Scale);
@@ -89,7 +89,7 @@ namespace LuaAPI
 
         bool IsValid() const
         {
-            auto& registry = UApplication::Get().GetEnttRegistry();
+            auto& registry = UApplication::Get().GetRegistry();
             return registry.valid(EntityHandle);
         }
     };

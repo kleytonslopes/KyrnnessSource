@@ -129,8 +129,8 @@ public:
 		return static_cast<T>(m_GameConfig.m_Height);
 	}
 
-	entt::registry& GetEnttRegistry() { return m_EnttRegistry; }
-	entt::registry& GetRegistry() { return m_EnttRegistry; }
+	//entt::registry& GetRegistry() { return m_EnttRegistry; }
+	entt::registry& GetRegistry() { return m_SceneManager->GetCurrentScene()->GetEntityManager()->GetRegistry(); }
 
 	FGameConfig& GetGameConfig() { return m_GameConfig; }
 
@@ -164,7 +164,7 @@ private:
 
 	float m_DeltaTime = 0.0f;
 
-	entt::registry m_EnttRegistry;
+	/*entt::registry m_EnttRegistry;*/
 
 	FGameConfig m_GameConfig{};
 
@@ -174,7 +174,6 @@ private:
 	void InitializeAudio();
 	void InitializeWindow();
 	void InitializeController();
-	void InitializeScene();
 	void InitializeShaders();
 	void InitializeGraphicsApi();
 	void InitializePhysicsSystem();

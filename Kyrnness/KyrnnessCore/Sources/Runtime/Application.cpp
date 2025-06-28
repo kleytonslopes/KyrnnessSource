@@ -109,8 +109,7 @@ void UApplication::PreInitialize()
 	//Create Physics System
 	m_PhysicsSystem = FMemoryManager::Allocate<UPhysicsSystem>(this);
 
-	////Create Scene
-	//m_Scene = std::make_unique<UScene>(this);
+	//Create Scene Manager
 	m_SceneManager = FMemoryManager::Allocate<USceneManager>(this);
 
 	//Create UI Manager
@@ -133,7 +132,7 @@ void UApplication::OnInitialize()
 	InitializeShaders();
 	InitializeController();
 	InitializePhysicsSystem();
-	InitializeScene();
+	m_SceneManager->Initialize();
 	m_UIManager->Initialize();
 	InitialzieHUD();
 
@@ -145,6 +144,8 @@ void UApplication::OnPostInitialize()
 	///UApplication::Get().GetSoundManager()->PlaySound("music", ESoundCategory::Music);
 
 	Super::OnPostInitialize();
+
+	m_Controller->SetupPawn();
 }
 
 void UApplication::OnUpdate(float DeltaTime)
@@ -343,23 +344,6 @@ void UApplication::InitializeController()
 	{
 		ThrowRuntimeError("Controller not Created!");
 	}
-}
-
-void UApplication::InitializeScene()
-{
-	if (m_SceneManager)
-	{
-		m_SceneManager->Initialize();
-	}
-	//if (m_Scene)
-	//{
-	//	m_Scene->LoadFromFile(m_GameConfig.m_MainMenuMap);
-	//	m_Scene->Initialize();
-	//}
-	//else
-	//{
-	//	ThrowRuntimeError("Scene not Created!");
-	//}
 }
 
 void UApplication::InitializeShaders()

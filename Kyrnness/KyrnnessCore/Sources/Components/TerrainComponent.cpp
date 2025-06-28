@@ -17,7 +17,7 @@ void UTerrainComponent::OnInitialize()
 {
 	UTerrain::GenerateTerrain(m_Noise, m_Amplitude, m_Width, m_Height, m_TileSize, m_MeshAsset.vertices, m_MeshAsset.indices);
 
-	UTransformComponent& transformComponent = m_Application->GetEnttRegistry().get<UTransformComponent>(m_EntityOwner);
+	UTransformComponent& transformComponent = m_Application->GetRegistry().get<UTransformComponent>(m_EntityOwner);
 
 	std::vector<glm::vec3> positions;
 	positions.reserve(m_MeshAsset.vertices.size());
@@ -65,6 +65,11 @@ void UTerrainComponent::SetAmplitude(float value)
 void UTerrainComponent::SetNoise(float value)
 {
 	m_Noise = value;
+}
+
+void UTerrainComponent::SetShaderName(const std::string& shaderName)
+{
+	m_MeshAsset.shaderName = shaderName;
 }
 
 nlohmann::json UTerrainComponent::GetJsonData()

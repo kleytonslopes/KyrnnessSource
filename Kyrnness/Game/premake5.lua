@@ -1,19 +1,27 @@
 project "Game"
-    kind "WindowedApp"
-    SetupCommonProjectSettings()
 
+-- filter "configurations:Debug"
+    kind "ConsoleApp"
+
+--  filter "configurations:Release"   
+    -- kind "WindowedApp"
+
+    SetupCommonProjectSettings()
+    
+    pchheader "GamePCH.hpp"
+    pchsource "Sources/GamePCH.cpp"
+    
     files
     {
-        "include/**.hpp",
-        "include/**.h",
-        "src/**.cpp",
+        "Sources/**.hpp",
+        "Sources/**.cpp",
         "version.rc",
         "gcrw_ico.ico"
     }
 
     includedirs
     {
-        "include",
+        "Sources",
         "%{include_dir.KyrnnessCore}",
         "%{include_dir.KyrnnessPacker}",
         "%{include_dir.KyrnnessSteamModule}",
