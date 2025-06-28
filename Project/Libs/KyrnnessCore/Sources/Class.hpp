@@ -34,23 +34,24 @@ public:
 	virtual void Initialize();
 	virtual void Update(float DeltaTime);
 	virtual void Destroy();
+	virtual void PreInitialize();
 
+	
 	bool IsInitialized() const;
 
 protected:
 	bool bCanUpdate = true;
 	EClassState m_State = EClassState::CS_None;
-	
-	virtual void PreInitialize();
 
 	virtual void OnInitialize();
 	virtual void OnPostInitialize();
 	virtual void OnUpdate(float DeltaTime);
 	virtual void OnDestroy();
-	
 	virtual void PostInitialize();
 
 	bool IsValid() const;
+
+
 
 };
 

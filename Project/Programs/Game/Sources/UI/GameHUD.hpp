@@ -9,13 +9,16 @@ class UShaderOpenGLComponent;
 
 class UGameHUD : public UHUD
 {
-
+	using Super = UHUD;
 public:
-	UGameHUD(UApplication* application);
+	//UGameHUD(UApplication* application);
 
-	void Initialize() override;
+	//void Initialize() override;
 
-	void Draw(float deltaTime) override;
+	//void Draw(float deltaTime) override;
+
+protected:
+	void PreInitialize() override;
 
 };
 #endif // !GAME_HUD_HPP

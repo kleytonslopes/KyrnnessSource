@@ -12,26 +12,26 @@
 #ifndef K_HUD_HPP
 #define K_HUD_HPP
 
-#include "Core/Core.hpp" 
+#include "Class.hpp" 
 
 
 class UApplication;
 
-class UHUD
+class UHUD : public UClass
 {
+	using Super = UClass;
 public:
-	UHUD(UApplication* application);
-	~UHUD() {};
+	//UHUD(UApplication* application);
+	//~UHUD() {};
 
-	virtual void Initialize();
-	virtual void PostInitialize();
-
-	virtual void Draw(float deltaTime);
-
-	///UUIManager* GetUIManager() const { return m_UIManager.get(); }
+	void SetHUDPath(const std::string& hudFilePath);
 
 protected:
-	UApplication* m_Application;
+	void OnUpdate(float DeltaTime) override;
+	std::string m_HudFilePath;
+	virtual void Draw(float deltaTime);
+
+	void PreInitialize() override;
 };
 
 #endif // K_HUD_HPP

@@ -13,6 +13,7 @@
 #include <memory>
 #include "Online/SteamModule.hpp"
 #include "UI/GameHUD.hpp"
+#include "UI/MainMenuHUD.hpp"
 #include "DebugUtils.hpp"
 #include "Core/AssetManager.hpp"
 #include "MemoryManager.hpp"
@@ -39,7 +40,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		TComponentBuilder& comp = UComponentBuilder::GetComponentBuilderParameters();
 		comp.application = &UApplication::Get();
 
-		UApplication::Get().SetHUDClass<UGameHUD>();
+		UApplication::Get().SetHUDClass<UMainMenuHUD>();
 
 		FFrequencyThread SteamUpdateFrequency(10.0, []() {
 			USteamModule::Get().Update(0.f);

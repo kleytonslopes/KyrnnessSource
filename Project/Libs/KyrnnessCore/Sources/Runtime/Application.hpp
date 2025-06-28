@@ -98,7 +98,7 @@ public:
 	{
 		SetupHUDFactory([](UApplication* App)
 			{
-				return FMemoryManager::Allocate<THUD>(App);
+				return FMemoryManager::Allocate<THUD>();
 			});
 	}
 

@@ -20,9 +20,9 @@ class UApplication;
 class UUIEditor : public UHUD
 {
 public:
-	UUIEditor(UApplication* application);
+	//UUIEditor(UApplication* application);
 
-	virtual void Initialize() override;
+	//virtual void Initialize() override;
 
 	virtual void Draw(float deltaTime) override;
 

@@ -169,7 +169,7 @@ void UApplication::OnUpdate(float DeltaTime)
 	//ImGui::NewFrame();
 
 	m_UIManager->RenderAll();
-	m_HUD->Draw(m_DeltaTime);
+	m_HUD->Update(m_DeltaTime);
 
 	m_Window->PollEvents();
 

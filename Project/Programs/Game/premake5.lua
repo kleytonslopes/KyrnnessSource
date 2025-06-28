@@ -75,17 +75,16 @@ project "Game"
 
     postbuildcommands
     {
-        "copy %{wks.location}\\Kyrnness\\Game\\GameContent\\Game.kpak %{wks.location}\\Build\\bin\\Debug-windows-x86_64\\Game\\GameContent\\Game.kpak",
-        "copy %{wks.location}\\Kyrnness\\Game\\GameContent\\Game.kpak %{wks.location}\\Kyrnness\\Game\\GameContent\\Game.kpak",
+        "copy %{wks.location}\\Project\\Programs\\Game\\GameContent\\Game.kpak %{wks.location}\\Build\\bin\\Debug-windows-x86_64\\Game\\GameContent\\Game.kpak",
 
-        "copy %{wks.location}\\ThirdParty\\SDL\\VisualC\\x64\\Debug\\SDL3.dll $(SolutionDir)Kyrnness\\Game\\SDL3.dll",
-        "copy %{wks.location}\\ThirdParty\\ASSIMP\\bin\\Debug\\assimp-vc143-mtd.dll $(SolutionDir)Kyrnness\\Game\\assimp-vc143-mtd.dll",
-        "copy %{wks.location}\\ThirdParty\\SteamSDK\\redistributable_bin\\win64\\steam_api64.dll $(SolutionDir)Kyrnness\\Game\\steam_api64.dll",
+        "copy %{wks.location}\\ThirdParty\\SDL\\VisualC\\x64\\Debug\\SDL3.dll $(SolutionDir)Project\\Programs\\Game\\SDL3.dll",
+        "copy %{wks.location}\\ThirdParty\\ASSIMP\\bin\\Debug\\assimp-vc143-mtd.dll $(SolutionDir)Project\\Programs\\Game\\assimp-vc143-mtd.dll",
+        "copy %{wks.location}\\ThirdParty\\SteamSDK\\redistributable_bin\\win64\\steam_api64.dll $(SolutionDir)Project\\Programs\\Game\\steam_api64.dll",
 
-        "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysX_64.dll $(SolutionDir)Kyrnness\\Game\\PhysX_64.dll",
-        "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXCommon_64.dll $(SolutionDir)Kyrnness\\Game\\PhysXCommon_64.dll",
-        "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXFoundation_64.dll $(SolutionDir)Kyrnness\\Game\\PhysXFoundation_64.dll",
-        "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXCooking_64.dll $(SolutionDir)Kyrnness\\Game\\PhysXCooking_64.dll",
+        "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysX_64.dll $(SolutionDir)Project\\Programs\\Game\\PhysX_64.dll",
+        "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXCommon_64.dll $(SolutionDir)Project\\Programs\\Game\\PhysXCommon_64.dll",
+        "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXFoundation_64.dll $(SolutionDir)Project\\Programs\\Game\\PhysXFoundation_64.dll",
+        "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\debug\\PhysXCooking_64.dll $(SolutionDir)Project\\Programs\\Game\\PhysXCooking_64.dll",
 
-        "copy %{wks.location}\\ThirdParty\\FreeType\\objs\\freetype.dll $(SolutionDir)Kyrnness\\Game\\freetype.dll",
+        "copy %{wks.location}\\ThirdParty\\FreeType\\objs\\freetype.dll $(SolutionDir)Project\\Programs\\Game\\freetype.dll",
     }
