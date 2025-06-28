@@ -1,0 +1,55 @@
+{
+  "Objects": [
+    {
+      "Components": [
+        {
+          "Type": "UIdentityComponent",
+          "Id": "c1b2f3a4-5d6e-7f8g-9h0i-j1k2l3m4n5o6",
+          "ObjectName": "MainCamera",
+          "Update": false
+        },
+        {
+          "Type": "UTransformComponent",
+          "ForwardVector": [ 0, 0, 1 ],
+          "Location": [ 0, 1, -1 ],
+          "RightVector": [ 0.0, 0.0, 1.0 ],
+          "Rotation": [ 0.0, 0.0, 0.0 ],
+          "Scale": [ 1.0, 1.0, 1.0 ],
+          "UpVector": [ 0, 1, 0 ],
+          "Update": false
+        },
+        {
+          "Type": "UInputComponent",
+          "Update": false
+        },
+        {
+          "Type": "UAudioSourceComponent",
+          "SoundName": "music",
+          "Update": true,
+          "Loop": false,
+          "Volume": 1.0,
+          "Position": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "Far": 1000.0,
+          "Fov": 60.0,
+          "LocationOffset": [ 0, 0, 0 ],
+          "Near": 0.1,
+          "Type": "UCameraComponent",
+          "Update": true
+        },
+        {
+          "Type": "FMyPlayerComponent"
+        },
+        {
+          "Type": "UMainCamera",
+          "IsActive": true
+        }
+      ],
+      "Id": "",
+      "IsSelectable": false,
+      "ObjectName": "MainCamera"
+    }
+  ],
+  "SceneName": ""
+}

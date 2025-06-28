@@ -1,7 +1,7 @@
 include_dir = {}
-include_dir["KyrnnessCore"]        = "%{wks.location}/Kyrnness/KyrnnessCore/Sources"
-include_dir["KyrnnessSteamModule"] = "%{wks.location}/Kyrnness/KyrnnessSteamModule/include"
-include_dir["KyrnnessPacker"]       = "%{wks.location}/Kyrnness/KyrnnessPacker/include"
+include_dir["KyrnnessCore"]        = "%{wks.location}/Project/Libs/KyrnnessCore/Sources"
+include_dir["KyrnnessSteamModule"] = "%{wks.location}/Project/Libs/KyrnnessSteamModule/include"
+include_dir["KyrnnessPacker"]       = "%{wks.location}/Project/Libs/KyrnnessPacker/include"
 
 include_dir["SDL"]             = "%{wks.location}/ThirdParty/SDL/include"
 include_dir["GLM"]              = "%{wks.location}/ThirdParty/GLM/glm"
@@ -118,7 +118,7 @@ function SetupCommonProjectSettings()
             "PX_PHYSX_COOKING",
         }
         postbuildcommands{
-            "copy %{wks.location}\\Kyrnness\\Game\\GameContent\\Game.kpak %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\GameContent\\Game.kpak",
+            "copy %{wks.location}\\Project\\Programs\\Game\\GameContent\\Game.kpak %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\GameContent\\Game.kpak",
             "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysX_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysX_64.dll",
             "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXCommon_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXCommon_64.dll",
             "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXFoundation_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXFoundation_64.dll",
@@ -139,7 +139,7 @@ workspace "Kyrnness"
     configurations{ "Debug", "Release" }
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-    assetFolder = "%{wks.location}/Kyrnness/Game/GameContent"
+    assetFolder = "%{wks.location}/Project/Game/GameContent"
 
     flags
     {
@@ -147,14 +147,14 @@ workspace "Kyrnness"
     }
 
 group "Programs"
-   include "Kyrnness/Game"
-   include "Kyrnness/Packer"
+   include "Project/Programs/Game"
+   include "Project/Programs/Packer"
 group ""
    
 group "Libs"
-   include "Kyrnness/KyrnnessCore"
-   include "Kyrnness/KyrnnessSteamModule"
-   include "Kyrnness/KyrnnessPacker"
+   include "Project/Libs/KyrnnessCore"
+   include "Project/Libs/KyrnnessSteamModule"
+   include "Project/Libs/KyrnnessPacker"
 group ""
 
 group "ThirdParty"   
