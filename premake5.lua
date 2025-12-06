@@ -5,8 +5,8 @@ include_dir["KyrnnessPacker"]       = "%{wks.location}/Project/Libs/KyrnnessPack
 
 include_dir["SDL"]             = "%{wks.location}/ThirdParty/SDL/include"
 include_dir["GLM"]              = "%{wks.location}/ThirdParty/GLM/glm"
-include_dir["PHYSX"]            = "F:/PhysX/physx/include"
-include_dir["VULKAN"]           = "C:/VulkanSDK/1.4.309.0/Include"
+include_dir["PHYSX"]            = "D:/Development/Vendors/PhysX/physx/include"
+include_dir["VULKAN"]           = "C:/VulkanSDK/1.4.321.1/Include"
 include_dir["GLAD"]             = "%{wks.location}/ThirdParty/GLAD/include"
 include_dir["IMGUI"]            = "%{wks.location}/ThirdParty/IMGUI"
 include_dir["ASSIMP"]           = "%{wks.location}/ThirdParty/ASSIMP/include"
@@ -26,12 +26,12 @@ include_dir["LUA"]              = "%{wks.location}/ThirdParty/LUA"
 
 extern_lib_dir = {}
 extern_lib_dir["SDL"]            = "%{wks.location}/ThirdParty/SDL/VisualC/x64/Debug"
-extern_lib_dir["PHYSX"]          = "F:/PhysX/physx/bin/win.x86_64.vc143.mt/debug"
-extern_lib_dir["PHYSX_RELEASE"]  = "F:/PhysX/physx/bin/win.x86_64.vc143.mt/release"
+extern_lib_dir["PHYSX"]          = "D:/Development/Vendors/PhysX/physx/bin/win.x86_64.vc143.mt/debug"
+extern_lib_dir["PHYSX_RELEASE"]  = "D:/Development/Vendors/PhysX/physx/bin/win.x86_64.vc143.mt/release"
 extern_lib_dir["ASSIMP"]         = "%{wks.location}/ThirdParty/ASSIMP/lib/Debug"
 extern_lib_dir["GLFW"]           = "%{wks.location}/ThirdParty/GLFW/src/Debug"
 extern_lib_dir["SteamSDK"]       = "%{wks.location}/ThirdParty/SteamSDK/redistributable_bin/win64"
-extern_lib_dir["VULKAN"]         = "C:/VulkanSDK/1.4.309.0/Lib"
+extern_lib_dir["VULKAN"]         = "C:/VulkanSDK/1.4.321.1/Lib"
 extern_lib_dir["FMOD"]           = "C:/Program Files (x86)/FMOD SoundSystem/FMOD Studio API Windows/api/core/lib/x64"
 extern_lib_dir["FreeType"]       = "%{wks.location}/ThirdParty/FreeType/objs"
 
@@ -119,10 +119,10 @@ function SetupCommonProjectSettings()
         }
         postbuildcommands{
             "copy %{wks.location}\\Project\\Programs\\Game\\GameContent\\Game.kpak %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\GameContent\\Game.kpak",
-            "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysX_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysX_64.dll",
-            "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXCommon_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXCommon_64.dll",
-            "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXFoundation_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXFoundation_64.dll",
-            "copy F:\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXCooking_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXCooking_64.dll",
+            "copy D:\\Development\\Vendors\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysX_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysX_64.dll",
+            "copy D:\\Development\\Vendors\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXCommon_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXCommon_64.dll",
+            "copy D:\\Development\\Vendors\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXFoundation_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXFoundation_64.dll",
+            "copy D:\\Development\\Vendors\\PhysX\\physx\\bin\\win.x86_64.vc143.mt\\release\\PhysXCooking_64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\PhysXCooking_64.dll",
             "copy %{wks.location}\\ThirdParty\\SDL\\VisualC\\x64\\Release\\SDL3.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\SDL3.dll",
             "copy %{wks.location}\\ThirdParty\\SteamSDK\\redistributable_bin\\win64\\steam_api64.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\steam_api64.dll",
             "copy %{wks.location}\\ThirdParty\\FMOD\\fmod.dll %{wks.location}\\Build\\bin\\Release-windows-x86_64\\Game\\fmod.dll",

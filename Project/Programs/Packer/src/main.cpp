@@ -4,8 +4,8 @@
 
 int main()
 {
-    fs::path inputDir   = "../../Kyrnness/Game/GameContent";
-    fs::path outputFile = "../../Kyrnness/Game/GameContent/Game.kpak";
+    fs::path inputDir   = "C:/Projects/KyrnnessSource/Project/Programs/Game/GameContent";
+    fs::path outputFile = "C:/Projects/KyrnnessSource/Project/Programs/Game/GameContent/Game.kpak";
 
     UPacker::PackDirectory(inputDir, outputFile);
 

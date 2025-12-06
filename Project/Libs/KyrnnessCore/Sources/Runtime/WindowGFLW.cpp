@@ -119,9 +119,9 @@ void UWindowGLFW::Initialize()
 		{
 			///std::cout << "glfwSetCursorPosCallback:  " << xpos << " x " << ypos << std::endl;
 
-			//auto* self = static_cast<UWindowGLFW*>(glfwGetWindowUserPointer(window));
-			//if (self)
-			//	self->OnMouseMove(static_cast<float>(xpos), static_cast<float>(ypos));
+			auto* self = static_cast<UWindowGLFW*>(glfwGetWindowUserPointer(window));
+			if (self)
+			self->OnMouseMove(static_cast<float>(xpos), static_cast<float>(ypos));
 
 			ImGui_ImplGlfw_CursorPosCallback(window, xpos, ypos);
 		});
@@ -191,8 +191,8 @@ void UWindowGLFW::OnMouseMove(float x, float y)
 
 	deltaX *= 0.01f; // Adjust sensitivity as needed
 	deltaY *= 0.01f; // Adjust sensitivity as needed
-
-	//UInputManager::Get().OnMouseMove(deltaX, deltaY);
+	FLogger::Debug("x: %f y: %f", deltaX, deltaY);
+	UInputManager::Get().OnMouseMove(deltaX, deltaY);
 	/*UInputManager::Get().OnMousePosition(x, y);*/
 }
 
